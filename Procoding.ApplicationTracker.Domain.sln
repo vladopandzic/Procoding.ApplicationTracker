@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Domain", "Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj", "{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Infrastructure", "Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj", "{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

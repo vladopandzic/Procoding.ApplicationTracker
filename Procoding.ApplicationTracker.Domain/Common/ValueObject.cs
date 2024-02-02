@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Procoding.ApplicationTracker.Domain.Common;
 
-namespace Procoding.ApplicationTracker.Domain.Common;
-
+/// <summary>
+/// Represents the base class all value objects derive from.
+/// </summary>
 public abstract class ValueObject
 {
     protected static bool EqualOperator(ValueObject left, ValueObject right)
@@ -25,6 +22,7 @@ public abstract class ValueObject
 
     protected abstract IEnumerable<object> GetEqualityComponents();
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         if(obj == null || obj.GetType() != GetType())
@@ -36,6 +34,7 @@ public abstract class ValueObject
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return GetEqualityComponents().Select(x => x != null ? x.GetHashCode() : 0)
