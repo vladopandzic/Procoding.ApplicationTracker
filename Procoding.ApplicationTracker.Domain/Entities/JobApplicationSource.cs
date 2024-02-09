@@ -1,11 +1,12 @@
 ﻿using Procoding.ApplicationTracker.Domain.Common;
+using Procoding.ApplicationTracker.Domain.Events;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
 /// <summary>
 /// Represents job application source like Linkedin.
 /// </summary>
-public sealed class JobApplicationSource : EntityBase
+public sealed class JobApplicationSource : AggregateRoot
 {
     /// <summary>
     /// Max length name can have.
@@ -24,7 +25,7 @@ public sealed class JobApplicationSource : EntityBase
     /// <param name="id">Id of the job application source.</param>
     /// <param name="name">Name of the job application source.</param>
     /// <exception cref="ArgumentException"></exception>
-    public JobApplicationSource(Guid id, string name) : base(id)
+    private JobApplicationSource(Guid id, string name) : base(id)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         if(name.Length > MaxLengthForName)
@@ -32,6 +33,13 @@ public sealed class JobApplicationSource : EntityBase
             throw new ArgumentException($"Name can not be longer than {MaxLengthForName} characters");
         }
         Name = name;
+    }
+
+    public JobApplicationSource Create(Guid id, string name)
+    {
+        var jobApplicationSource = new JobApplicationSource(id, name);
+        jobApplicationSource.AddDomainEvent(new JobApplicationSourceCreatedDomainEvent(jobApplicationSource));
+        return jobApplicationSource;
     }
 
     /// <summary>

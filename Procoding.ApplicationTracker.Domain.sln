@@ -3,9 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Domain", "Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj", "{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.Domain", "Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj", "{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Infrastructure", "Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj", "{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.Infrastructure", "Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj", "{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Application", "Procoding.ApplicationTracker.Application\Procoding.ApplicationTracker.Application.csproj", "{559FDB35-1577-4F7F-949F-1EE87EC43647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Web", "Procoding.ApplicationTracker.Web\Procoding.ApplicationTracker.Web.csproj", "{4030CB8F-60A3-4013-9627-F19DFF0B66BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{8302A11C-7E0F-46D0-AE58-E39797B75E74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{FF9F9555-26A4-4190-94E1-EC78E3E94E6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Web.Root", "Procoding.ApplicationTracker.Web.Root\Procoding.ApplicationTracker.Web.Root.csproj", "{50748E15-60AD-45C2-8B80-CB041228975B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +31,28 @@ Global
 		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{559FDB35-1577-4F7F-949F-1EE87EC43647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{559FDB35-1577-4F7F-949F-1EE87EC43647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{559FDB35-1577-4F7F-949F-1EE87EC43647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{559FDB35-1577-4F7F-949F-1EE87EC43647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4030CB8F-60A3-4013-9627-F19DFF0B66BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4030CB8F-60A3-4013-9627-F19DFF0B66BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4030CB8F-60A3-4013-9627-F19DFF0B66BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4030CB8F-60A3-4013-9627-F19DFF0B66BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50748E15-60AD-45C2-8B80-CB041228975B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50748E15-60AD-45C2-8B80-CB041228975B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50748E15-60AD-45C2-8B80-CB041228975B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50748E15-60AD-45C2-8B80-CB041228975B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BF866863-2C0C-4563-9F4B-9ABCEC8E0F4B} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
+		{4889D78A-6A85-4FFD-9724-297FD0A3D8CF} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
+		{559FDB35-1577-4F7F-949F-1EE87EC43647} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
+		{4030CB8F-60A3-4013-9627-F19DFF0B66BD} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
+		{50748E15-60AD-45C2-8B80-CB041228975B} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23C9585D-5823-475F-884E-4A8D6FFF1F93}
