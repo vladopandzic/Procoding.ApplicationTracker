@@ -9,6 +9,8 @@ namespace Procoding.ApplicationTracker.Domain.Entities;
 /// </summary>
 public sealed class Company : EntityBase, ISoftDeletableEntity, IAuditableEntity
 {
+    private readonly List<CompanyAverageGrossSalary> _companyAverageGrossSalaries = new();
+
     /// <summary>
     /// Creates new instance of the <see cref="Company"/>. Required by EF Core.
     /// </summary>
@@ -29,7 +31,6 @@ public sealed class Company : EntityBase, ISoftDeletableEntity, IAuditableEntity
     {
         CompanyName = companyName;
         OfficialWebSiteLink = officialWebSiteLink;
-        CompanyAverageGrossSalaries = averageGrossSalaries;
     }
 
     /// <summary>
@@ -42,7 +43,6 @@ public sealed class Company : EntityBase, ISoftDeletableEntity, IAuditableEntity
     {
         CompanyName = companyName;
         OfficialWebSiteLink = officialWebSiteLink;
-        CompanyAverageGrossSalaries = new List<CompanyAverageGrossSalary>();
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public sealed class Company : EntityBase, ISoftDeletableEntity, IAuditableEntity
     /// <summary>
     /// List of average gross salaries  for each <see cref="CompanyAverageGrossSalary.Year"/>.
     /// </summary>
-    public ICollection<CompanyAverageGrossSalary> CompanyAverageGrossSalaries { get; }
+    public IReadOnlyList<CompanyAverageGrossSalary> CompanyAverageGrossSalaries => _companyAverageGrossSalaries;
 
     /// <inheritdoc/>
     public DateTime? DeletedOnUtc { get; }

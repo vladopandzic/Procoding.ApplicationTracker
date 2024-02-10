@@ -1,13 +1,17 @@
 ﻿using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Common;
+using Procoding.ApplicationTracker.Domain.Events;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
 /// <summary>
 /// Represents job application.
 /// </summary>
-public class JobApplication : EntityBase, ISoftDeletableEntity, IAuditableEntity
+public class JobApplication : AggregateRoot, ISoftDeletableEntity, IAuditableEntity
 {
+
+    private readonly List<InterviewStep> _interviewSteps = new();
+
     /// <summary>
     /// Creates new instance of <see cref="JobApplication"/>. Required by EF Core.
     /// </summary>
@@ -26,7 +30,7 @@ public class JobApplication : EntityBase, ISoftDeletableEntity, IAuditableEntity
     /// <param name="applicationSource">Source through candidate applied like LinkedIn, etc.</param>
     /// <param name="company">Company that the candidate applies for.</param>
     /// <param name="jobApplicationStatus">Job application status.</param>
-    public JobApplication(Candidate candidate,
+    private JobApplication(Candidate candidate,
                           Guid id,
                           DateTime appliedOnUTC,
                           JobApplicationSource applicationSource,
@@ -38,7 +42,36 @@ public class JobApplication : EntityBase, ISoftDeletableEntity, IAuditableEntity
         ApplicationSource = applicationSource;
         Company = company;
         JobApplicationStatus = jobApplicationStatus;
-        InterviewSteps = new List<InterviewStep>();
+    }
+
+    public JobApplication ApplyForAJob(Candidate candidate,
+                                       Guid id,
+                                       JobApplicationSource jobApplicationSource,
+                                       Company company,
+                                      TimeProvider timeProvider)
+    {
+
+        var newJobApplication = new JobApplication(candidate: candidate,
+                                                   id: id,
+                                                   appliedOnUTC: timeProvider.GetUtcNow().DateTime,
+                                                   applicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   jobApplicationStatus: JobApplicationStatus.Applied);
+
+        this.AddDomainEvent(new AppliedForAJobDomainEvent(newJobApplication));
+
+        return newJobApplication;
+
+    }
+
+    public void NewInterview(Guid id, string description, InteviewStepType inteviewStepType)
+    {
+        var interview = new InterviewStep(jobApplication: this,
+                                          id: id,
+                                          description: description,
+                                          inteviewStepType: inteviewStepType);
+
+        this.AddDomainEvent(new NewInterviewAddedDomainEvent(interview));
     }
 
     /// <summary>
@@ -69,8 +102,8 @@ public class JobApplication : EntityBase, ISoftDeletableEntity, IAuditableEntity
     /// <summary>
     /// Interview steps each job application has.
     /// </summary>
-    public ICollection<InterviewStep> InterviewSteps { get; }
-
+    public IReadOnlyList<InterviewStep> InterviewSteps => _interviewSteps.ToList();
+    
     /// <inheritdoc/>
     public DateTime? DeletedOnUtc { get; }
 

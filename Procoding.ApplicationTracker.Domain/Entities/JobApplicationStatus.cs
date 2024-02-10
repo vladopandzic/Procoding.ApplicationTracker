@@ -5,6 +5,7 @@
 /// </summary>
 public enum JobApplicationStatus
 {
+    Applied,
     InProcess,
     Rejected,
     Withdrawed
