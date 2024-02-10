@@ -4,7 +4,7 @@ namespace Procoding.ApplicationTracker.Domain.Events;
 /// <summary>
 /// Represents event which happens when new interview step is added.
 /// </summary>
-public class NewInterviewAddedDomainEvent : IDomainEvent
+public sealed class NewInterviewAddedDomainEvent : IDomainEvent
 {
     public NewInterviewAddedDomainEvent(InterviewStep interviewStep)
     {

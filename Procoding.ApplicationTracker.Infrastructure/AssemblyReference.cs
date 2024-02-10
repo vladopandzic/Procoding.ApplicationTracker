@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Infrastructure
 {
-    internal class AssemblyReference
+    public class AssemblyReference
     {
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Common;
+using System.Xml.Linq;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
@@ -25,6 +26,10 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     /// <param name="inteviewStepType">Intervies step type.</param>
     public InterviewStep(JobApplication jobApplication, Guid id, string description, InteviewStepType inteviewStepType) : base(id)
     {
+        if (description.Length > MaxLengthForDescription)
+        {
+            throw new ArgumentException($"Description can not be longer than {MaxLengthForDescription} characters");
+        }
         ArgumentException.ThrowIfNullOrEmpty(description);
         Description = description;
         JobApplication = jobApplication;
@@ -44,7 +49,7 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     /// <summary>
     /// Job application this inteview step belongs to.
     /// </summary>
-    public JobApplication JobApplication { get; set; }
+    public JobApplication JobApplication { get; }
 
     /// <inheritdoc/>
     public DateTime? DeletedOnUtc { get; }

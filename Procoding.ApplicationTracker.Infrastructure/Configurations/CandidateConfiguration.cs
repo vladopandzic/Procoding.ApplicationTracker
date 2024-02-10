@@ -9,10 +9,12 @@ namespace Procoding.ApplicationTracker.Infrastructure.Configurations;
 /// This class is used to configure the Candidate entity in the database.  It implements the <see
 /// cref="IEntityTypeConfiguration{TEntity}
 /// </summary>
-public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
+public sealed class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
 {
-    void IEntityTypeConfiguration<Candidate>.Configure(EntityTypeBuilder<Candidate> builder)
+    public void Configure(EntityTypeBuilder<Candidate> builder)
     {
+        builder.ToTable("Candidates");
+
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name)
                .HasMaxLength(Candidate.MaxLengthForName)
@@ -23,11 +25,13 @@ public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
                .IsRequired();
 
         builder.ComplexProperty(x => x.Email)
+               .IsRequired()
                .Property(x => x.Value)
-               .HasMaxLength(Email.MaxLengthForValue);
+               .HasMaxLength(Email.MaxLengthForValue)
+               .IsRequired();
 
         builder.HasMany(x => x.JobApplications)
-                .WithOne(x => x.Candidate)
-                .OnDelete(DeleteBehavior.Cascade);
+               .WithOne(x => x.Candidate)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -7,7 +7,7 @@ namespace Procoding.ApplicationTracker.Domain.Entities;
 /// <summary>
 /// Represents job application.
 /// </summary>
-public class JobApplication : AggregateRoot, ISoftDeletableEntity, IAuditableEntity
+public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAuditableEntity
 {
 
     private readonly List<InterviewStep> _interviewSteps = new();

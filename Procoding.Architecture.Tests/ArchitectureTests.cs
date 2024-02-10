@@ -40,6 +40,7 @@ namespace Procoding.Architecture.Tests
             var otherProjects = new[] {
                 InfrastructureNamespace, WebNamespace, WebRootNamespace
             };
+
             //Act
             var testResult = Types.InAssembly(assembly)
                                   .ShouldNot()

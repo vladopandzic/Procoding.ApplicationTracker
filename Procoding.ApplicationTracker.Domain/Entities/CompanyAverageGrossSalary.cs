@@ -41,7 +41,7 @@ public sealed class CompanyAverageGrossSalary : EntityBase, ISoftDeletableEntity
     /// <summary>
     /// Year for which this information is provided.
     /// </summary>
-    public int Year { get; set; }
+    public int Year { get; }
 
     /// <summary>
     /// Company for which this information is valid.

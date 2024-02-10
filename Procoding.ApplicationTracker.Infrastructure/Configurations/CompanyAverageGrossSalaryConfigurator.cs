@@ -14,6 +14,10 @@ public class CompanyAverageGrossSalaryConfigurator : IEntityTypeConfiguration<Co
     {
         builder.ToTable(nameof(Company.CompanyAverageGrossSalaries));
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Year)
+               .IsRequired();
+        builder.Property(x => x.GrossSalary)
+               .IsRequired();
         builder.Property(x => x.Currency)
                .HasConversion<string>()
                .HasMaxLength(100);

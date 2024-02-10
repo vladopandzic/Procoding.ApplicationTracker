@@ -10,7 +10,7 @@ namespace Procoding.ApplicationTracker.Domain.Events
     /// <summary>
     /// Represents event which happens when new candidate is created.
     /// </summary>
-    public class CandidateCreatedDomainEvent : IDomainEvent
+    public sealed class CandidateCreatedDomainEvent : IDomainEvent
     {
         public CandidateCreatedDomainEvent(Candidate candidate)
         {

@@ -10,7 +10,7 @@ namespace Procoding.ApplicationTracker.Domain.Events
     /// <summary>
     /// Represents event which happens when candidate is applied for a job.
     /// </summary>
-    public class AppliedForAJobDomainEvent : IDomainEvent
+    public sealed class AppliedForAJobDomainEvent : IDomainEvent
     {
         public AppliedForAJobDomainEvent(JobApplication jobApplication)
         {

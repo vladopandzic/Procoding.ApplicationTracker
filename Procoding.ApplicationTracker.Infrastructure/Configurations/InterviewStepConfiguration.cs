@@ -8,9 +8,9 @@ namespace Procoding.ApplicationTracker.Infrastructure.Configurations;
 /// This class is used to configure the <see cref="InterviewStep"/> entity. It is used to map the <see
 /// cref="InterviewStep"/> entity. to a database table.
 /// </summary>
-internal sealed class InterviewStepConfiguration : IEntityTypeConfiguration<InterviewStep>
+public class InterviewStepConfiguration : IEntityTypeConfiguration<InterviewStep>
 {
-    void IEntityTypeConfiguration<InterviewStep>.Configure(EntityTypeBuilder<InterviewStep> builder)
+    public void Configure(EntityTypeBuilder<InterviewStep> builder)
     {
         builder.ToTable(nameof(JobApplication.InterviewSteps));
         builder.HasKey(x => x.Id);

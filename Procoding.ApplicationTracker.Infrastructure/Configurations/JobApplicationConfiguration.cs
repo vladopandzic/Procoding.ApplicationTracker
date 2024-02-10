@@ -8,14 +8,17 @@ namespace Procoding.ApplicationTracker.Infrastructure.Configurations;
 /// This class is used to configure the <see cref="JobApplication"/> entity. It is used to map the <see
 /// cref="JobApplication"/> entity to a database table.
 /// </summary>
-internal sealed class JobApplicationConfiguration : IEntityTypeConfiguration<JobApplication>
+public sealed class JobApplicationConfiguration : IEntityTypeConfiguration<JobApplication>
 {
     public void Configure(EntityTypeBuilder<JobApplication> builder)
     {
+        builder.ToTable("JobApplications");
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.ApplicationSource);
         builder.HasOne(x => x.Candidate)
-               .WithMany(x => x.JobApplications);
+               .WithMany(x => x.JobApplications)
+               .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasMany(x => x.InterviewSteps)
                .WithOne(x => x.JobApplication)
                .OnDelete(DeleteBehavior.Cascade);
