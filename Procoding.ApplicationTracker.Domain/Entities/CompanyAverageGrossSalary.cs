@@ -16,16 +16,20 @@ public sealed class CompanyAverageGrossSalary : EntityBase, ISoftDeletableEntity
     } //used by EF core
 #pragma warning restore CS8618
 
-    public CompanyAverageGrossSalary(Guid id, Company company, decimal grossSalary, Currency currency, int year) : base(id)
+    private CompanyAverageGrossSalary(Guid id, Company company, decimal grossSalary, Currency currency, int year) : base(id)
     {
+        if (company is null)
+        {
+            throw new ArgumentNullException(nameof(company));
+        }
         GrossSalary = grossSalary;
         Company = company;
         Currency = currency;
-        if(Year > DateTime.Now.Year)
+        Year = year;
+        if (Year > DateTime.Now.Year)
         {
             throw new InvalidYearForAverageSalaryException("Can't enter historical data for future!");
         }
-        Year = year;
     }
 
     /// <summary>
@@ -56,4 +60,22 @@ public sealed class CompanyAverageGrossSalary : EntityBase, ISoftDeletableEntity
 
     /// <inheritdoc/>
     public DateTime ModifiedOnUtc { get; }
+
+    /// <summary>
+    /// Creates new instance of <see cref="CompanyAverageGrossSalary"/>.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static CompanyAverageGrossSalary Create(Company company, Guid id, decimal grossSalary, int year, Currency currency)
+    {
+        //TODO: check if already exists for year  
+        var grossSalaryForYear = new CompanyAverageGrossSalary(id: id,
+                                                               company: company,
+                                                               grossSalary: grossSalary,
+                                                               currency: currency,
+                                                               year: year);
+        return grossSalaryForYear;
+    }
+
 }

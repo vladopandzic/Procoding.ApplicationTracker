@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.Architecture.Tests", "Procoding.Architecture.Tests\Procoding.Architecture.Tests.csproj", "{5DA67CE2-9EDD-4C09-A23F-B822306F88E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Domain.Tests", "Procoding.ApplicationTracker.Domain.Tests\Procoding.ApplicationTracker.Domain.Tests.csproj", "{1892A913-6912-4196-867D-E497F9DA8DEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{5DA67CE2-9EDD-4C09-A23F-B822306F88E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DA67CE2-9EDD-4C09-A23F-B822306F88E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DA67CE2-9EDD-4C09-A23F-B822306F88E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1892A913-6912-4196-867D-E497F9DA8DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1892A913-6912-4196-867D-E497F9DA8DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1892A913-6912-4196-867D-E497F9DA8DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1892A913-6912-4196-867D-E497F9DA8DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{4030CB8F-60A3-4013-9627-F19DFF0B66BD} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 		{50748E15-60AD-45C2-8B80-CB041228975B} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 		{5DA67CE2-9EDD-4C09-A23F-B822306F88E7} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
+		{1892A913-6912-4196-867D-E497F9DA8DEF} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23C9585D-5823-475F-884E-4A8D6FFF1F93}

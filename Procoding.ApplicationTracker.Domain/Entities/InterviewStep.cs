@@ -24,7 +24,7 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     /// <param name="id">Id of the interview step.</param>
     /// <param name="description">Description of the interview step.</param>
     /// <param name="inteviewStepType">Intervies step type.</param>
-    public InterviewStep(JobApplication jobApplication, Guid id, string description, InteviewStepType inteviewStepType) : base(id)
+    public InterviewStep(JobApplication jobApplication, Guid id, string description, InterviewStepType inteviewStepType) : base(id)
     {
         if (description.Length > MaxLengthForDescription)
         {
@@ -44,7 +44,7 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     /// <summary>
     /// Interview step type.
     /// </summary>
-    public InteviewStepType InteviewStepType { get; }
+    public InterviewStepType InteviewStepType { get; }
 
     /// <summary>
     /// Job application this inteview step belongs to.

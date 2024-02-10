@@ -44,11 +44,20 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
         JobApplicationStatus = jobApplicationStatus;
     }
 
-    public JobApplication ApplyForAJob(Candidate candidate,
-                                       Guid id,
-                                       JobApplicationSource jobApplicationSource,
-                                       Company company,
-                                      TimeProvider timeProvider)
+    /// <summary>
+    /// Creates new job application.
+    /// </summary>
+    /// <param name="candidate"></param>
+    /// <param name="id"></param>
+    /// <param name="jobApplicationSource"></param>
+    /// <param name="company"></param>
+    /// <param name="timeProvider"></param>
+    /// <returns></returns>
+    public static JobApplication Create(Candidate candidate,
+                                        Guid id,
+                                        JobApplicationSource jobApplicationSource,
+                                        Company company,
+                                        TimeProvider timeProvider)
     {
 
         var newJobApplication = new JobApplication(candidate: candidate,
@@ -58,20 +67,31 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
                                                    company: company,
                                                    jobApplicationStatus: JobApplicationStatus.Applied);
 
-        this.AddDomainEvent(new AppliedForAJobDomainEvent(newJobApplication));
+        newJobApplication.AddDomainEvent(new AppliedForAJobDomainEvent(newJobApplication));
 
         return newJobApplication;
 
     }
 
-    public void NewInterview(Guid id, string description, InteviewStepType inteviewStepType)
+    /// <summary>
+    /// Creates new interview for job application.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="description"></param>
+    /// <param name="inteviewStepType"></param>
+    /// <returns></returns>
+    public InterviewStep CreateNewInterview(Guid id, string description, InterviewStepType inteviewStepType)
     {
         var interview = new InterviewStep(jobApplication: this,
                                           id: id,
                                           description: description,
                                           inteviewStepType: inteviewStepType);
 
+        _interviewSteps.Add(interview);
+
         this.AddDomainEvent(new NewInterviewAddedDomainEvent(interview));
+
+        return interview;
     }
 
     /// <summary>
@@ -100,10 +120,12 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     public Candidate Candidate { get; }
 
     /// <summary>
-    /// Interview steps each job application has.
+    /// Interview steps each job application has. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".
+    /// It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
+    /// https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx
     /// </summary>
-    public IReadOnlyList<InterviewStep> InterviewSteps => _interviewSteps.ToList();
-    
+    public IReadOnlyList<InterviewStep> InterviewSteps => _interviewSteps.AsReadOnly();
+
     /// <inheritdoc/>
     public DateTime? DeletedOnUtc { get; }
 

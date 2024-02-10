@@ -13,6 +13,11 @@ public sealed class JobApplicationSource : AggregateRoot
     /// </summary>
     public static readonly int MaxLengthForName = 255;
 
+    /// <summary>
+    /// Min length name can have.
+    /// </summary>
+    public static readonly int MinLengthForName = 3;
+
 #pragma warning disable CS8618
     private JobApplicationSource()
     {
@@ -27,15 +32,35 @@ public sealed class JobApplicationSource : AggregateRoot
     /// <exception cref="ArgumentException"></exception>
     private JobApplicationSource(Guid id, string name) : base(id)
     {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        if(name.Length > MaxLengthForName)
-        {
-            throw new ArgumentException($"Name can not be longer than {MaxLengthForName} characters");
-        }
+        ValidateName(name);
         Name = name;
     }
 
-    public JobApplicationSource Create(Guid id, string name)
+    private static void ValidateName(string name)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (name.Length > MaxLengthForName)
+        {
+            throw new ArgumentException($"Name can not be longer than {MaxLengthForName} characters");
+        }
+        if (name.Length < MinLengthForName)
+        {
+            throw new ArgumentException($"Name can not be shorter than {MinLengthForName} characters");
+        }
+    }
+
+    /// <summary>
+    /// Represents the name of the job source.
+    /// </summary>
+    public string Name { get; private set; }
+
+    /// <summary>
+    /// Creates new <see cref="JobApplicationSource"/>.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static JobApplicationSource Create(Guid id, string name)
     {
         var jobApplicationSource = new JobApplicationSource(id, name);
         jobApplicationSource.AddDomainEvent(new JobApplicationSourceCreatedDomainEvent(jobApplicationSource));
@@ -43,7 +68,20 @@ public sealed class JobApplicationSource : AggregateRoot
     }
 
     /// <summary>
-    /// Represents the name of the job source.
+    /// Updates the name of the <see cref="JobApplicationSource"/>.
     /// </summary>
-    public string Name { get; }
+    /// <param name="name"></param>
+    public void ChangeName(string name)
+    {
+        ValidateName(name);
+
+        if (string.Equals(Name, name, StringComparison.InvariantCulture))
+        {
+            return;
+        }
+
+        Name = name;
+
+        AddDomainEvent(new JobApplicationSourceUpdatedDomainEvent(Id, name));
+    }
 }

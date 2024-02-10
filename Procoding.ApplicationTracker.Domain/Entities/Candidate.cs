@@ -62,6 +62,14 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// <exception cref="ArgumentException"></exception>
     private Candidate(Guid id, string name, string surname, Email email) : base(id)
     {
+        ValidateNameSurname(name, surname);
+        Name = name;
+        Surname = surname;
+        Email = email;
+    }
+
+    private static void ValidateNameSurname(string name, string surname)
+    {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentException.ThrowIfNullOrEmpty(surname);
 
@@ -82,42 +90,65 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
         {
             throw new ArgumentException($"Surname can not be longer than {MinLengthForName} characters");
         }
-        Name = name;
-        Surname = surname;
-        Email = email;
     }
 
-    public Candidate Create(Guid id, string name, string surname, Email email)
+    /// <summary>
+    /// Creates new <see cref="Candidate"/>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <param name="surname"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public static Candidate Create(Guid id, string name, string surname, Email email)
     {
         var candidate = new Candidate(id: id,
                                       name: name,
                                       surname: surname,
                                       email: email);
 
-        this.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
+        candidate.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
 
         return candidate;
     }
 
     /// <summary>
+    /// Updates main attribute of the <see cref="Candidate"/>.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="surname"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public Candidate Update(string name, string surname, Email email)
+    {
+        ValidateNameSurname(name, surname);
+        Name = name;
+        Surname = surname;
+        Email = email;
+        return this;
+    }
+
+    /// <summary>
     /// Candidates name.
     /// </summary>
-    public string Name { get; }
+    public string Name { get; private set; }
 
     /// <summary>
     /// Candidates surname
     /// </summary>
-    public string Surname { get; }
+    public string Surname { get; private set; }
 
     /// <summary>
     /// Candidates email address.
     /// </summary>
-    public Email Email { get; }
+    public Email Email { get; private set; }
 
     /// <summary>
-    /// Job applications for the candidate.
+    /// Job applications for the candidate. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".
+    /// It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
+    /// https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx
     /// </summary>
-    public IReadOnlyList<JobApplication> JobApplications => _jobApplications.ToList();
+    public IReadOnlyList<JobApplication> JobApplications => _jobApplications.AsReadOnly();
 
     /// <inheritdoc/>
     public DateTime? DeletedOnUtc { get; }
@@ -127,4 +158,34 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
 
     /// <inheritdoc/>
     public DateTime ModifiedOnUtc { get; }
+
+    /// <summary>
+    ///  Applies for a job for <paramref name="company"/>.
+    /// </summary>
+    /// <param name="company"></param>
+    /// <param name="jobApplicationSource"></param>
+    /// <param name="timeProvider"></param>
+    /// <returns></returns>
+    public JobApplication ApplyForAJob(Company company, JobApplicationSource jobApplicationSource, TimeProvider timeProvider)
+    {
+        var jobApplication = JobApplication.Create(candidate: this,
+                                                   id: Guid.NewGuid(),
+                                                   jobApplicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   timeProvider: timeProvider);
+
+        _jobApplications.Add(jobApplication);
+
+        //TODO: consider removing adding event and also Aggregate root property from JobApplication
+        return jobApplication;
+    }
+
+    public void NewJobInterviewStep(JobApplication jobApplication, string description, InterviewStepType interviewStepType)
+    {
+        var interviewStep = jobApplication.CreateNewInterview(id: Guid.NewGuid(),
+                                                              description: description,
+                                                              inteviewStepType: interviewStepType);
+
+
+    }
 }

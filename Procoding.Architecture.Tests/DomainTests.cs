@@ -120,6 +120,24 @@ namespace Procoding.Architecture.Tests
         }
 
         [Test]
+        public void DomainEvents_Should_Be_Imuttable()
+        {
+            // Arrange
+            var domainAssembly = typeof(ApplicationTracker.Domain.AssemblyReference).Assembly;
+
+            //Act
+            var testResult = Types.InAssembly(domainAssembly)
+                                  .That()
+                                  .ImplementInterface(typeof(IDomainEvent))
+                                  .Should()
+                                  .BeImmutable()
+                                  .GetResult();
+
+            // Assert
+            testResult.IsSuccessful.Should().BeTrue();
+        }
+
+        [Test]
         public void DomainEvents_Should_HaveDomainEventPostfix()
         {
             // Arrange
