@@ -2,12 +2,8 @@
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Events;
 using Procoding.ApplicationTracker.Domain.Exceptions;
+using Procoding.ApplicationTracker.Domain.Tests.TestData;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Domain.Tests.Entities;
 
@@ -33,32 +29,22 @@ public class CompanyTests
     [Test]
     public void Create_NullCompanyName_ThrowsArgumentException()
     {
-        // Arrange
-        CompanyName? companyName = null;
-        Link officialWebSiteLink = new Link("https://example.com");
-
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Company.Create(companyName!, officialWebSiteLink));
+        //Arrange && Act & Assert
+        Assert.Throws<ArgumentNullException>(() => { _ = TestData.CompanyTestData.InValidCompanyWithNullCompany; });
     }
 
     [Test]
     public void Create_NullOfficialWebSiteLink_ThrowsArgumentException()
     {
-        // Arrange
-        CompanyName companyName = new CompanyName("Test Company");
-        Link? officialWebSiteLink = null;
-
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => Company.Create(companyName, officialWebSiteLink!));
+        //Arrange && Act & Assert
+        Assert.Throws<ArgumentNullException>(() => { _ = TestData.CompanyTestData.InValidCompanyWithNullLink; });
     }
 
     [Test]
     public void AddGrossSalaryForYear_FutureYear_ThrowsInvalidYearForAverageSalaryException()
     {
         // Arrange
-        CompanyName companyName = new CompanyName("Test Company");
-        Link officialWebSiteLink = new Link("https://example.com");
-        var company = Company.Create(companyName, officialWebSiteLink);
+        Company company = CompanyTestData.ValidCompany;
 
         decimal grossSalary = 50000;
         int futureYear = DateTime.Now.Year + 1; // Year in future
@@ -72,9 +58,7 @@ public class CompanyTests
     public void AddGrossSalaryForYear_NullCompany_ThrowsArgumentNullException()
     {
         // Arrange
-        CompanyName companyName = new CompanyName("Test Company");
-        Link officialWebSiteLink = new Link("https://example.com");
-        var company = Company.Create(companyName, officialWebSiteLink);
+        Company company = CompanyTestData.ValidCompany;
 
         decimal grossSalary = 50000;
         int year = 2023;
@@ -89,9 +73,7 @@ public class CompanyTests
     public void Update_ValidArguments_UpdatesCompanyInfo()
     {
         // Arrange
-        CompanyName originalCompanyName = new CompanyName("Original Company");
-        Link originalWebSiteLink = new Link("https://original.example.com");
-        var company = Company.Create(originalCompanyName, originalWebSiteLink);
+        Company company = CompanyTestData.ValidCompany;
 
         CompanyName updatedCompanyName = new CompanyName("Updated Company");
         Link updatedWebSiteLink = new Link("https://updated.example.com");
@@ -108,9 +90,7 @@ public class CompanyTests
     public void AddGrossSalaryForYear_ValidArguments_AddsSalaryForYear()
     {
         // Arrange
-        CompanyName companyName = new CompanyName("Test Company");
-        Link officialWebSiteLink = new Link("https://example.com");
-        var company = Company.Create(companyName, officialWebSiteLink);
+        Company company = CompanyTestData.ValidCompany;
 
         decimal grossSalary = 50000;
         int year = 2023;
@@ -131,10 +111,7 @@ public class CompanyTests
     public void AddGrossSalaryForYear_ValidArguments_AddsSalaryForYearAndAddsDomainEvent()
     {
         // Arrange
-        CompanyName companyName = new CompanyName("Test Company");
-        Link officialWebSiteLink = new Link("https://example.com");
-        var company = Company.Create(companyName, officialWebSiteLink);
-
+        Company company = CompanyTestData.ValidCompany;
         decimal grossSalary = 50000;
         int year = 2023;
         Currency currency = Currency.USD;

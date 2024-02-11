@@ -1,4 +1,5 @@
 ﻿using Procoding.ApplicationTracker.Domain.Common;
+using Procoding.ApplicationTracker.Domain.Exceptions;
 
 namespace Procoding.ApplicationTracker.Domain.ValueObjects;
 
@@ -26,9 +27,15 @@ public class Email : ValueObject
     /// </summary>
     public Email(string email)
     {
-        if(email.Length > MaxLengthForValue)
+        if (email.Length > MaxLengthForValue)
         {
             throw new ArgumentException($"Name can not be longer than {email.Length} characters");
+        }
+        //TODO: add better logic here
+        if (!email.Contains("@"))
+        {
+            throw new InvalidEmailException($"Invalid email");
+
         }
         Value = email;
     }

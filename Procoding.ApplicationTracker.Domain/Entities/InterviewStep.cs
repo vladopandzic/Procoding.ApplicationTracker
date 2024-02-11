@@ -26,11 +26,17 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     /// <param name="inteviewStepType">Intervies step type.</param>
     public InterviewStep(JobApplication jobApplication, Guid id, string description, InterviewStepType inteviewStepType) : base(id)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(description);
+
         if (description.Length > MaxLengthForDescription)
         {
             throw new ArgumentException($"Description can not be longer than {MaxLengthForDescription} characters");
         }
-        ArgumentException.ThrowIfNullOrEmpty(description);
+        if (jobApplication is null)
+        {
+            throw new ArgumentNullException($"JobApplication can not be null");
+
+        }
         Description = description;
         JobApplication = jobApplication;
         InteviewStepType = inteviewStepType;

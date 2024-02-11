@@ -26,45 +26,29 @@ public class JobApplicationSourceTests
     [Test]
     public void Create_NullName_ThrowsArgumentException()
     {
-        // Arrange
-        Guid id = Guid.NewGuid();
-        string? name = null;
-
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => JobApplicationSource.Create(id, name!));
+        // Arrange && Act & Assert
+        Assert.Throws<ArgumentNullException>(() => { _ = TestData.JobApplicationSourceTestData.InvalidJobApplicationSourceWithNullEmail; });
     }
 
     [Test]
     public void Create_EmptyName_ThrowsArgumentException()
     {
-        // Arrange
-        Guid id = Guid.NewGuid();
-        string name = "";
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => JobApplicationSource.Create(id, name));
+        // Arrange && Act & Assert
+        Assert.Throws<ArgumentException>(() => { _ = TestData.JobApplicationSourceTestData.InvalidJobApplicationSourceWithEmptyEmail; });
     }
 
     [Test]
     public void Create_NameTooLong_ThrowsArgumentException()
     {
-        // Arrange
-        Guid id = Guid.NewGuid();
-        string name = new string('x', JobApplicationSource.MaxLengthForName + 1);
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => JobApplicationSource.Create(id, name));
+        //Arrange && Act & Assert
+        Assert.Throws<ArgumentException>(() => { _ = TestData.JobApplicationSourceTestData.InvalidJobApplicationSourceWithToLongEmail; });
     }
 
     [Test]
     public void Create_NameTooShort_ThrowsArgumentException()
     {
-        // Arrange
-        Guid id = Guid.NewGuid();
-        string name = new string('x', JobApplicationSource.MinLengthForName - 1);
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => JobApplicationSource.Create(id, name));
+        //Arrange && Act & Assert
+        Assert.Throws<ArgumentException>(() => { _ = TestData.JobApplicationSourceTestData.InvalidJobApplicationSourceWithToShortEmail; });
     }
 
     [Test]

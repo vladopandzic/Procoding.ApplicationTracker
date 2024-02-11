@@ -62,13 +62,13 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// <exception cref="ArgumentException"></exception>
     private Candidate(Guid id, string name, string surname, Email email) : base(id)
     {
-        ValidateNameSurname(name, surname);
+        Validate(name, surname, email);
         Name = name;
         Surname = surname;
         Email = email;
     }
 
-    private static void ValidateNameSurname(string name, string surname)
+    private static void Validate(string name, string surname, Email email)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentException.ThrowIfNullOrEmpty(surname);
@@ -89,6 +89,10 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
         if (surname.Length > MaxLengthForSurname)
         {
             throw new ArgumentException($"Surname can not be longer than {MinLengthForName} characters");
+        }
+        if (email is null)
+        {
+            throw new ArgumentNullException("Email cannot be null!");
         }
     }
 
@@ -121,7 +125,7 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// <returns></returns>
     public Candidate Update(string name, string surname, Email email)
     {
-        ValidateNameSurname(name, surname);
+        Validate(name, surname, email);
         Name = name;
         Surname = surname;
         Email = email;
@@ -185,6 +189,8 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
         var interviewStep = jobApplication.CreateNewInterview(id: Guid.NewGuid(),
                                                               description: description,
                                                               inteviewStepType: interviewStepType);
+
+        //TODO: see where domain event should reside!
 
 
     }
