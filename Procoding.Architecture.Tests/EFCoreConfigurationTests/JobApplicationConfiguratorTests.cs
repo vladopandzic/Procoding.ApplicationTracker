@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Infrastructure.Configurations;
+using Procoding.Architecture.Tests.Helpers;
 
 namespace Procoding.Architecture.Tests.EFCoreConfigurationTests;
 

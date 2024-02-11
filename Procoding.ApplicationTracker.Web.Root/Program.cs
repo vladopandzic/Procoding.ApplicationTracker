@@ -8,7 +8,7 @@ internal class Program
     {
         var app = new AppAdapter(args, typeof(Program), x =>
         {
-            x.AddTransient<IHandler, Handler>();
+            x.AddTransient<ISomething, Something>();
         });
 
         await app.StartAsync();

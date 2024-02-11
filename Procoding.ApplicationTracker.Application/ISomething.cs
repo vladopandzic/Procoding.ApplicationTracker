@@ -1,6 +1,6 @@
 ﻿namespace Procoding.ApplicationTracker.Application;
 
-public interface IHandler
+public interface ISomething
 {
     void Handle();
 }

@@ -7,7 +7,7 @@ using Procoding.ApplicationTracker.Domain.ValueObjects;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Procoding.Architecture.Tests
+namespace Procoding.Architecture.Tests.Helpers
 {
     internal class EntityTypeConfigurationHelper
     {

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Procoding.Architecture.Tests.Helpers;
 using System.Reflection;
 
 namespace Procoding.Architecture.Tests;

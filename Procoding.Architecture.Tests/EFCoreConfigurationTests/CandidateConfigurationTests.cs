@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.Infrastructure.Configurations;
+using Procoding.Architecture.Tests.Helpers;
 using System.Reflection;
 
 namespace Procoding.Architecture.Tests.EFCoreConfigurationTests;

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Procoding.Architecture.Tests.Helpers;
 
 namespace Procoding.Architecture.Tests.EFCoreConfigurationTests
 {
