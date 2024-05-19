@@ -13,6 +13,7 @@ public class CompanyInsertedResponseDTO
     {
         Company = company;
     }
+
     public CompanyInsertedResponseDTO()
     {
             

@@ -1,7 +1,5 @@
-﻿using Procoding.ApplicationTracker.DTOs.Model;
-using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
-using Procoding.ApplicationTracker.Infrastructure.Data;
+﻿using Procoding.ApplicationTracker.DTOs.Response;
+using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +7,10 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Procoding.ApplicationTracker.Api.IntegrationTests.Companies;
+namespace Procoding.ApplicationTracker.Api.IntegrationTests.Candidates;
 
 [TestFixture]
-public class GetOneCompanyEndpointTests
+public class GetAllCandidatesEndpointTests
 {
     private CustomWebApplicationFactory _factory;
 
@@ -35,20 +33,16 @@ public class GetOneCompanyEndpointTests
     }
 
     [Test]
-    public async Task GetOneCompanyEndpointTests_ShouldReturnListOfCompanies()
+    public async Task GetAllCandidates_ShouldReturnListOfCandidates()
     {
         //Arrange
         var client = _factory.CreateClient();
-        using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        var firstFromDb = dbContext.Companies.FirstOrDefault();
 
         //Act
-        var response = await client.GetFromJsonAsync<CompanyResponseDTO>($"companies/{firstFromDb!.Id}");
+        var response = await client.GetFromJsonAsync<CandidateListResponseDTO>("candidates");
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.Company.Name, Is.EqualTo(firstFromDb.CompanyName.Value));
-        Assert.That(response.Company.OfficialWebSiteLink, Is.EqualTo(firstFromDb.OfficialWebSiteLink.Value));
-
+        Assert.That(response.Candidates.Count, Is.EqualTo(DatabaseSeedData.GetCandidates().Count));
     }
 }

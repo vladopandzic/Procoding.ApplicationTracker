@@ -17,13 +17,11 @@ namespace Procoding.ApplicationTracker.Application.Companies.Commands.InsertComp
 
 internal class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyCommand, CompanyInsertedResponseDTO>
 {
-    private readonly IMapper _mapper;
     private readonly ICompanyRepository _companyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public InsertCompanyCommandHandler(IMapper mapper, ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
+    public InsertCompanyCommandHandler(ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
     {
-        _mapper = mapper;
         _companyRepository = companyRepository;
         _unitOfWork = unitOfWork;
     }

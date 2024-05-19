@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetOneJobApplicationSource;
+using Procoding.ApplicationTracker.DTOs.Response;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.JobApplicationSource;

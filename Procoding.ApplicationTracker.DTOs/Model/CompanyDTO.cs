@@ -14,7 +14,7 @@ public class CompanyDTO
         OfficialWebSiteLink = officialWebSiteLink;
     }
 
-    public string Name { get; set; }
+    public string Name { get; }
 
-    public string OfficialWebSiteLink { get; set; }
+    public string OfficialWebSiteLink { get; }
 }

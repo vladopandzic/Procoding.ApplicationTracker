@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Procoding.ApplicationTracker.DTOs.Response;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 using System.Net.Http.Json;

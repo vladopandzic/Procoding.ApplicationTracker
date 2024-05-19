@@ -1,6 +1,6 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 
-namespace Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
+namespace Procoding.ApplicationTracker.DTOs.Response;
 
 public class JobApplicationSourceResponseDTO
 {
@@ -10,7 +10,7 @@ public class JobApplicationSourceResponseDTO
     }
     public JobApplicationSourceResponseDTO()
     {
-
+            
     }
 
     public JobApplicationSourceDTO JobApplicationSource { get; set; }

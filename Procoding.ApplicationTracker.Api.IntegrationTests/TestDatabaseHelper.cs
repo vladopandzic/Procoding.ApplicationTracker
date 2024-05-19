@@ -32,6 +32,7 @@ public class TestDatabaseHelper
     {
         await context.JobApplicationSources.AddRangeAsync(DatabaseSeedData.GetJobApplicationSources());
         await context.Companies.AddRangeAsync(DatabaseSeedData.GetCompanies());
+        await context.Candidates.AddRangeAsync(DatabaseSeedData.GetCandidates());
 
         await context.SaveChangesAsync();
     }

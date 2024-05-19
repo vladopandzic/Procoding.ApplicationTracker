@@ -10,6 +10,11 @@ public static class DatabaseSeedData
         return [JobApplicationSource.Create(Guid.Empty, "Linkedin")];
     }
 
+    public static List<Candidate> GetCandidates()
+    {
+        return [Candidate.Create(Guid.Empty,"Name","Surname",new Email("email@email.com"))];
+    }
+
     public static List<Company> GetCompanies()
     {
         return [Company.Create(new CompanyName("CompanyName Ltd."), new Link("https://www.company.com"))];

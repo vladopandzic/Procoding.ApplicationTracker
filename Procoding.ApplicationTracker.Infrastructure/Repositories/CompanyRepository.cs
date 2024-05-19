@@ -18,6 +18,7 @@ internal class CompanyRepository : ICompanyRepository
     {
         _dbContext = dbContext;
     }
+
     public async Task<List<Company>> GetCompaniesAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Companies.ToListAsync(cancellationToken);

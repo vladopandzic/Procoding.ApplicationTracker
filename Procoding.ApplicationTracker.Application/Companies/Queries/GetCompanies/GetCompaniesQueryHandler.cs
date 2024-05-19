@@ -14,13 +14,10 @@ namespace Procoding.ApplicationTracker.Application.Companies.Queries.GetCompanie
 
 internal class GetCompaniesQueryHandler : IQueryHandler<GetCompaniesQuery, CompanyListResponseDTO>
 {
-
-    private readonly IMapper _mapper;
     private readonly ICompanyRepository _companyRepository;
 
-    public GetCompaniesQueryHandler(IMapper mapper, ICompanyRepository companyRepository)
+    public GetCompaniesQueryHandler(ICompanyRepository companyRepository)
     {
-        _mapper = mapper;
         _companyRepository = companyRepository;
     }
 

@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
+﻿using Procoding.ApplicationTracker.DTOs.Response;
+using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
