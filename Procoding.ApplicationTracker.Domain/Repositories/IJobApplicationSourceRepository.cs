@@ -12,4 +12,18 @@ public interface IJobApplicationSourceRepository
     /// </summary>
     /// <param name="jobApplicationSource">The jobApplicationSource to be inserted to the database.</param>
     Task InsertAsync(JobApplicationSource jobApplicationSource, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets list of job application source.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<List<JobApplicationSource>> GetJobApplicationSourceAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Get one job application source.
+    /// </summary>
+    /// <param name="jobApplicationSourceId"></param>
+    /// <returns></returns>
+    Task<JobApplicationSource?> GetJobApplicationSourceAsync(Guid jobApplicationSourceId, CancellationToken cancellationToken);
 }
