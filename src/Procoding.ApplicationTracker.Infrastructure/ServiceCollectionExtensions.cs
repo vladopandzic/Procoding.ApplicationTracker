@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPersistance(this IServiceCollection services)
     {
-        services.AddScoped<TimeProvider>(x => TimeProvider.System);
+        services.AddSingleton<TimeProvider>(x => TimeProvider.System);
 
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
 

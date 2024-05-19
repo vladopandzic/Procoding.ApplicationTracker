@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Procoding.ApplicationTracker.Application\Procoding.ApplicationTracker.Application.csproj" />
     <ProjectReference Include="..\Procoding.ApplicationTracker.DTOs\Procoding.ApplicationTracker.DTOs.csproj" />
     <ProjectReference Include="..\Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj" />
+    <ProjectReference Include="..\Procoding.ApplicationTracker.ServiceDefaults\Procoding.ApplicationTracker.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
