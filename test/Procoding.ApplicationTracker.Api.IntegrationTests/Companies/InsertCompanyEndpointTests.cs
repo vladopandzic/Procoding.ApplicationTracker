@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
+using Procoding.ApplicationTracker.DTOs.Request.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -45,8 +46,8 @@ internal class InsertCompanyEndpointTests
         var allCompanies = await dbContext.Companies.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"companies", new InsertCompanyCommand("CompanyName","https://www.company.hr"));
-        var json = await response.Content.ReadFromJsonAsync<CompanyUpdatedResponseDTO>();
+        var response = await client.PostAsJsonAsync($"companies", new CompanyInsertRequestDTO("CompanyName","https://www.company.hr"));
+        var json = await response.Content.ReadFromJsonAsync<CompanyInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allCompaniesAfter = await dbContext2.Companies.ToListAsync();
 

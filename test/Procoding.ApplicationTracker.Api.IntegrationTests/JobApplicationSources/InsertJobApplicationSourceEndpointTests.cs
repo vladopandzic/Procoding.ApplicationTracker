@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
+using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 using System;
@@ -45,8 +46,8 @@ internal class InsertJobApplicationSourceEndpointTests
         var allJobsSources = await dbContext.JobApplicationSources.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"job-application-sources", new AddJobApplicationSourceCommand("SomeName"));
-        var json = await response.Content.ReadFromJsonAsync<JobApplicationSourceUpdatedResponseDTO>();
+        var response = await client.PostAsJsonAsync($"job-application-sources", new JobApplicationSourceInsertRequestDTO("SomeName"));
+        var json = await response.Content.ReadFromJsonAsync<JobApplicationSourceInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allJobsSourcesAfter = await dbContext2.JobApplicationSources.ToListAsync();
 

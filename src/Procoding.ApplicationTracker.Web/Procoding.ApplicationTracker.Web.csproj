@@ -15,6 +15,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Procoding.ApplicationTracker.DTOs\Procoding.ApplicationTracker.DTOs.csproj" />
+	  <ProjectReference Include="..\Procoding.ApplicationTracker.ServiceDefaults\Procoding.ApplicationTracker.ServiceDefaults.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Update="wwwroot\app.css">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>

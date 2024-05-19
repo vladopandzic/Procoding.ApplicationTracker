@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
 using Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
+using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -45,8 +46,8 @@ internal class InsertCandidateEndpointTests
         var allCandidates = await dbContext.Candidates.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"candidates", new InsertCandidateCommand("NameNew", "SurnameNew","newemail@newemail.com"));
-        var json = await response.Content.ReadFromJsonAsync<CandidateUpdatedResponseDTO>();
+        var response = await client.PostAsJsonAsync($"candidates", new CandidateInsertRequestDTO("NameNew", "SurnameNew","newemail@newemail.com"));
+        var json = await response.Content.ReadFromJsonAsync<CandidateInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allCandidatesAfter = await dbContext2.Candidates.ToListAsync();
 

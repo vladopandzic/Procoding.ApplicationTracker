@@ -2,11 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
+using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Candidates;
 
-public class InsertCandidateEndpoint : EndpointBaseAsync.WithRequest<InsertCandidateCommand>.WithResult<CandidateInsertedResponseDTO>
+public class InsertCandidateEndpoint : EndpointBaseAsync.WithRequest<CandidateInsertRequestDTO>.WithResult<CandidateInsertedResponseDTO>
 {
     readonly ISender _sender;
     public InsertCandidateEndpoint(ISender sender)
@@ -15,8 +16,8 @@ public class InsertCandidateEndpoint : EndpointBaseAsync.WithRequest<InsertCandi
     }
 
     [HttpPost("candidates")]
-    public override Task<CandidateInsertedResponseDTO> HandleAsync(InsertCandidateCommand request, CancellationToken cancellationToken = default)
+    public override Task<CandidateInsertedResponseDTO> HandleAsync(CandidateInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
-        return _sender.Send(request, cancellationToken);
+        return _sender.Send(new InsertCandidateCommand(request.Name, request.Surname, request.Email), cancellationToken);
     }
 }

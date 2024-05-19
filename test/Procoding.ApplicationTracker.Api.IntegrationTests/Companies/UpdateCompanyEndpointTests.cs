@@ -1,5 +1,6 @@
 ﻿using Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
+using Procoding.ApplicationTracker.DTOs.Request.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -44,7 +45,7 @@ internal class UpdateCompanyEndpointTests
         var firstFromDb = dbContext.Companies.FirstOrDefault();
 
         //Act
-        var response = await client.PutAsJsonAsync($"companies", new UpdateCompanyCommand(firstFromDb!.Id, "NewName","https://www.newLink.com"));
+        var response = await client.PutAsJsonAsync($"companies", new CompanyUpdateRequestDTO(firstFromDb!.Id, "NewName","https://www.newLink.com"));
         var json = await response.Content.ReadFromJsonAsync<CompanyUpdatedResponseDTO>();
 
         //Assert

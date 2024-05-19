@@ -1,13 +1,9 @@
 ﻿@page "/job-application-sources"
-
-@* <MudDataGrid Items="@Elements.Take(4)">
+@using MudBlazor
+<MudDataGrid Items="@ViewModel.JobApplicationSources" Hover=true>
     <Columns>
-        <PropertyColumn Property="x => x.Number" Title="Nr" />
-        <PropertyColumn Property="x => x.Sign" />
-        <PropertyColumn Property="x => x.Name" />
-        <PropertyColumn Property="x => x.Position" />
-        <PropertyColumn Property="x => x.Molar" Title="Molar mass" />
+        <PropertyColumn Property="x => x.Id" Title="Id" />
+        <PropertyColumn Property="x => x.Name" Title="Name" />
     </Columns>
 </MudDataGrid>
 
- *@

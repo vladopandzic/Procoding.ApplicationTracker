@@ -1,5 +1,7 @@
 ﻿//using Procoding.ApplicationTracker.Application;
 
+using Procoding.ApplicationTracker.Web.ViewModels;
+
 namespace Procoding.ApplicationTracker.Web.Root;
 
 internal class Program

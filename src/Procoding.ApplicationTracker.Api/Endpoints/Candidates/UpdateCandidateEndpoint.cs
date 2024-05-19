@@ -2,11 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
+using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Candidates;
 
-public class UpdateCandidateEndpoint : EndpointBaseAsync.WithRequest<UpdateCandidateCommand>.WithResult<CandidateUpdatedResponseDTO>
+public class UpdateCandidateEndpoint : EndpointBaseAsync.WithRequest<UpdateCandidateRequestDTO>.WithResult<CandidateUpdatedResponseDTO>
 {
 
     readonly ISender _sender;
@@ -18,8 +19,8 @@ public class UpdateCandidateEndpoint : EndpointBaseAsync.WithRequest<UpdateCandi
 
     [HttpPut("candidates")]
 
-    public override Task<CandidateUpdatedResponseDTO> HandleAsync(UpdateCandidateCommand request, CancellationToken cancellationToken = default)
+    public override Task<CandidateUpdatedResponseDTO> HandleAsync(UpdateCandidateRequestDTO request, CancellationToken cancellationToken = default)
     {
-        return _sender.Send(request, cancellationToken);
+        return _sender.Send(new UpdateCandidateCommand(request.Id,request.Name, request.Surname, request.Email), cancellationToken);
     }
 }

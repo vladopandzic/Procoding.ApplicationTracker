@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Procoding.ApplicationTracker.Api\Procoding.ApplicationTracker.Api.csproj" />
+    <ProjectReference Include="..\Procoding.ApplicationTracker.Web.Root\Procoding.ApplicationTracker.Web.Root.csproj" />
+    <ProjectReference Include="..\Procoding.ApplicationTracker.Web\Procoding.ApplicationTracker.Web.csproj" />
   </ItemGroup>
 
 </Project>
