@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Application\Procoding.ApplicationTracker.Application.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Web.Root\Procoding.ApplicationTracker.Web.Root.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Web\Procoding.ApplicationTracker.Web.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Application\Procoding.ApplicationTracker.Application.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Web.Root\Procoding.ApplicationTracker.Web.Root.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Web\Procoding.ApplicationTracker.Web.csproj" />
   </ItemGroup>
 
 </Project>

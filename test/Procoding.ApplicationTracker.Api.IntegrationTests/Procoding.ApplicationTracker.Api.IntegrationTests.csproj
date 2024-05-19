@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Api\Procoding.ApplicationTracker.Api.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Api\Procoding.ApplicationTracker.Api.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Infrastructure\Procoding.ApplicationTracker.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

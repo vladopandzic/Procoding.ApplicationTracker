@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj" />
   </ItemGroup>
 
 </Project>
