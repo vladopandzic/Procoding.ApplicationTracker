@@ -155,13 +155,13 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     public IReadOnlyList<JobApplication> JobApplications => _jobApplications.AsReadOnly();
 
     /// <inheritdoc/>
-    public DateTime? DeletedOnUtc { get; }
+    public DateTime? DeletedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime CreatedOnUtc { get; }
+    public DateTime CreatedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime ModifiedOnUtc { get; }
+    public DateTime ModifiedOnUtc { get; private set; }
 
     /// <summary>
     ///  Applies for a job for <paramref name="company"/>.

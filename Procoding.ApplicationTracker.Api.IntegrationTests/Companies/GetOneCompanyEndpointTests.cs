@@ -1,12 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Procoding.ApplicationTracker.DTOs.Model;
+using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplicationSources;
+namespace Procoding.ApplicationTracker.Api.IntegrationTests.Companies;
+
 
 [TestFixture]
-public class GetOneJobApplicationSourceEndpointTests
+public class GetOneCompanyEndpointTests
 {
     private CustomWebApplicationFactory _factory;
 
@@ -17,8 +24,8 @@ public class GetOneJobApplicationSourceEndpointTests
         await testDatabaseHelper.SetupDatabase();
         _factory = new CustomWebApplicationFactory(testDatabaseHelper,
                                                    (x) =>
-        {
-        });
+                                                   {
+                                                   });
     }
 
     [TearDown]
@@ -29,18 +36,20 @@ public class GetOneJobApplicationSourceEndpointTests
     }
 
     [Test]
-    public async Task GetOneApplicationSource_ShouldReturnListOfJobAplicationSources()
+    public async Task GetOneCompanyEndpointTests_ShouldReturnListOfCompanies()
     {
         //Arrange
         var client = _factory.CreateClient();
         using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        var firstFromDb = dbContext.JobApplicationSources.FirstOrDefault();
+        var firstFromDb = dbContext.Companies.FirstOrDefault();
 
         //Act
-        var response = await client.GetFromJsonAsync<JobApplicationSourceResponseDTO>($"job-application-sources/{firstFromDb!.Id}");
+        var response = await client.GetFromJsonAsync<CompanyResponseDTO>($"companies/{firstFromDb!.Id}");
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.JobApplicationSource.Name, Is.EqualTo(firstFromDb.Name));
+        Assert.That(response.Company.Name, Is.EqualTo(firstFromDb.CompanyName.Value));
+        Assert.That(response.Company.OfficialWebSiteLink, Is.EqualTo(firstFromDb.OfficialWebSiteLink.Value));
+
     }
 }

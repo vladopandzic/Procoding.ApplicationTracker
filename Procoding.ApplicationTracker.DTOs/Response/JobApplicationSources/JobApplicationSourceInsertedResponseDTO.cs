@@ -1,6 +1,6 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 
-namespace Procoding.ApplicationTracker.DTOs.Response;
+namespace Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 public class JobApplicationSourceInsertedResponseDTO
 {

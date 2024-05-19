@@ -53,13 +53,13 @@ public sealed class CompanyAverageGrossSalary : EntityBase, ISoftDeletableEntity
     public Company Company { get; }
 
     /// <inheritdoc/>
-    public DateTime? DeletedOnUtc { get; }
+    public DateTime? DeletedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime CreatedOnUtc { get; }
+    public DateTime CreatedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime ModifiedOnUtc { get; }
+    public DateTime ModifiedOnUtc { get; private set; }
 
     /// <summary>
     /// Creates new instance of <see cref="CompanyAverageGrossSalary"/>.

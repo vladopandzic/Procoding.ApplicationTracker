@@ -1,5 +1,6 @@
-using Procoding.ApplicationTracker.Domain.Entities;
-using Procoding.ApplicationTracker.DTOs.Response;
+using MapsterMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using System.Net.Http.Json;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplicationSources;
@@ -32,12 +33,12 @@ public class GetAllApplicationSourcesEndpointTests
     {
         //Arrange
         var client = _factory.CreateClient();
-
+        var mapper = _factory.Services.GetRequiredService<IMapper>();
         //Act
-        var response = await client.GetFromJsonAsync<JobApplicationSourceListResponseDTO>("job-application-sources");
+        var response = await client.GetFromJsonAsync<CompanyListResponseDTO>("companies");
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.JobApplicationSources.Count, Is.EqualTo(DatabaseSeedData.GetJobApplicationSources().Count));
+        Assert.That(response.Companies.Count, Is.EqualTo(DatabaseSeedData.GetCompanies().Count));
     }
 }

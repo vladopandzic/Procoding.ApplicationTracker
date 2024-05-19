@@ -58,11 +58,11 @@ public sealed class InterviewStep : EntityBase, IAuditableEntity, ISoftDeletable
     public JobApplication JobApplication { get; }
 
     /// <inheritdoc/>
-    public DateTime? DeletedOnUtc { get; }
+    public DateTime? DeletedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime CreatedOnUtc { get; }
+    public DateTime CreatedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime ModifiedOnUtc { get; }
+    public DateTime ModifiedOnUtc { get; private set; }
 }

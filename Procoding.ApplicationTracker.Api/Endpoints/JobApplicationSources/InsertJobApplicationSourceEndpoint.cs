@@ -3,7 +3,7 @@ using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
-using Procoding.ApplicationTracker.DTOs.Response;
+using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using System.Threading;
 using System.Threading.Tasks;
 

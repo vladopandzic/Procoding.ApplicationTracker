@@ -2,7 +2,7 @@
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Model;
-using Procoding.ApplicationTracker.DTOs.Response;
+using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetOneJobApplicationSource;
 
@@ -20,6 +20,10 @@ internal class GetOneJobApplicationSourceQueryHandler : IQueryHandler<GetOneJobA
     public async Task<JobApplicationSourceResponseDTO> Handle(GetOneJobApplicationSourceQuery request, CancellationToken cancellationToken)
     {
         var jobApplicationSource = await _jobApplicationSourceRepository.GetJobApplicationSourceAsync(request.Id, cancellationToken);
+
+        //TODO: result object?
+        if (jobApplicationSource is null)
+            throw new Domain.Exceptions.JobApplicationSourceDoesNotExistException();
 
         var jobApplicationSourceDto = _mapper.Map<JobApplicationSourceDTO>(jobApplicationSource);
 

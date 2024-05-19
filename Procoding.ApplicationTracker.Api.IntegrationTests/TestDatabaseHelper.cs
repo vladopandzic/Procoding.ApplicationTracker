@@ -31,6 +31,8 @@ public class TestDatabaseHelper
     private async Task SeedDatabaseAsync(ApplicationDbContext context)
     {
         await context.JobApplicationSources.AddRangeAsync(DatabaseSeedData.GetJobApplicationSources());
+        await context.Companies.AddRangeAsync(DatabaseSeedData.GetCompanies());
+
         await context.SaveChangesAsync();
     }
 

@@ -76,13 +76,13 @@ public sealed class Company : AggregateRoot, ISoftDeletableEntity, IAuditableEnt
     public IReadOnlyList<CompanyAverageGrossSalary> CompanyAverageGrossSalaries => _companyAverageGrossSalaries;
 
     /// <inheritdoc/>
-    public DateTime? DeletedOnUtc { get; }
+    public DateTime? DeletedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime CreatedOnUtc { get; }
+    public DateTime CreatedOnUtc { get; private set; }
 
     /// <inheritdoc/>
-    public DateTime ModifiedOnUtc { get; }
+    public DateTime ModifiedOnUtc { get; private set; }
 
     /// <summary>
     /// Creates new company

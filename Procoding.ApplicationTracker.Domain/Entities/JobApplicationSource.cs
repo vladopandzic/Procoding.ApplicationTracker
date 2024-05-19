@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.Domain.Common;
+﻿using Procoding.ApplicationTracker.Domain.Abstractions;
+using Procoding.ApplicationTracker.Domain.Common;
 using Procoding.ApplicationTracker.Domain.Events;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
@@ -6,7 +7,7 @@ namespace Procoding.ApplicationTracker.Domain.Entities;
 /// <summary>
 /// Represents job application source like Linkedin.
 /// </summary>
-public sealed class JobApplicationSource : AggregateRoot
+public sealed class JobApplicationSource : AggregateRoot, ISoftDeletableEntity
 {
     /// <summary>
     /// Max length name can have.
@@ -84,4 +85,13 @@ public sealed class JobApplicationSource : AggregateRoot
 
         AddDomainEvent(new JobApplicationSourceUpdatedDomainEvent(Id, name));
     }
+
+    /// <inheritdoc/>
+    public DateTime? DeletedOnUtc { get; private set; }
+
+    /// <inheritdoc/>
+    public DateTime CreatedOnUtc { get; private set; }
+
+    /// <inheritdoc/>
+    public DateTime ModifiedOnUtc { get; private set; }
 }
