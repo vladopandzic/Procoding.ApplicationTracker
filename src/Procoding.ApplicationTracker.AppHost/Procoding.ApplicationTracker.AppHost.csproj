@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
-    <UserSecretsId>194fca91-a877-4b92-a666-e8e386dcb390</UserSecretsId>
+    <UserSecretsId>93587f01-cc3d-474b-86dc-655e73b0423b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Procoding.ApplicationTracker.Api\Procoding.ApplicationTracker.Api.csproj" />
     <ProjectReference Include="..\Procoding.ApplicationTracker.Web.Root\Procoding.ApplicationTracker.Web.Root.csproj" />
-    <ProjectReference Include="..\Procoding.ApplicationTracker.Web\Procoding.ApplicationTracker.Web.csproj" />
   </ItemGroup>
 
 </Project>
