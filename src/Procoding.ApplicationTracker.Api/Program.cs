@@ -1,6 +1,6 @@
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
-using Procoding.ApplicationTracker.Api.Middleware;
+using Procoding.ApplicationTracker.Api.Infrastructure;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -24,9 +24,12 @@ public class Program
         builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("JobApplicationDatabase")));
         builder.Services.AddPersistance();
 
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
+
         var app = builder.Build();
 
-        using ApplicationDbContext context = await SeedDatabaseAsync(app);
+        //using ApplicationDbContext context = await SeedDatabaseAsync(app);
 
         app.MapDefaultEndpoints();
 
@@ -39,7 +42,7 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseExceptionHandler();
 
         app.UseAuthorization();
 
