@@ -25,7 +25,7 @@ public class Program
 
         var app = builder.Build();
 
-        using ApplicationDbContext context = await SeedDatabaseAsync(app);
+        //using ApplicationDbContext context = await SeedDatabaseAsync(app);
 
         app.MapDefaultEndpoints();
 

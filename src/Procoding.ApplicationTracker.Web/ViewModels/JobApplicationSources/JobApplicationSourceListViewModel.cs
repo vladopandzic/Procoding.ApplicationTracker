@@ -3,7 +3,7 @@ using Procoding.ApplicationTracker.Web.Services.Interfaces;
 
 namespace Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
-public class JobApplicationSourceListViewModel
+public class JobApplicationSourceListViewModel : ViewModelBase
 {
     private readonly IJobApplicationSourceService _jobApplicationSourceService;
 
@@ -16,7 +16,9 @@ public class JobApplicationSourceListViewModel
 
     public async Task InitializeViewModel(CancellationToken cancellationToken = default)
     {
+        IsLoading = true;
         var response = await _jobApplicationSourceService.GetJobApplicationSourcesAsync(cancellationToken);
+        IsLoading = false;
 
         if (response is not null)
         {

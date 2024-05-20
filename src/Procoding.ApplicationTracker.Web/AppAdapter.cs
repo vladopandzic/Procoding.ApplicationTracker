@@ -1,5 +1,6 @@
 using Procoding.ApplicationTracker.Web.Components;
 using System.Reflection;
+using FluentValidation;
 
 namespace Procoding.ApplicationTracker.Web;
 
@@ -14,7 +15,10 @@ public class AppAdapter
         options.Invoke(builder.Services);
 
         builder.Services.AddRazorComponents()
-                        .AddInteractiveServerComponents();
+                        .AddInteractiveServerComponents(x => x.DetailedErrors = true);
+
+        builder.Services.AddValidatorsFromAssemblyContaining(typeof(Validators.JobApplicationSourceValidator));
+
 
         _app = builder.Build();
 
