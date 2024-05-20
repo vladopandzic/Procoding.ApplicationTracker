@@ -1,5 +1,6 @@
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using Procoding.ApplicationTracker.Api.Middleware;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -37,6 +38,8 @@ public class Program
 
 
         app.UseHttpsRedirection();
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseAuthorization();
 
