@@ -29,7 +29,7 @@ internal class GetOneCompanyQueryHandler : IQueryHandler<GetOneCompanyQuery, Com
         if (company is null)
             throw new Domain.Exceptions.CompanyDoesNotExistException();
 
-        var companyDTO = new CompanyDTO(company.CompanyName.Value, company.OfficialWebSiteLink.Value);
+        var companyDTO = new CompanyDTO(company.Id, company.CompanyName.Value, company.OfficialWebSiteLink.Value);
 
         return new CompanyResponseDTO(companyDTO);
     }

@@ -36,6 +36,5 @@ public class JobApplicationSourceService : IJobApplicationSourceService
         var response = await _httpClient.PutAsJsonAsync(UrlConstants.JobApplicationSources.UpdateUrl(), request, cancellationToken);
 
         return await response.Content.ReadFromJsonAsync<JobApplicationSourceUpdatedResponseDTO?>(cancellationToken);
-
     }
 }

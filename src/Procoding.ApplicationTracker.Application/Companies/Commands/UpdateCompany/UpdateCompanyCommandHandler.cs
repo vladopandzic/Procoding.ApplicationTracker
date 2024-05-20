@@ -46,7 +46,7 @@ internal class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyComman
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var companyDto = new CompanyDTO(companyName.Value, officialWebsiteLink.Value);
+        var companyDto = new CompanyDTO(companyFromDb.Id, companyName.Value, officialWebsiteLink.Value);
 
         return new CompanyUpdatedResponseDTO(companyDto);
     }

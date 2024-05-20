@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
-namespace Procoding.ApplicationTracker.Web.Pages;
+namespace Procoding.ApplicationTracker.Web.Pages.JobApplicationSource;
 
 public partial class JobApplicationSources
 {

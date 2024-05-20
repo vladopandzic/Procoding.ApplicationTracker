@@ -2,12 +2,15 @@
 
 public class CandidateDTO
 {
-    public CandidateDTO(string name, string surname, string email)
+    public CandidateDTO(Guid id, string name, string surname, string email)
     {
+        Id = id;
         Name = name;
         Surname = surname;
         Email = email;
     }
+
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 

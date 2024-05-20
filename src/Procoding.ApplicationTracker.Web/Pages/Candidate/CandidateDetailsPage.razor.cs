@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 using MudBlazor;
-using static MudBlazor.CategoryTypes;
+using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
+using Procoding.ApplicationTracker.Web.ViewModels.Companies;
 
-namespace Procoding.ApplicationTracker.Web.Pages;
+namespace Procoding.ApplicationTracker.Web.Pages.Candidate;
 
-public partial class JobApplicationSourceDetailsPage
+public partial class CandidateDetailsPage
 {
     [Inject]
-    public JobApplicationSourceDetailsViewModel ViewModel { get; set; } = default!;
+    public CandidateDetailsViewModel ViewModel { get; set; } = default!;
 
     [Parameter]
     public string Id { get; set; }
@@ -39,5 +39,4 @@ public partial class JobApplicationSourceDetailsPage
         }
 
     }
-
 }

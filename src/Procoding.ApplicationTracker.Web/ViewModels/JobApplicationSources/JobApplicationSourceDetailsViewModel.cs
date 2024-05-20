@@ -53,6 +53,5 @@ public class JobApplicationSourceDetailsViewModel : ViewModelBase
                new JobApplicationSourceUpdateRequestDTO(JobApplicationSource!.Id, JobApplicationSource!.Name));
         }
        
-
     }
 }

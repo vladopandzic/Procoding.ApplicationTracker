@@ -1,0 +1,37 @@
+﻿@page "/candidates"
+@using MudBlazor
+
+
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h4">Candidates</MudText>
+    <br />
+    <MudLink Href="@($"candidates/new")">
+        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+    </MudLink>
+    <br />
+    <MudDataGrid Items="@ViewModel.Candidates" Hover=true RowsPerPage="10">
+        <Columns>
+            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Surname" Title="Surname" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Email" Title="Email" Resizable="true" Filterable="true" />
+
+            <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
+                <CellTemplate Context="data">
+                    <MudStack Row>
+                        <MudLink Href="@($"candidates/{data.Item.Id}")">
+                            <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
+                        </MudLink>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="DTOs.Model.CandidateDTO" />
+        </PagerContent>
+    </MudDataGrid>
+}

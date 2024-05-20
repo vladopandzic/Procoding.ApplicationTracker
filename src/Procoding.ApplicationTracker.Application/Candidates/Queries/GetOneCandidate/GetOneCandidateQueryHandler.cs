@@ -27,7 +27,7 @@ public class GetOneCandidateQueryHandler : IQueryHandler<GetOneCandidateQuery, C
         if (candidate is null)
             throw new Domain.Exceptions.CandidateDoesNotExistException();
 
-        var companyDTO = new CandidateDTO(candidate.Name, candidate.Surname, candidate.Email.Value);
+        var companyDTO = new CandidateDTO(candidate.Id, candidate.Name, candidate.Surname, candidate.Email.Value);
 
         return new CandidateResponseDTO(companyDTO);
     }

@@ -8,13 +8,17 @@ namespace Procoding.ApplicationTracker.DTOs.Model;
 
 public class CompanyDTO
 {
-    public CompanyDTO(string name, string officialWebSiteLink)
+
+    public CompanyDTO(Guid id, string name, string officialWebSiteLink)
     {
+        Id = id;
         Name = name;
         OfficialWebSiteLink = officialWebSiteLink;
     }
 
-    public string Name { get; }
+    public Guid Id { get; set; }
 
-    public string OfficialWebSiteLink { get; }
+    public string Name { get; set; }
+
+    public string OfficialWebSiteLink { get; set; }
 }

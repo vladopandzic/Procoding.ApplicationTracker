@@ -25,7 +25,7 @@ internal class GetCompaniesQueryHandler : IQueryHandler<GetCompaniesQuery, Compa
     {
         var companies = await _companyRepository.GetCompaniesAsync(cancellationToken);
 
-        var companyDTOs = companies.Select(x => new CompanyDTO(x.CompanyName.Value, x.OfficialWebSiteLink.Value)).ToList();
+        var companyDTOs = companies.Select(x => new CompanyDTO(x.Id, x.CompanyName.Value, x.OfficialWebSiteLink.Value)).ToList();
 
         return new CompanyListResponseDTO(companyDTOs.AsReadOnly());
     }

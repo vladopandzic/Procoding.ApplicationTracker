@@ -37,7 +37,7 @@ internal class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyComman
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var companyDTO = new CompanyDTO(company.CompanyName.Value, company.OfficialWebSiteLink.Value);
+        var companyDTO = new CompanyDTO(company.Id, company.CompanyName.Value, company.OfficialWebSiteLink.Value);
 
         return new CompanyInsertedResponseDTO(companyDTO);
     }

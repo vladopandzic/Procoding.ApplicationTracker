@@ -1,0 +1,51 @@
+﻿@page "/candidates/{Id}"
+@using MudBlazor
+@using Microsoft.AspNetCore.Components.Web;
+@using FluentValidation.Validators;
+@using Blazored.FluentValidation
+<PageTitle>@ViewModel.Candidate?.Name</PageTitle>
+
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+
+}
+else if (ViewModel.Candidate is not null)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">@ViewModel.Candidate.Name</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref=mudForm Model="ViewModel.Candidate" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+                    <MudTextField @bind-Value=ViewModel.Candidate.Name 
+                                  T="string"
+                                  Label="Name"
+                                  Validation="ViewModel.Validator.ValidateValue" 
+                                  Immediate="true" 
+                                  For="(()=>ViewModel.Candidate.Name)" />
+
+                    <MudTextField @bind-Value=ViewModel.Candidate.Surname
+                                  T="string"
+                                  Label="Surname"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Candidate.Surname)" />
+
+                    <MudTextField @bind-Value=ViewModel.Candidate.Email
+                                  T="string"
+                                  Label="Email"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Candidate.Email)" />
+
+                    <br />
+                    <MudButton OnClick="()=>OnSubmit()" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Rounded.Save">Save</MudButton>
+                </MudForm>
+            </MudCardContent>
+        </MudCard>
+
+    </MudContainer>
+}

@@ -24,7 +24,7 @@ internal class GetCandidateQueryHandler : IQueryHandler<GetCandidatesQuery, Cand
     {
         var candidates = await _candidateRepository.GetCandidatesAsync(cancellationToken);
 
-        var candidateDTOs = candidates.Select(x => new CandidateDTO(x.Name, x.Surname, x.Email.Value)).ToList();
+        var candidateDTOs = candidates.Select(x => new CandidateDTO(x.Id, x.Name, x.Surname, x.Email.Value)).ToList();
 
         return new CandidateListResponseDTO(candidateDTOs.AsReadOnly());
     }

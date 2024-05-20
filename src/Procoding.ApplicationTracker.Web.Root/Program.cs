@@ -17,10 +17,19 @@ internal class Program
             x.AddTransient<ISomething, Something>();
             x.AddViewModels();
             x.AddMudServices();
-            x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>(x => x.BaseAddress = new Uri("https://localhost:7140/"))
+            var baseApiUrl = "https://localhost:7140/";
+            x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>(x => x.BaseAddress = new Uri(baseApiUrl))
                       .AddTransientHttpErrorPolicy(policyBuilder =>
                                                                                                 policyBuilder.WaitAndRetryAsync(
                                                                                                     3, retryNumber => TimeSpan.FromMilliseconds(600)));
+            x.AddHttpClient<ICompanyService, CompanyService>(x => x.BaseAddress = new Uri(baseApiUrl))
+                     .AddTransientHttpErrorPolicy(policyBuilder =>
+                                                                                               policyBuilder.WaitAndRetryAsync(
+                                                                                                   3, retryNumber => TimeSpan.FromMilliseconds(600)));
+            x.AddHttpClient<ICandidateService, CandidateService>(x => x.BaseAddress = new Uri(baseApiUrl))
+                     .AddTransientHttpErrorPolicy(policyBuilder =>
+                                                                                               policyBuilder.WaitAndRetryAsync(
+                                                                                                   3, retryNumber => TimeSpan.FromMilliseconds(600)));
         });
 
 

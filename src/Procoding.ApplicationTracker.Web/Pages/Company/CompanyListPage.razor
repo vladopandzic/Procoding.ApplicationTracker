@@ -1,0 +1,36 @@
+﻿@page "/companies"
+@using MudBlazor
+
+
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h4">Companies</MudText>
+    <br />
+    <MudLink Href="@($"companies/new")">
+        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+    </MudLink>
+    <br />
+    <MudDataGrid Items="@ViewModel.Companies" Hover=true RowsPerPage="10">
+        <Columns>
+            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.OfficialWebSiteLink" Title="Official website" Resizable="true" Filterable="true" />
+
+            <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
+                <CellTemplate Context="data">
+                    <MudStack Row>
+                        <MudLink Href="@($"companies/{data.Item.Id}")">
+                            <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
+                        </MudLink>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="DTOs.Model.CompanyDTO" />
+        </PagerContent>
+    </MudDataGrid>
+}

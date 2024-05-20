@@ -37,7 +37,7 @@ internal class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCo
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var candidateDto = new CandidateDTO(name: candidate.Name, surname: candidate.Surname, email: candidate.Email.Value);
+        var candidateDto = new CandidateDTO(id: candidate.Id, name: candidate.Name, surname: candidate.Surname, email: candidate.Email.Value);
 
         return new CandidateInsertedResponseDTO(candidateDto);
     }

@@ -42,7 +42,7 @@ internal class UpdateCandidateCommandHandler : IQueryHandler<UpdateCandidateComm
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var candidateDto = new CandidateDTO(name: candidate.Name, surname: candidate.Surname, email: candidate.Email.Value);
+        var candidateDto = new CandidateDTO(candidate.Id, name: candidate.Name, surname: candidate.Surname, email: candidate.Email.Value);
 
         return new CandidateUpdatedResponseDTO(candidateDto);
     }
