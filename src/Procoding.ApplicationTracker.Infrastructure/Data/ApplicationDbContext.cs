@@ -27,6 +27,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+       
         base.OnModelCreating(modelBuilder);
     }
 

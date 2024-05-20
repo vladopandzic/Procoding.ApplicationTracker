@@ -19,9 +19,11 @@ public class AppAdapter
         _app = builder.Build();
 
 
-        if(!_app.Environment.IsDevelopment())
+        if (!_app.Environment.IsDevelopment())
         {
             _app.UseExceptionHandler("/Error");
+
+
             _app.UseHsts();
         }
 
@@ -32,7 +34,9 @@ public class AppAdapter
         _app.UseAntiforgery();
 
         _app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+
     }
+
 
     public async Task StartAsync()
     {

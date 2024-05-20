@@ -7,7 +7,7 @@ namespace Procoding.ApplicationTracker.Api;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
@@ -25,6 +25,8 @@ public class Program
 
         var app = builder.Build();
 
+        using ApplicationDbContext context = await SeedDatabaseAsync(app);
+
         app.MapDefaultEndpoints();
 
         if (app.Environment.IsDevelopment())
@@ -41,6 +43,13 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static async Task<ApplicationDbContext> SeedDatabaseAsync(WebApplication app)
+    {
+        var context = app.Services.GetRequiredScopedService<ApplicationDbContext>();
+        await SeedData.SeedAsync(context);
+        return context;
     }
 }
 

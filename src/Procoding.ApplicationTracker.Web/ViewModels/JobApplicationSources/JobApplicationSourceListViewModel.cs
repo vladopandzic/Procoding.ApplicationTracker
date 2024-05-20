@@ -1,7 +1,7 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 
-namespace Procoding.ApplicationTracker.Web.ViewModels;
+namespace Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
 public class JobApplicationSourceListViewModel
 {

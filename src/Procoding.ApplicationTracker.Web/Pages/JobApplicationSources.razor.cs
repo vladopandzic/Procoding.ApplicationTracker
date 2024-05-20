@@ -1,12 +1,13 @@
 ﻿
 using Microsoft.AspNetCore.Components;
+using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Web.Pages;
 
 public partial class JobApplicationSources
 {
     [Inject]
-    public ViewModels.JobApplicationSourceListViewModel ViewModel { get; set; } = default!;
+    public JobApplicationSourceListViewModel ViewModel { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {

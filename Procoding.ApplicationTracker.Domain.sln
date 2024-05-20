@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.Architecture.Tests", "test\Procoding.Architecture.Tests\Procoding.Architecture.Tests.csproj", "{AA92A8E7-1D2C-4E44-885A-394710C9D40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.AppHost", "src\Procoding.ApplicationTracker.AppHost\Procoding.ApplicationTracker.AppHost.csproj", "{8334AECE-2FDE-4E94-AAE2-6190C68FE189}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.AppHost", "src\Procoding.ApplicationTracker.AppHost\Procoding.ApplicationTracker.AppHost.csproj", "{8334AECE-2FDE-4E94-AAE2-6190C68FE189}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.ServiceDefaults", "src\Procoding.ApplicationTracker.ServiceDefaults\Procoding.ApplicationTracker.ServiceDefaults.csproj", "{27CD45CF-9B14-4C2D-BD77-6C793E2614C7}"
 EndProject
