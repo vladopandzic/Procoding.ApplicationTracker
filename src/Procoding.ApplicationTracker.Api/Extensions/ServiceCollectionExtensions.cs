@@ -1,4 +1,4 @@
-﻿namespace Procoding.ApplicationTracker.Api.Exceptions;
+﻿namespace Procoding.ApplicationTracker.Api.Extensions;
 
 public static class ServiceCollectionExtensions
 {

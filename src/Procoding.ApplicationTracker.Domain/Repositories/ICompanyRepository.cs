@@ -1,14 +1,18 @@
 ﻿using Procoding.ApplicationTracker.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Domain.Repositories;
 
 public interface ICompanyRepository
 {
+    /// <summary>
+    /// If already exist with same name.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<bool> ExistsAsync(string name, Guid id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Inserts the specified company to the database.
     /// </summary>

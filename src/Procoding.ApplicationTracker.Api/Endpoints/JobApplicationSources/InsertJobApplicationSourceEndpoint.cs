@@ -3,7 +3,7 @@ using Ardalis.ApiEndpoints;
 using LanguageExt;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Procoding.ApplicationTracker.Api.Exceptions;
+using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;

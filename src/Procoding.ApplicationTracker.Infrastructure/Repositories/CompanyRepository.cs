@@ -33,4 +33,9 @@ internal class CompanyRepository : ICompanyRepository
     {
         await _dbContext.Companies.AddAsync(company, cancellationToken);
     }
+
+    public async Task<bool> ExistsAsync(string name, Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Companies.AnyAsync(x => x.CompanyName.Value == name && x.Id != id);
+    }
 }

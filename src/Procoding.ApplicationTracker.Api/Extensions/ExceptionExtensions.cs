@@ -2,7 +2,7 @@
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Procoding.ApplicationTracker.Api.Exceptions;
+namespace Procoding.ApplicationTracker.Api.Extensions;
 
 public static class ExceptionExtensions
 {

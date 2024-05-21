@@ -21,7 +21,7 @@ public class NotificationService : INotificationService
         }
         else
         {
-            _snackbar.Add(string.Join("", result.Errors.Select(x => $"<p>{x}</p>").ToList()),Severity.Error);
+            _snackbar.Add(string.Join("", result.Errors.Select(x => $"<p>{x.Message}</p>").ToList()),Severity.Error);
         }
     }
 }

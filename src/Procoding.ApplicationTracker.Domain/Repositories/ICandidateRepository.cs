@@ -1,14 +1,18 @@
 ﻿using Procoding.ApplicationTracker.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Domain.Repositories;
 
 public interface ICandidateRepository
 {
+    /// <summary>
+    /// If already exist with same name.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<bool> ExistsAsync(string email, Guid id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Inserts the specified candidate to the database.
     /// </summary>

@@ -3,17 +3,17 @@ using Procoding.ApplicationTracker.Application.Core.Errors;
 using Procoding.ApplicationTracker.Application.Core.Extensions;
 using Procoding.ApplicationTracker.Domain.Repositories;
 
-namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
+namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 
-public sealed class AddJobApplicationSourceCommandValidator : AbstractValidator<AddJobApplicationSourceCommand>
+public class UpdateJobApplicationSourceCommandrValidator : AbstractValidator<UpdateJobApplicationSourceCommand>
 {
-    public AddJobApplicationSourceCommandValidator(IJobApplicationSourceRepository jobApplicationSourceRepository)
+    public UpdateJobApplicationSourceCommandrValidator(IJobApplicationSourceRepository jobApplicationSourceRepository)
     {
         RuleFor(x => x.Name).NotEmpty().WithError(ValidationErrors.JobApplicationSources.NameIsRequried);
 
         RuleFor(x => x.Name).CustomAsync(async (name, validationContext, cancellationToken) =>
         {
-            if (await jobApplicationSourceRepository.ExistsAsync(name, Guid.Empty, cancellationToken))
+            if (await jobApplicationSourceRepository.ExistsAsync(name, validationContext.InstanceToValidate.Id, cancellationToken))
             {
                 validationContext.AddFailure(ValidationErrors.JobApplicationSources.NameAlreadyExists.Message);
             }

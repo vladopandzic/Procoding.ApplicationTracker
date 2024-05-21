@@ -29,4 +29,9 @@ internal class CandidateRepository : ICandidateRepository
     {
         await _dbContext.Candidates.AddAsync(candidate, cancellationToken);
     }
+
+    public async Task<bool> ExistsAsync(string email, Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Candidates.AnyAsync(x => x.Email.Value == email && x.Id != id);
+    }
 }

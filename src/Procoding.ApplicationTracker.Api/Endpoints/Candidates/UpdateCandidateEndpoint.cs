@@ -1,7 +1,7 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Procoding.ApplicationTracker.Api.Exceptions;
+using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;

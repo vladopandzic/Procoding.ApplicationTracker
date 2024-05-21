@@ -1,7 +1,7 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Procoding.ApplicationTracker.Api.Exceptions;
+using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;

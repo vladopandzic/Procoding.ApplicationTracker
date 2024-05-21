@@ -4,11 +4,14 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Procoding.ApplicationTracker.Api.Exceptions;
+using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Api.Infrastructure;
 using Procoding.ApplicationTracker.Api.Validation;
 using Procoding.ApplicationTracker.Application;
+using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
+using Procoding.ApplicationTracker.Application.Core.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
+using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
@@ -31,8 +34,7 @@ public class Program
         builder.Services.AddMediatR(x =>
         {
             x.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(GetJobApplicationSourcesQuery).Assembly)
-             .AddBehavior<IPipelineBehavior<AddJobApplicationSourceCommand, Result<JobApplicationSourceInsertedResponseDTO>>,
-                                            ValidationBehavior<AddJobApplicationSourceCommand, JobApplicationSourceInsertedResponseDTO>>();
+             .AddHandlerValidations();     
         });
         builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("JobApplicationDatabase")));
         builder.Services.AddPersistance();
@@ -40,7 +42,9 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
-        builder.Services.AddValidatorsFromAssemblies([typeof(CandidateInsertRequestDTOValidator).Assembly, typeof(AddJobApplicationSourceCommandValidator).Assembly]);
+        builder.Services.AddValidatorsFromAssemblies([typeof(CandidateInsertRequestDTOValidator).Assembly, 
+                                                      typeof(UpdateCandidateCommand).Assembly]);
+
 
         builder.Services.AddFluentValidationAutoValidation();
 

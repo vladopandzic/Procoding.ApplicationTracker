@@ -28,4 +28,9 @@ internal sealed class JobApplicationSourceRepository : IJobApplicationSourceRepo
     {
         await _dbContext.JobApplicationSources.AddAsync(jobApplicationSource, cancellationToken);
     }
+
+    public async Task<bool> ExistsAsync(string name, Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.JobApplicationSources.AnyAsync(x => x.Name == name && x.Id != id);
+    }
 }
