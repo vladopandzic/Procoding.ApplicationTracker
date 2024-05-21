@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
-namespace Procoding.ApplicationTracker.Web;
+namespace Procoding.ApplicationTracker.Web.Extensions;
 
 public static class ApplicationBuilderExtensions
 {

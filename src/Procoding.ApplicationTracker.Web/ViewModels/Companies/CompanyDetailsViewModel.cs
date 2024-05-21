@@ -1,22 +1,29 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
+using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
+using Procoding.ApplicationTracker.DTOs.Response.Companies;
+using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
+using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
 
 namespace Procoding.ApplicationTracker.Web.ViewModels.Companies;
 
-public class CompanyDetailsViewModel : ViewModelBase
+public class CompanyDetailsViewModel : EditViewModelBase
 {
     private readonly ICompanyService _companyService;
+    private readonly INotificationService _notificationService;
 
     public CompanyDTO? Company { get; set; }
 
     public CompanyValidator Validator { get; }
 
     public CompanyDetailsViewModel(ICompanyService companyService,
+                                   INotificationService notificationService,
                                    CompanyValidator validator)
     {
         _companyService = companyService;
+        _notificationService = notificationService;
         Validator = validator;
     }
 
@@ -33,7 +40,7 @@ public class CompanyDetailsViewModel : ViewModelBase
 
         if (response is not null)
         {
-            Company = response.Company;
+            Company = response.Value.Company;
         }
     }
 
@@ -44,16 +51,27 @@ public class CompanyDetailsViewModel : ViewModelBase
 
     public async Task SaveAsync()
     {
-        if (Company.Id == Guid.Empty)
+        IsSaving = true;
+        if (!(await IsValidAsync()))
         {
-            await _companyService.InsertCompanyAsync(
+            return;
+        }
+
+        if (Company!.Id == Guid.Empty)
+        {
+            var result = await _companyService.InsertCompanyAsync(
            new CompanyInsertRequestDTO(Company!.Name, Company.OfficialWebSiteLink));
+
+            _notificationService.ShowMessageFromResult(result);
         }
         else
         {
-            await _companyService.UpdateCompanyAsync(
+            var result = await _companyService.UpdateCompanyAsync(
                new CompanyUpdateRequestDTO(Company!.Id, Company!.Name, Company.OfficialWebSiteLink));
+
+            _notificationService.ShowMessageFromResult(result);
         }
 
+        IsSaving = false;
     }
 }

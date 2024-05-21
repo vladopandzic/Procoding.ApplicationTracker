@@ -1,6 +1,7 @@
 using Procoding.ApplicationTracker.Web.Components;
 using System.Reflection;
 using FluentValidation;
+using Procoding.ApplicationTracker.Web.Extensions;
 
 namespace Procoding.ApplicationTracker.Web;
 

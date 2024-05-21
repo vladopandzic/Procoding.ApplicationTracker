@@ -8,6 +8,5 @@ public class JobApplicationSourceValidator : FluentValueValidator<JobApplication
     public JobApplicationSourceValidator()
     {
         RuleFor(x => x.Name).NotEmpty();
-
     }
 }

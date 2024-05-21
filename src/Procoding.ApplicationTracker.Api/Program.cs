@@ -1,9 +1,13 @@
+using FluentValidation;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Procoding.ApplicationTracker.Api.Infrastructure;
+using Procoding.ApplicationTracker.Api.Validation;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
 using Procoding.ApplicationTracker.Infrastructure.Data;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 namespace Procoding.ApplicationTracker.Api;
 
 public class Program
@@ -26,6 +30,11 @@ public class Program
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
+
+        builder.Services.AddValidatorsFromAssemblyContaining(typeof(Validation.CandidateInsertRequestDTOValidator));
+
+        builder.Services.AddFluentValidationAutoValidation();
+
 
         var app = builder.Build();
 

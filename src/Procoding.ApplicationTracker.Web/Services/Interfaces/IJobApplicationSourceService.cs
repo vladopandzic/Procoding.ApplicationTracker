@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
+﻿using FluentResults;
+using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
@@ -11,25 +12,25 @@ public interface IJobApplicationSourceService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<JobApplicationSourceResponseDTO?> GetJobApplicationSourceAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Result<JobApplicationSourceResponseDTO>> GetJobApplicationSourceAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets all job application sources
     /// </summary>
     /// <returns></returns>
-    Task<JobApplicationSourceListResponseDTO?> GetJobApplicationSourcesAsync(CancellationToken cancellationToken = default);
+    Task<Result<JobApplicationSourceListResponseDTO>> GetJobApplicationSourcesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Inserts one job application source
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<JobApplicationSourceInsertedResponseDTO?> InsertJobApplicationSourceAsync(JobApplicationSourceInsertRequestDTO request, CancellationToken cancellationToken = default);
+    Task<Result<JobApplicationSourceInsertedResponseDTO>> InsertJobApplicationSourceAsync(JobApplicationSourceInsertRequestDTO request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates one job application source
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<JobApplicationSourceUpdatedResponseDTO?> UpdateJobApplicationSourceAsync(JobApplicationSourceUpdateRequestDTO request, CancellationToken cancellationToken = default);
+    Task<Result<JobApplicationSourceUpdatedResponseDTO>> UpdateJobApplicationSourceAsync(JobApplicationSourceUpdateRequestDTO request, CancellationToken cancellationToken = default);
 }

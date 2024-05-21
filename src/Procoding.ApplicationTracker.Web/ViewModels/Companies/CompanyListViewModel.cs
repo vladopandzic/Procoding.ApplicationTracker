@@ -20,9 +20,9 @@ public class CompanyListViewModel : ViewModelBase
         var response = await _companyService.GetCompaniesAsync(cancellationToken);
         IsLoading = false;
 
-        if (response is not null)
+        if (response.IsSuccess)
         {
-            Companies = response.Companies;
+            Companies = response.Value.Companies;
         }
     }
 }

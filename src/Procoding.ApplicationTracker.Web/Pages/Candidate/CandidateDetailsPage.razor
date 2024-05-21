@@ -42,7 +42,7 @@ else if (ViewModel.Candidate is not null)
                                   For="(()=>ViewModel.Candidate.Email)" />
 
                     <br />
-                    <MudButton OnClick="()=>OnSubmit()" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Rounded.Save">Save</MudButton>
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
                 </MudForm>
             </MudCardContent>
         </MudCard>

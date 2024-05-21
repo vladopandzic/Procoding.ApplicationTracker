@@ -10,6 +10,9 @@ public partial class JobApplicationSourceDetailsPage
     [Inject]
     public JobApplicationSourceDetailsViewModel ViewModel { get; set; } = default!;
 
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = default!;
+
     [Parameter]
     public string Id { get; set; }
 
@@ -30,13 +33,7 @@ public partial class JobApplicationSourceDetailsPage
 
     protected async Task OnSubmit()
     {
-
-        var isValid = await ViewModel.IsValidAsync();
-
-        if (isValid)
-        {
-            await ViewModel.SaveAsync();
-        }
+        await ViewModel.SaveAsync();
 
     }
 }

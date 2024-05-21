@@ -1,5 +1,6 @@
 ﻿@page "/job-application-sources/{Id}"
-@using MudBlazor
+@using MudBlazor;
+
 @using Microsoft.AspNetCore.Components.Web;
 @using FluentValidation.Validators;
 @using Blazored.FluentValidation
@@ -9,7 +10,8 @@
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 
-}else if (ViewModel.JobApplicationSource is not null)
+}
+else if (ViewModel.JobApplicationSource is not null)
 {
     <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
         <MudCard>
@@ -19,10 +21,11 @@
             <MudCardContent>
                 <MudForm @ref=mudForm Model="ViewModel.JobApplicationSource" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
-                    <MudTextField @bind-Value=ViewModel.JobApplicationSource.Name T="string" Label="Name"  Validation="ViewModel.Validator.ValidateValue" Immediate="true" For="(()=>ViewModel.JobApplicationSource.Name)"   />
-            
+                    <MudTextField @bind-Value=ViewModel.JobApplicationSource.Name T="string" Label="Name" Validation="ViewModel.Validator.ValidateValue" Immediate="true" For="(()=>ViewModel.JobApplicationSource.Name)" />
+
                     <br />
-                    <MudButton OnClick="()=>OnSubmit()" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Rounded.Save">Save</MudButton>
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
+
                 </MudForm>
             </MudCardContent>
         </MudCard>

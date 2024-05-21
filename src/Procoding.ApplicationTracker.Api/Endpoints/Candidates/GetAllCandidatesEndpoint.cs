@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
-using Procoding.ApplicationTracker.Application.Companies.Queries.GetCompanies;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Candidates;

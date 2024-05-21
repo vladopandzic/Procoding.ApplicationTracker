@@ -35,7 +35,7 @@ else if (ViewModel.Company is not null)
                                   For="(()=>ViewModel.Company.OfficialWebSiteLink)" />
 
                     <br />
-                    <MudButton OnClick="()=>OnSubmit()" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Rounded.Save">Save</MudButton>
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
                 </MudForm>
             </MudCardContent>
         </MudCard>

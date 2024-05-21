@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.DTOs.Request.Candidates;
+﻿using FluentResults;
+using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
@@ -12,25 +13,25 @@ public interface ICandidateService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<CandidateResponseDTO?> GetCandidateAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Result<CandidateResponseDTO>> GetCandidateAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets all candidates.
     /// </summary>
     /// <returns></returns>
-    Task<CandidateListResponseDTO?> GetCandidatesAsync(CancellationToken cancellationToken = default);
+    Task<Result<CandidateListResponseDTO>> GetCandidatesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Inserts one candidate.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<CandidateInsertedResponseDTO?> InsertCandidateAsync(CandidateInsertRequestDTO request, CancellationToken cancellationToken = default);
+    Task<Result<CandidateInsertedResponseDTO>> InsertCandidateAsync(CandidateInsertRequestDTO request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates one candidate.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<CandidateUpdatedResponseDTO?> UpdateCandidateAsync(CandidateUpdateRequestDTO request, CancellationToken cancellationToken = default);
+    Task<Result<CandidateUpdatedResponseDTO>> UpdateCandidateAsync(CandidateUpdateRequestDTO request, CancellationToken cancellationToken = default);
 }

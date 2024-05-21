@@ -20,9 +20,9 @@ public class JobApplicationSourceListViewModel : ViewModelBase
         var response = await _jobApplicationSourceService.GetJobApplicationSourcesAsync(cancellationToken);
         IsLoading = false;
 
-        if (response is not null)
+        if (response.IsSuccess)
         {
-            JobApplicationSources = response.JobApplicationSources;
+            JobApplicationSources = response.Value.JobApplicationSources;
         }
     }
 }

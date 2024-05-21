@@ -1,28 +1,33 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
+using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
-using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
+using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
 
 namespace Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
-public class JobApplicationSourceDetailsViewModel : ViewModelBase
+public class JobApplicationSourceDetailsViewModel : EditViewModelBase
 {
     private readonly IJobApplicationSourceService _jobApplicationSourceService;
+    private readonly INotificationService _notificationService;
 
     public JobApplicationSourceDTO? JobApplicationSource { get; set; }
 
     public JobApplicationSourceValidator Validator { get; }
 
     public JobApplicationSourceDetailsViewModel(IJobApplicationSourceService jobApplicationSourceService,
-                                               JobApplicationSourceValidator validator)
+                                               JobApplicationSourceValidator validator,
+                                               INotificationService notificationService)
     {
         _jobApplicationSourceService = jobApplicationSourceService;
         Validator = validator;
+        _notificationService = notificationService;
     }
 
     public async Task InitializeViewModel(Guid? id, CancellationToken cancellationToken = default)
     {
-        if (id is null) {
+        if (id is null)
+        {
             JobApplicationSource = new JobApplicationSourceDTO(Guid.Empty, "");
             return;
         }
@@ -30,9 +35,9 @@ public class JobApplicationSourceDetailsViewModel : ViewModelBase
         var response = await _jobApplicationSourceService.GetJobApplicationSourceAsync(id.Value);
         IsLoading = false;
 
-        if (response is not null)
+        if (response.IsSuccess)
         {
-            JobApplicationSource = response.JobApplicationSource;
+            JobApplicationSource = response.Value.JobApplicationSource;
         }
     }
 
@@ -43,15 +48,27 @@ public class JobApplicationSourceDetailsViewModel : ViewModelBase
 
     public async Task SaveAsync()
     {
-        if (JobApplicationSource.Id == Guid.Empty)
+        IsSaving = true;
+        if (!(await IsValidAsync()))
         {
-            await _jobApplicationSourceService.InsertJobApplicationSourceAsync(
-           new JobApplicationSourceInsertRequestDTO(JobApplicationSource!.Name));
+            return;
         }
-        else {
-            await _jobApplicationSourceService.UpdateJobApplicationSourceAsync(
-               new JobApplicationSourceUpdateRequestDTO(JobApplicationSource!.Id, JobApplicationSource!.Name));
+
+        if (JobApplicationSource!.Id == Guid.Empty)
+        {
+            var result = await _jobApplicationSourceService.InsertJobApplicationSourceAsync(
+                             new JobApplicationSourceInsertRequestDTO(JobApplicationSource!.Name));
+
+            _notificationService.ShowMessageFromResult(result);
         }
-       
+        else
+        {
+            var result = await _jobApplicationSourceService.UpdateJobApplicationSourceAsync(
+                            new JobApplicationSourceUpdateRequestDTO(JobApplicationSource!.Id, JobApplicationSource!.Name));
+
+            _notificationService.ShowMessageFromResult(result);
+        }
+
+        IsSaving = false;
     }
 }

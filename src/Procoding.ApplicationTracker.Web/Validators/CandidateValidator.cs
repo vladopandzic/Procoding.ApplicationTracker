@@ -12,6 +12,5 @@ public class CandidateValidator : FluentValueValidator<CandidateDTO>
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
 
         RuleFor(x => x.Surname).NotEmpty();
-
     }
 }

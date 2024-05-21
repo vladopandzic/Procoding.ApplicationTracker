@@ -20,9 +20,9 @@ public class CandidateListViewModel : ViewModelBase
         var response = await _candidateService.GetCandidatesAsync(cancellationToken);
         IsLoading = false;
 
-        if (response is not null)
+        if (response.IsSuccess)
         {
-            Candidates = response.Candidates;
+            Candidates = response.Value.Candidates;
         }
     }
 }
