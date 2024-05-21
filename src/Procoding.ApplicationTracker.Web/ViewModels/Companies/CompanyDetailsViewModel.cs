@@ -51,11 +51,12 @@ public class CompanyDetailsViewModel : EditViewModelBase
 
     public async Task SaveAsync()
     {
-        IsSaving = true;
         if (!(await IsValidAsync()))
         {
             return;
         }
+
+        IsSaving = true;
 
         if (Company!.Id == Guid.Empty)
         {

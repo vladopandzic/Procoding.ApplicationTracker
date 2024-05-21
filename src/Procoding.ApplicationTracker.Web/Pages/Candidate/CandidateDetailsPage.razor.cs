@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
-using Procoding.ApplicationTracker.Web.ViewModels.Companies;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Candidate;
 
@@ -30,13 +29,9 @@ public partial class CandidateDetailsPage
 
     protected async Task OnSubmit()
     {
+        await mudForm!.Validate();
 
-        var isValid = await ViewModel.IsValidAsync();
-
-        if (isValid)
-        {
-            await ViewModel.SaveAsync();
-        }
+        await ViewModel.SaveAsync();
 
     }
 }

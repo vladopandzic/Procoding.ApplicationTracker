@@ -33,6 +33,7 @@ public partial class JobApplicationSourceDetailsPage
 
     protected async Task OnSubmit()
     {
+        await mudForm!.Validate();
         await ViewModel.SaveAsync();
 
     }

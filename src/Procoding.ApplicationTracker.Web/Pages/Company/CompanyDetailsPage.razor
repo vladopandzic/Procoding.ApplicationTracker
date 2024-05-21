@@ -18,7 +18,7 @@ else if (ViewModel.Company is not null)
                 <MudText Typo="Typo.h4">@ViewModel.Company.Name</MudText>
             </MudCardHeader>
             <MudCardContent>
-                <MudForm @ref=mudForm Model="ViewModel.Company" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+                <MudForm @ref=mudForm Model="ViewModel.Company"  ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
                     <MudTextField @bind-Value=ViewModel.Company.Name
                                   T="string" 

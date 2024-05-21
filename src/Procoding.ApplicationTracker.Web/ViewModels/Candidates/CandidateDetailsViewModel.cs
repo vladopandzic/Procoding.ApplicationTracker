@@ -50,11 +50,13 @@ public class CandidateDetailsViewModel : EditViewModelBase
 
     public async Task SaveAsync()
     {
-        IsSaving = true;
+       
         if (!(await IsValidAsync()))
         {
             return;
         }
+
+        IsSaving = true;
 
         if (Candidate!.Id == Guid.Empty)
         {

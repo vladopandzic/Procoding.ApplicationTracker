@@ -48,11 +48,13 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
 
     public async Task SaveAsync()
     {
-        IsSaving = true;
+      
         if (!(await IsValidAsync()))
         {
             return;
         }
+
+        IsSaving = true;
 
         if (JobApplicationSource!.Id == Guid.Empty)
         {
