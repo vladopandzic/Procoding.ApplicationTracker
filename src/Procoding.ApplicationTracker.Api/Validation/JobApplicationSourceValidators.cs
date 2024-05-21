@@ -8,7 +8,6 @@ public class JobApplicationSourceInsertRequestDTOValidator : AbstractValidator<J
     public JobApplicationSourceInsertRequestDTOValidator()
     {
         RuleFor(x => x.Name).NotEmpty();
-
     }
 }
 public class JobApplicationSourceUpdateRequestDTOValidator : AbstractValidator<JobApplicationSourceUpdateRequestDTO>
@@ -16,6 +15,5 @@ public class JobApplicationSourceUpdateRequestDTOValidator : AbstractValidator<J
     public JobApplicationSourceUpdateRequestDTOValidator()
     {
         RuleFor(x => x.Name).NotEmpty();
-
     }
 }

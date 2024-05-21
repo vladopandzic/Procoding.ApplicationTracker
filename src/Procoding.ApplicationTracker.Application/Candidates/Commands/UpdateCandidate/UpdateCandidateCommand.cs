@@ -1,14 +1,10 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 
-public class UpdateCandidateCommand : IQuery<CandidateUpdatedResponseDTO>
+public sealed class UpdateCandidateCommand : ICommand<Result<CandidateUpdatedResponseDTO>>
 {
     public UpdateCandidateCommand(Guid id, string name, string surname, string email)
     {

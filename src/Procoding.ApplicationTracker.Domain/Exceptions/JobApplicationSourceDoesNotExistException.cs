@@ -1,9 +1,11 @@
-﻿namespace Procoding.ApplicationTracker.Domain.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Procoding.ApplicationTracker.Domain.Exceptions;
 
 /// <summary>
 /// Represents exception that occurs when job application source does not exist.
 /// </summary>
-public sealed class JobApplicationSourceDoesNotExistException : Exception
+public sealed class JobApplicationSourceDoesNotExistException : ValidationException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="JobApplicationSourceDoesNotExistException"/> class.

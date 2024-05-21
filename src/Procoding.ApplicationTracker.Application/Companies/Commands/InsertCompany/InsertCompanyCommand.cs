@@ -1,15 +1,10 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 
-public class InsertCompanyCommand : ICommand<CompanyInsertedResponseDTO>
+public sealed class InsertCompanyCommand : ICommand<Result<CompanyInsertedResponseDTO>>
 {
     public InsertCompanyCommand(string name, string officialWebSiteLink)
     {

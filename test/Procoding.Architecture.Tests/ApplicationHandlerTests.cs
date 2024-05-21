@@ -3,7 +3,6 @@ using FluentValidation;
 using NetArchTest.Rules;
 using NUnit.Framework;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Procoding.Architecture.Tests;
 
@@ -35,7 +34,7 @@ public class ApplicationHandlerTests
     }
 
     [Test]
-    public void Handlers_ShouldImplementICommandHandler()
+    public void CommandHandlers_ShouldImplementICommandHandler()
     {
         // Arrange
         var applicationAssembly = typeof(ApplicationTracker.Application.AssemblyReference).Assembly;
@@ -45,13 +44,35 @@ public class ApplicationHandlerTests
                                 .That()
                                 .ResideInNamespace("Procoding.ApplicationTracker.Application")
                                 .And()
-                                .HaveNameEndingWith("Handler")
+                                .HaveNameEndingWith("CommandHandler")
                                 .And()
                                 .AreNotAbstract()
                                 .Should()
                                 .ImplementInterface(typeof(ICommandHandler<,>))
                                 .Or()
                                 .ImplementInterface(typeof(ICommandHandler<>))
+                                .GetResult();
+
+        // Assert
+        testResult.IsSuccessful.Should().BeTrue();
+    }
+
+    [Test]
+    public void QueryHandlers_ShouldImplementICommandHandler()
+    {
+        // Arrange
+        var applicationAssembly = typeof(ApplicationTracker.Application.AssemblyReference).Assembly;
+
+        //Act
+        var testResult = Types.InAssembly(applicationAssembly)
+                                .That()
+                                .ResideInNamespace("Procoding.ApplicationTracker.Application")
+                                .And()
+                                .HaveNameEndingWith("QueryHandler")
+                                .And()
+                                .AreNotAbstract()
+                                .Should()
+                                .ImplementInterface(typeof(IQueryHandler<,>))
                                 .GetResult();
 
         // Assert
@@ -144,7 +165,11 @@ public class ApplicationHandlerTests
         var applicationAssembly = typeof(ApplicationTracker.Application.AssemblyReference).Assembly;
 
         var handlerTypes = applicationAssembly.GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Handler") && t.Namespace != null && t.Namespace.StartsWith("Procoding.ApplicationTracker.Application"));
+            .Where(t => t.IsClass &&
+                        !t.IsAbstract &&
+                        t.Name.EndsWith("Handler") &&
+                        t.Namespace != null &&
+                        t.Namespace.StartsWith("Procoding.ApplicationTracker.Application"));
 
         foreach (var handlerType in handlerTypes)
         {
@@ -158,7 +183,11 @@ public class ApplicationHandlerTests
         var applicationAssembly = typeof(ApplicationTracker.Application.AssemblyReference).Assembly;
 
         var commandTypes = applicationAssembly.GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Command") && t.Namespace != null && t.Namespace.StartsWith("Procoding.ApplicationTracker.Application"));
+            .Where(t => t.IsClass &&
+                        !t.IsAbstract &&
+                        t.Name.EndsWith("Command") &&
+                        t.Namespace != null &&
+                        t.Namespace.StartsWith("Procoding.ApplicationTracker.Application"));
 
         foreach (var commandType in commandTypes)
         {

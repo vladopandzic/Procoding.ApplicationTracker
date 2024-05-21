@@ -1,9 +1,10 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 
-public sealed class UpdateJobApplicationSourceCommand : ICommand<JobApplicationSourceUpdatedResponseDTO>
+public sealed class UpdateJobApplicationSourceCommand : ICommand<Result<JobApplicationSourceUpdatedResponseDTO>>
 {
     public UpdateJobApplicationSourceCommand(Guid id, string name)
     {

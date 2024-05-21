@@ -1,9 +1,10 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 
-public sealed class AddJobApplicationSourceCommand : ICommand<JobApplicationSourceInsertedResponseDTO>
+public sealed class AddJobApplicationSourceCommand : ICommand<Result<JobApplicationSourceInsertedResponseDTO>>
 {
     public AddJobApplicationSourceCommand(string name)
     {

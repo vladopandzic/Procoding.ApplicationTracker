@@ -1,10 +1,12 @@
-﻿namespace Procoding.ApplicationTracker.Domain.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Procoding.ApplicationTracker.Domain.Exceptions;
 
 
 /// <summary>
 /// Represents exception that occurs when Url in maloformed.
 /// </summary>
-public sealed class InvalidUrlException : Exception
+public sealed class InvalidUrlException : ValidationException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidUrlException"/> class.

@@ -1,4 +1,6 @@
-﻿using MapsterMapper;
+﻿using FluentValidation;
+using LanguageExt.Common;
+using MapsterMapper;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
@@ -8,7 +10,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 
-internal sealed class UpdateJobApplicationSourceCommandHandler : ICommandHandler<UpdateJobApplicationSourceCommand, JobApplicationSourceUpdatedResponseDTO>
+internal sealed class UpdateJobApplicationSourceCommandHandler : ICommandHandler<UpdateJobApplicationSourceCommand, Result<JobApplicationSourceUpdatedResponseDTO>>
 {
     private readonly IMapper _mapper;
     private readonly IJobApplicationSourceRepository _jobApplicationSourceRepository;
@@ -21,14 +23,16 @@ internal sealed class UpdateJobApplicationSourceCommandHandler : ICommandHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<JobApplicationSourceUpdatedResponseDTO> Handle(UpdateJobApplicationSourceCommand request, CancellationToken cancellationToken)
+    public async Task<Result<JobApplicationSourceUpdatedResponseDTO>> Handle(UpdateJobApplicationSourceCommand request, CancellationToken cancellationToken)
     {
         var jobApplicationSource = await _jobApplicationSourceRepository.GetJobApplicationSourceAsync(request.Id, cancellationToken);
 
         //TODO: use result object
         if (jobApplicationSource is null)
         {
-            throw new JobApplicationSourceDoesNotExistException("Job application source does not exist");
+            var error = new ValidationException("Job application source does not exist");
+
+            return new Result<JobApplicationSourceUpdatedResponseDTO>(error);
         }
 
         jobApplicationSource.ChangeName(request.Name);

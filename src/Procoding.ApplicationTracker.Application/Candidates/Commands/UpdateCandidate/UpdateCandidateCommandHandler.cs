@@ -1,20 +1,15 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
-using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 
-internal class UpdateCandidateCommandHandler : IQueryHandler<UpdateCandidateCommand, CandidateUpdatedResponseDTO>
+internal sealed class UpdateCandidateCommandHandler : ICommandHandler<UpdateCandidateCommand, Result<CandidateUpdatedResponseDTO>>
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,7 +20,7 @@ internal class UpdateCandidateCommandHandler : IQueryHandler<UpdateCandidateComm
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CandidateUpdatedResponseDTO> Handle(UpdateCandidateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CandidateUpdatedResponseDTO>> Handle(UpdateCandidateCommand request, CancellationToken cancellationToken)
     {
         var candidate = await _candidateRepository.GetCandidateAsync(request.Id, cancellationToken);
 

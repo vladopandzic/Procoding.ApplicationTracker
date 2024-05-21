@@ -1,13 +1,14 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Api.Exceptions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.JobApplicationSource;
 
-public class UpdateJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<JobApplicationSourceUpdateRequestDTO>.WithResult<JobApplicationSourceUpdatedResponseDTO>
+public class UpdateJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<JobApplicationSourceUpdateRequestDTO>.WithResult<IActionResult>
 {
 
     private readonly ISender _sender;
@@ -18,9 +19,14 @@ public class UpdateJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<
     }
 
     [HttpPut("job-application-sources")]
-    public override Task<JobApplicationSourceUpdatedResponseDTO> HandleAsync(JobApplicationSourceUpdateRequestDTO request,
-                                                                              CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(JobApplicationSourceUpdatedResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public override async Task<IActionResult> HandleAsync(JobApplicationSourceUpdateRequestDTO request,
+                                                          CancellationToken cancellationToken = default)
     {
-        return _sender.Send(new UpdateJobApplicationSourceCommand(request.Id,request.Name), cancellationToken);
+        var result = await _sender.Send(new UpdateJobApplicationSourceCommand(request.Id, request.Name), cancellationToken);
+
+        return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
+
     }
 }

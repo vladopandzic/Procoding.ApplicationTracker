@@ -1,4 +1,4 @@
-﻿using MapsterMapper;
+﻿using LanguageExt.Common;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
@@ -6,16 +6,10 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 
-internal class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyCommand, CompanyInsertedResponseDTO>
+internal sealed class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyCommand, Result<CompanyInsertedResponseDTO>>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +20,7 @@ internal class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CompanyInsertedResponseDTO> Handle(InsertCompanyCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CompanyInsertedResponseDTO>> Handle(InsertCompanyCommand request, CancellationToken cancellationToken)
     {
         var companyName = new CompanyName(request.Name);
         var officialWebSiteLink = new Link(request.OfficialWebSiteLink);

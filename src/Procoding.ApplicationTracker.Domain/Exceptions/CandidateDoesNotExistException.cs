@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Procoding.ApplicationTracker.Domain.Exceptions;
 /// <summary>
 /// Represents exception that occurs when candidate does not exist.
 /// </summary>
-public sealed class CandidateDoesNotExistException : Exception
+public sealed class CandidateDoesNotExistException : ValidationException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="CandidateDoesNotExistException"/> class.

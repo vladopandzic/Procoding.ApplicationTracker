@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+﻿using LanguageExt.Common;
+using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
 
-internal class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCommand, CandidateInsertedResponseDTO>
+internal sealed class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCommand, Result<CandidateInsertedResponseDTO>>
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +27,7 @@ internal class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCo
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CandidateInsertedResponseDTO> Handle(InsertCandidateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CandidateInsertedResponseDTO>> Handle(InsertCandidateCommand request, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
         var email = new Email(request.Email);

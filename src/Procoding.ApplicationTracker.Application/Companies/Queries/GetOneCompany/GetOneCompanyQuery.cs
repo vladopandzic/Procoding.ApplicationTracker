@@ -3,7 +3,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Companies;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Queries.GetOneCompany;
 
-public class GetOneCompanyQuery : IQuery<CompanyResponseDTO>
+public sealed class GetOneCompanyQuery : IQuery<CompanyResponseDTO>
 {
     public GetOneCompanyQuery(Guid id)
     {

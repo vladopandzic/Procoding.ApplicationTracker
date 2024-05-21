@@ -4,7 +4,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetOneJobApplicationSource;
 
-public class GetOneJobApplicationSourceQuery : IQuery<JobApplicationSourceResponseDTO>
+public sealed class GetOneJobApplicationSourceQuery : IQuery<JobApplicationSourceResponseDTO>
 {
     public GetOneJobApplicationSourceQuery(Guid id)
     {

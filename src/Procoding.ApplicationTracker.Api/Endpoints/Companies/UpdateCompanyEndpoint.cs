@@ -1,13 +1,15 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Api.Exceptions;
 using Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
+using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Companies;
 
-public class UpdateCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyUpdateRequestDTO>.WithResult<CompanyUpdatedResponseDTO>
+public class UpdateCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyUpdateRequestDTO>.WithResult<IActionResult>
 {
     readonly ISender _sender;
 
@@ -17,9 +19,13 @@ public class UpdateCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyUpdate
     }
 
     [HttpPut("companies")]
-
-    public override Task<CompanyUpdatedResponseDTO> HandleAsync(CompanyUpdateRequestDTO request, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(CompanyUpdatedResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public override async Task<IActionResult> HandleAsync(CompanyUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
-        return _sender.Send(new UpdateCompanyCommand(request.Id, request.Name, request.OfficialWebSiteLink), cancellationToken);
+        var result = await _sender.Send(new UpdateCompanyCommand(request.Id, request.Name, request.OfficialWebSiteLink), cancellationToken);
+
+        return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
+
     }
 }

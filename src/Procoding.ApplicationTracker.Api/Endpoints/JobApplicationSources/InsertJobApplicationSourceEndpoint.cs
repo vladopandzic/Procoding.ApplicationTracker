@@ -1,16 +1,17 @@
 ﻿namespace Procoding.ApplicationTracker.Api.Endpoints.JobApplicationSource;
 using Ardalis.ApiEndpoints;
+using LanguageExt;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Api.Exceptions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class InsertJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<JobApplicationSourceInsertRequestDTO>.WithResult<JobApplicationSourceInsertedResponseDTO>
+public class InsertJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<JobApplicationSourceInsertRequestDTO>.WithResult<IActionResult>
 {
-
     private readonly ISender _sender;
 
     public InsertJobApplicationSourceEndpoint(ISender sender)
@@ -19,10 +20,12 @@ public class InsertJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<
     }
 
     [HttpPost("job-application-sources")]
-
-    public override Task<JobApplicationSourceInsertedResponseDTO> HandleAsync(JobApplicationSourceInsertRequestDTO request,
-                                                                              CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(JobApplicationSourceInsertedResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public override async Task<IActionResult> HandleAsync(JobApplicationSourceInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
-        return _sender.Send(new AddJobApplicationSourceCommand(request.Name), cancellationToken);
+        var result = await _sender.Send(new AddJobApplicationSourceCommand(request.Name), cancellationToken);
+
+        return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
     }
 }

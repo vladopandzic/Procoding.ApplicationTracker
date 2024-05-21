@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using LanguageExt.Common;
+using MapsterMapper;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
@@ -8,7 +9,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 
-internal sealed class AddJobApplicationSourceCommandHandler : ICommandHandler<AddJobApplicationSourceCommand, JobApplicationSourceInsertedResponseDTO>
+internal sealed class AddJobApplicationSourceCommandHandler : ICommandHandler<AddJobApplicationSourceCommand, Result<JobApplicationSourceInsertedResponseDTO>>
 {
     private readonly IMapper _mapper;
     private readonly IJobApplicationSourceRepository _jobApplicationSourceRepository;
@@ -21,14 +22,14 @@ internal sealed class AddJobApplicationSourceCommandHandler : ICommandHandler<Ad
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<JobApplicationSourceInsertedResponseDTO> Handle(AddJobApplicationSourceCommand request, CancellationToken cancellationToken)
+    public async Task<Result<JobApplicationSourceInsertedResponseDTO>> Handle(AddJobApplicationSourceCommand request, CancellationToken cancellationToken)
     {
         var id = Guid.NewGuid();
         var jobApplicationSource = JobApplicationSource.Create(id, request.Name);
 
         await _jobApplicationSourceRepository.InsertAsync(jobApplicationSource, cancellationToken);
 
-         await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
         var jobApplicationSourceDto = new JobApplicationSourceDTO(id, request.Name);

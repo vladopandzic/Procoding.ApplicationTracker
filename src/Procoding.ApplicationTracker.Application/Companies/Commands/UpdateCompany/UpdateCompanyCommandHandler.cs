@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using LanguageExt.Common;
+using MapsterMapper;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
@@ -6,16 +7,10 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
 
-internal class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyCommand, CompanyUpdatedResponseDTO>
+internal sealed class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyCommand, Result<CompanyUpdatedResponseDTO>>
 {
     private readonly IMapper _mapper;
     private readonly ICompanyRepository _companyRepository;
@@ -28,7 +23,7 @@ internal class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CompanyUpdatedResponseDTO> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CompanyUpdatedResponseDTO>> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
     {
         var companyFromDb = await _companyRepository.GetCompanyAsync(request.Id, cancellationToken);
 
