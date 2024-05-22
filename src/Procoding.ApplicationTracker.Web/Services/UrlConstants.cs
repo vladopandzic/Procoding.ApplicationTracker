@@ -65,4 +65,26 @@ public static class UrlConstants
             return $"{GET_ALL_URL}";
         }
     }
+
+
+    public static class JobApplications
+    {
+
+        public const string GET_ALL_URL = "job-applications";
+
+        public static string GetOne(Guid id)
+        {
+            return $"{GET_ALL_URL}/{id}";
+        }
+
+        public static string UpdateUrl()
+        {
+            return $"{GET_ALL_URL}";
+        }
+
+        public static string InsertUrl()
+        {
+            return $"{GET_ALL_URL}";
+        }
+    }
 }

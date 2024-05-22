@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 
 namespace Procoding.ApplicationTracker.Infrastructure.Data;
@@ -24,6 +25,18 @@ public static class SeedData
 
         await dbContext.AddRangeAsync(candidates);
 
+        //to that related entities get saved and get an id.
         await dbContext.SaveChangesAsync();
+
+        var candidate = dbContext.Candidates.First();
+        var company = dbContext.Companies.First();
+        var jobApplicationSource = dbContext.JobApplicationSources.First();
+
+        var jobApplications = Enumerable.Range(1, 10).Select(x => JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System));
+
+        await dbContext.JobApplications.AddRangeAsync(jobApplications.ToList());
+
+        await dbContext.SaveChangesAsync();
+
     }
 }

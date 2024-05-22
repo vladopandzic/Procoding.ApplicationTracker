@@ -1,11 +1,6 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Response;
-using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.Companies;
 
@@ -39,10 +34,10 @@ public class GetAllCompaniesEndpointTests
         var client = _factory.CreateClient();
 
         //Act
-        var response = await client.GetFromJsonAsync<JobApplicationSourceListResponseDTO>("job-application-sources");
+        var response = await client.GetFromJsonAsync<CompanyListResponseDTO>("companies");
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.JobApplicationSources.Count, Is.EqualTo(DatabaseSeedData.GetJobApplicationSources().Count));
+        Assert.That(response.Companies.Count, Is.EqualTo(DatabaseSeedData.GetCompanies().Count));
     }
 }

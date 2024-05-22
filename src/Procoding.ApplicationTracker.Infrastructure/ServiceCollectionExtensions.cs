@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ICandidateRepository, CandidateRepository>();
 
+        services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 
         return services;
     }

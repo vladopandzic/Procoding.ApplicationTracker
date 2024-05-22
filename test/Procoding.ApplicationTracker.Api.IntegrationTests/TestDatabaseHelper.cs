@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests;
@@ -33,6 +34,13 @@ public class TestDatabaseHelper
         await context.JobApplicationSources.AddRangeAsync(DatabaseSeedData.GetJobApplicationSources());
         await context.Companies.AddRangeAsync(DatabaseSeedData.GetCompanies());
         await context.Candidates.AddRangeAsync(DatabaseSeedData.GetCandidates());
+
+        await context.SaveChangesAsync();
+
+        JobApplication jobApplication = DatabaseSeedData.GetJobApplication(context.Candidates.First(),
+                                                                        context.Companies.First(),
+                                                                        context.JobApplicationSources.First());
+        await context.JobApplications.AddAsync(jobApplication);
 
         await context.SaveChangesAsync();
     }

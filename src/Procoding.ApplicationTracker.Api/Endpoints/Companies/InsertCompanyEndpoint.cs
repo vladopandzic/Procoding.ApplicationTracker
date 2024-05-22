@@ -24,6 +24,5 @@ public class InsertCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyInsert
         var result = await _sender.Send(new InsertCompanyCommand(request.Name, request.OfficialWebSiteLink), cancellationToken);
 
         return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
-
     }
 }

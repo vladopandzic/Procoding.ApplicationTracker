@@ -12,11 +12,18 @@ public static class DatabaseSeedData
 
     public static List<Candidate> GetCandidates()
     {
-        return [Candidate.Create(Guid.Empty,"Name","Surname",new Email("email@email.com"))];
+        return [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"))];
     }
 
     public static List<Company> GetCompanies()
     {
         return [Company.Create(new CompanyName("CompanyName Ltd."), new Link("https://www.company.com"))];
+    }
+
+    public static JobApplication GetJobApplication(Candidate candidate, Company company, JobApplicationSource jobApplicationSource)
+    {
+
+        var jobApplication = JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System);
+        return jobApplication;
     }
 }

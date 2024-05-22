@@ -1,7 +1,6 @@
 ﻿using MudBlazor.Services;
 using Polly;
 using Procoding.ApplicationTracker.Application;
-using Procoding.ApplicationTracker.Infrastructure.Data;
 using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.ViewModels;
@@ -37,6 +36,11 @@ internal class Program
                      .AddTransientHttpErrorPolicy(policyBuilder =>
                                                                                                policyBuilder.WaitAndRetryAsync(
                                                                                                    3, retryNumber => TimeSpan.FromMilliseconds(600)));
+
+            x.AddHttpClient<IJobApplicationService, JobApplicationService>(x => x.BaseAddress = new Uri(baseApiUrl))
+                   .AddTransientHttpErrorPolicy(policyBuilder =>
+                                                                                             policyBuilder.WaitAndRetryAsync(
+                                                                                                 3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
             x.AddTransient<INotificationService, NotificationService>();
         });

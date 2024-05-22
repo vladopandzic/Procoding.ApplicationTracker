@@ -1,0 +1,40 @@
+﻿@page "/job-applications"
+@using MudBlazor
+@using Procoding.ApplicationTracker.DTOs.Model
+
+
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h4">Job applications</MudText>
+    <br />
+    <MudLink Href="@($"job-applications/new")">
+        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+    </MudLink>
+    <br />
+    <MudDataGrid ServerData="@LoadGridData" T="JobApplicationDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
+        <Columns>
+            <PropertyColumn Property="x => x.Candidate.Name" Title="Candidate name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Candidate.Surname" Title="Candidate surname" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Candidate.Email" Title="Candidate email" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Company.Name" Title="Company name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.JobApplicationSource.Name" Title="Job application source" Resizable="true" Filterable="true" />
+
+            <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
+                <CellTemplate Context="data">
+                    <MudStack Row>
+                        <MudLink Href="@($"job-applications/{data.Item.JobApplicationSource.Id}")">
+                            <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
+                        </MudLink>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="DTOs.Model.JobApplicationDTO" />
+        </PagerContent>
+    </MudDataGrid>
+}
