@@ -22,9 +22,9 @@ public class CandidateService : ICandidateService
         return await response.HandleResponseAsync<CandidateResponseDTO>(cancellationToken);
     }
 
-    public async Task<Result<CandidateListResponseDTO>> GetCandidatesAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<CandidateListResponseDTO>> GetCandidatesAsync(CandidateGetListRequestDTO request, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.GetAsync(UrlConstants.Candidates.GET_ALL_URL);
+        var response = await _httpClient.GetAsync($"{UrlConstants.Candidates.GET_ALL_URL}?{request.ToQueryString()}");
 
         return await response.HandleResponseAsync<CandidateListResponseDTO>(cancellationToken);
     }

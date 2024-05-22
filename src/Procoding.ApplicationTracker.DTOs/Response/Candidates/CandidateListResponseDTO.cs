@@ -9,14 +9,17 @@ namespace Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 public class CandidateListResponseDTO
 {
-    public CandidateListResponseDTO(IReadOnlyList<CandidateDTO> candidates)
-    {
-        Candidates = candidates;
-    }
-
     public CandidateListResponseDTO()
     {
 
     }
+    public CandidateListResponseDTO(IReadOnlyList<CandidateDTO> candidates, int totalCount)
+    {
+        Candidates = candidates;
+        TotalCount = totalCount;
+    }
+
     public IReadOnlyList<CandidateDTO> Candidates { get; set; }
+
+    public int TotalCount { get; set; }
 }

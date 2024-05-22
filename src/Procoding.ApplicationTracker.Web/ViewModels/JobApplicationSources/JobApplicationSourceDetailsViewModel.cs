@@ -48,7 +48,7 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
 
     public async Task SaveAsync()
     {
-      
+
         if (!(await IsValidAsync()))
         {
             return;
@@ -60,6 +60,11 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
         {
             var result = await _jobApplicationSourceService.InsertJobApplicationSourceAsync(
                              new JobApplicationSourceInsertRequestDTO(JobApplicationSource!.Name));
+
+            if (result.IsSuccess)
+            {
+                JobApplicationSource.Id = result.Value.JobApplicationSource.Id;
+            }
 
             _notificationService.ShowMessageFromResult(result);
         }

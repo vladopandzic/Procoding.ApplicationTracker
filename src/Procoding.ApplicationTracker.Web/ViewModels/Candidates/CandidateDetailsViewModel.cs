@@ -61,14 +61,19 @@ public class CandidateDetailsViewModel : EditViewModelBase
         if (Candidate!.Id == Guid.Empty)
         {
             var result = await _candidateService.InsertCandidateAsync(
-           new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email));
+                         new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email));
+
+            if (result.IsSuccess)
+            {
+                Candidate.Id = result.Value.Candidate.Id;
+            }
 
             _notificationService.ShowMessageFromResult(result);
         }
         else
         {
             var result = await _candidateService.UpdateCandidateAsync(
-               new CandidateUpdateRequestDTO(Candidate!.Id, Candidate!.Name, Candidate.Surname, Candidate.Email));
+                    new CandidateUpdateRequestDTO(Candidate!.Id, Candidate!.Name, Candidate.Surname, Candidate.Email));
 
             _notificationService.ShowMessageFromResult(result);
         }

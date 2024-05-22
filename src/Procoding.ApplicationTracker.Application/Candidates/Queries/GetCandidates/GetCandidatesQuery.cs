@@ -5,4 +5,13 @@ namespace Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandida
 
 public sealed class GetCandidatesQuery : IQuery<CandidateListResponseDTO>
 {
+    public GetCandidatesQuery(int? pageNumber, int? pageSize)
+    {
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+    }
+
+    public int? PageNumber { get; set; }
+
+    public int? PageSize { get; set; }
 }

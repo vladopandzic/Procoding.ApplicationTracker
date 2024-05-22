@@ -1,5 +1,6 @@
 ﻿@page "/candidates"
 @using MudBlazor
+@using Procoding.ApplicationTracker.DTOs.Model
 
 
 @if (ViewModel.IsLoading)
@@ -14,7 +15,7 @@ else
         <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
     </MudLink>
     <br />
-    <MudDataGrid Items="@ViewModel.Candidates" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
+    <MudDataGrid ServerData="@LoadGridData" T="CandidateDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
             <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.Surname" Title="Surname" Resizable="true" Filterable="true" />

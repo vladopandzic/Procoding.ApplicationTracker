@@ -8,7 +8,7 @@ public sealed class JobApplicationSourceDTO
         Name = name;
     }
 
-    public Guid Id { get; }
+    public Guid Id { get; set; }
 
     public string Name { get; set; } = default!;
 }

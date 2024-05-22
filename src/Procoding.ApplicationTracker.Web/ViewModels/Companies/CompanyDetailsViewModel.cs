@@ -63,6 +63,10 @@ public class CompanyDetailsViewModel : EditViewModelBase
             var result = await _companyService.InsertCompanyAsync(
            new CompanyInsertRequestDTO(Company!.Name, Company.OfficialWebSiteLink));
 
+            if (result.IsSuccess)
+            {
+                Company.Id = result.Value.Company.Id;
+            }
             _notificationService.ShowMessageFromResult(result);
         }
         else

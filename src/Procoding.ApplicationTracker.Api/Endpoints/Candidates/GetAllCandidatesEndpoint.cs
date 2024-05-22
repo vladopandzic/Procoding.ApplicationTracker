@@ -2,11 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
+using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Candidates;
 
-public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithoutRequest.WithResult<CandidateListResponseDTO>
+public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<CandidateGetListRequestDTO>.WithResult<CandidateListResponseDTO>
 {
     readonly ISender _sender;
     public GetAllCandidatesEndpoint(ISender sender)
@@ -15,8 +16,9 @@ public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithoutRequest.WithRes
     }
 
     [HttpGet("candidates")]
-    public override Task<CandidateListResponseDTO> HandleAsync(CancellationToken cancellationToken = default)
+    public override Task<CandidateListResponseDTO> HandleAsync([FromQuery] CandidateGetListRequestDTO request, CancellationToken cancellationToken = default)
     {
-        return _sender.Send(new GetCandidatesQuery(), cancellationToken);
+        return _sender.Send(new GetCandidatesQuery(pageNumber: request.PageNumber,
+                                                   pageSize: request.PageSize), cancellationToken);
     }
 }

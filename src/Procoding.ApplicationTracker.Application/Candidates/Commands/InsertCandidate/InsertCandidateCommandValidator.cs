@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Procoding.ApplicationTracker.Application.Core.Errors;
 using Procoding.ApplicationTracker.Application.Core.Extensions;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
@@ -9,9 +10,13 @@ public sealed class InsertCandidateCommandValidator : AbstractValidator<InsertCa
 {
     public InsertCandidateCommandValidator(ICandidateRepository candidateRepository)
     {
-        RuleFor(x => x.Name).NotEmpty().WithError(ValidationErrors.Candidates.NameIsRequried);
+        RuleFor(x => x.Name).NotEmpty().WithError(ValidationErrors.Candidates.NameIsRequried)
+                            .MaximumLength(Candidate.MaxLengthForName)
+                            .MinimumLength(Candidate.MinLengthForName);
 
-        RuleFor(x => x.Surname).NotEmpty().WithError(ValidationErrors.Candidates.SurnameIsRequired);
+        RuleFor(x => x.Surname).NotEmpty().WithError(ValidationErrors.Candidates.SurnameIsRequired)
+                               .MaximumLength(Candidate.MaxLengthForSurname)
+                               .MinimumLength(Candidate.MinLengthForSurname);
 
         RuleFor(x => x.Email).NotEmpty().WithError(ValidationErrors.Candidates.EmailIsRequired);
 

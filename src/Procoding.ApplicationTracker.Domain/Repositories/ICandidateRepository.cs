@@ -1,9 +1,12 @@
-﻿using Procoding.ApplicationTracker.Domain.Entities;
+﻿using Ardalis.Specification;
+using Procoding.ApplicationTracker.Domain.Entities;
 
 namespace Procoding.ApplicationTracker.Domain.Repositories;
 
 public interface ICandidateRepository
 {
+    Task<int> CountAsync(ISpecification<Candidate> spec, CancellationToken cancellationToken);
+
     /// <summary>
     /// If already exist with same name.
     /// </summary>
@@ -24,7 +27,7 @@ public interface ICandidateRepository
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<List<Candidate>> GetCandidatesAsync(CancellationToken cancellationToken);
+    Task<List<Candidate>> GetCandidatesAsync(ISpecification<Candidate> spec, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get one company.

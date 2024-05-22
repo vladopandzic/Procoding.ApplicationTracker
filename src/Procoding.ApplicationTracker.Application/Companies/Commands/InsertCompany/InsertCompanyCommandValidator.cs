@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Procoding.ApplicationTracker.Application.Core.Errors;
 using Procoding.ApplicationTracker.Application.Core.Extensions;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
