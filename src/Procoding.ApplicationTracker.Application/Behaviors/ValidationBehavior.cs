@@ -2,7 +2,7 @@
 using LanguageExt.Common;
 using MediatR;
 
-namespace Procoding.ApplicationTracker.Application;
+namespace Procoding.ApplicationTracker.Application.Behaviors;
 
 public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, Result<TResult>> where TRequest : notnull
 {

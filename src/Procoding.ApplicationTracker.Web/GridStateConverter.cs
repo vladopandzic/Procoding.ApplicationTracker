@@ -26,7 +26,6 @@ public class GridStateConverter
 
         var derivedRequest = new TResponse();
 
-        // Copy properties from the base request to the derived request
         CopyProperties(baseRequest, derivedRequest);
 
         return derivedRequest;
@@ -38,7 +37,5 @@ public class GridStateConverter
         destination.PageNumber = source.PageNumber;
         destination.Sort = source.Sort;
         destination.Filters = source.Filters;
-
-        // Add additional properties to copy if needed
     }
 }

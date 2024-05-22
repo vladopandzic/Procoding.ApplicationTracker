@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
+using Procoding.ApplicationTracker.Application.Core.Query;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 

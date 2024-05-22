@@ -1,4 +1,4 @@
-﻿namespace Procoding.ApplicationTracker.Application;
+﻿namespace Procoding.ApplicationTracker.Application.Core.Query;
 
 public sealed class Sort
 {

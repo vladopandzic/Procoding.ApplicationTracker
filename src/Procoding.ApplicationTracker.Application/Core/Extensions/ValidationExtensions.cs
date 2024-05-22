@@ -1,6 +1,7 @@
 ﻿using LanguageExt.Common;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Procoding.ApplicationTracker.Application.Behaviors;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 using Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;

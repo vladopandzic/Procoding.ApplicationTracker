@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using Procoding.ApplicationTracker.Application;
+using Procoding.ApplicationTracker.Application.Core.Query;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -170,15 +170,20 @@ public static class SpecificationBuilderExtensions
 
             var lambda = Expression.Lambda<Func<T, object>>(Expression.Convert(property, typeof(object)), parameter);
 
+            if (lambda is null)
+            {
+                continue;
+            }
+
             if (isFirstSort)
             {
                 if (sort.Descending)
                 {
-                    specificationBuilder.OrderByDescending(lambda);
+                    specificationBuilder.OrderByDescending(lambda!);
                 }
                 else
                 {
-                    specificationBuilder.OrderBy(lambda);
+                    specificationBuilder.OrderBy(lambda!);
                 }
                 isFirstSort = false;
             }
@@ -186,13 +191,27 @@ public static class SpecificationBuilderExtensions
             {
                 if (sort.Descending)
                 {
-                    specificationBuilder.OrderByDescending(lambda);
+                    specificationBuilder.OrderByDescending(lambda!);
                 }
                 else
                 {
-                    specificationBuilder.OrderBy(lambda);
+                    specificationBuilder.OrderBy(lambda!);
                 }
             }
+        }
+
+        return specificationBuilder;
+    }
+
+    public static ISpecificationBuilder<T> ApplyPaging<T>(this ISpecificationBuilder<T> specificationBuilder, int? pageNumber, int? pageSize)
+    {
+        if (pageNumber.HasValue)
+        {
+            specificationBuilder.Skip((pageNumber.Value - 1) * (pageSize ?? 1000));
+        }
+        if (pageSize.HasValue)
+        {
+            specificationBuilder.Take(pageSize.Value);
         }
 
         return specificationBuilder;
