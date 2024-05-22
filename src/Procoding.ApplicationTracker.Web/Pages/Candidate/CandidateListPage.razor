@@ -14,7 +14,7 @@ else
         <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
     </MudLink>
     <br />
-    <MudDataGrid Items="@ViewModel.Candidates" Hover=true RowsPerPage="10">
+    <MudDataGrid Items="@ViewModel.Candidates" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
             <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.Surname" Title="Surname" Resizable="true" Filterable="true" />

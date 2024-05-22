@@ -5,7 +5,7 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
 
-public class InsertCandidateCommandValidator : AbstractValidator<InsertCandidateCommand>
+public sealed class InsertCandidateCommandValidator : AbstractValidator<InsertCandidateCommand>
 {
     public InsertCandidateCommandValidator(ICandidateRepository candidateRepository)
     {

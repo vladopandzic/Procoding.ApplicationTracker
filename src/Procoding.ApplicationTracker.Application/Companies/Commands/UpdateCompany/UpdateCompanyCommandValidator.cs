@@ -5,7 +5,7 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
 
-public class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
+public sealed class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
 {
     public UpdateCompanyCommandValidator(ICompanyRepository companyRepository)
     {

@@ -9,7 +9,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 
-internal sealed class UpdateCandidateCommandHandler : ICommandHandler<UpdateCandidateCommand, Result<CandidateUpdatedResponseDTO>>
+internal sealed class UpdateCandidateCommandHandler : ICommandHandler<UpdateCandidateCommand, CandidateUpdatedResponseDTO>
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IUnitOfWork _unitOfWork;

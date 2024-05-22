@@ -9,7 +9,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Companies;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 
-internal sealed class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyCommand, Result<CompanyInsertedResponseDTO>>
+internal sealed class InsertCompanyCommandHandler : ICommandHandler<InsertCompanyCommand, CompanyInsertedResponseDTO>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly IUnitOfWork _unitOfWork;

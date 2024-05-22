@@ -16,7 +16,7 @@ else
     <br />
     <MudDataGrid Items="@ViewModel.JobApplicationSources" Hover=true RowsPerPage="10"  >
     <Columns>
-            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore" />
         <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
             <CellTemplate Context="data">
                 <MudStack Row>

@@ -5,9 +5,9 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 
-public class UpdateJobApplicationSourceCommandrValidator : AbstractValidator<UpdateJobApplicationSourceCommand>
+public sealed class UpdateJobApplicationSourceCommandValidator : AbstractValidator<UpdateJobApplicationSourceCommand>
 {
-    public UpdateJobApplicationSourceCommandrValidator(IJobApplicationSourceRepository jobApplicationSourceRepository)
+    public UpdateJobApplicationSourceCommandValidator(IJobApplicationSourceRepository jobApplicationSourceRepository)
     {
         RuleFor(x => x.Name).NotEmpty().WithError(ValidationErrors.JobApplicationSources.NameIsRequried);
 

@@ -1,5 +1,4 @@
 ﻿using LanguageExt.Common;
-using MapsterMapper;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
@@ -9,15 +8,13 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 
-internal sealed class AddJobApplicationSourceCommandHandler : ICommandHandler<AddJobApplicationSourceCommand, Result<JobApplicationSourceInsertedResponseDTO>>
+internal sealed class AddJobApplicationSourceCommandHandler : ICommandHandler<AddJobApplicationSourceCommand, JobApplicationSourceInsertedResponseDTO>
 {
-    private readonly IMapper _mapper;
     private readonly IJobApplicationSourceRepository _jobApplicationSourceRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddJobApplicationSourceCommandHandler(IMapper mapper, IJobApplicationSourceRepository jobApplicationSourceRepository, IUnitOfWork unitOfWork)
+    public AddJobApplicationSourceCommandHandler(IJobApplicationSourceRepository jobApplicationSourceRepository, IUnitOfWork unitOfWork)
     {
-        _mapper = mapper;
         _jobApplicationSourceRepository = jobApplicationSourceRepository;
         _unitOfWork = unitOfWork;
     }

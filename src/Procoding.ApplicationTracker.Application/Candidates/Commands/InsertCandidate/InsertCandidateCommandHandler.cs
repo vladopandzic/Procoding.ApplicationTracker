@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
 
-internal sealed class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCommand, Result<CandidateInsertedResponseDTO>>
+internal sealed class InsertCandidateCommandHandler : ICommandHandler<InsertCandidateCommand, CandidateInsertedResponseDTO>
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IUnitOfWork _unitOfWork;

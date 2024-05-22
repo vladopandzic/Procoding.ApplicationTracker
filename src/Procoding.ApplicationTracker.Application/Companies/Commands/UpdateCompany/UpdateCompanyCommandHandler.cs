@@ -1,5 +1,4 @@
 ﻿using LanguageExt.Common;
-using MapsterMapper;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
@@ -10,15 +9,13 @@ using Procoding.ApplicationTracker.DTOs.Response.Companies;
 
 namespace Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
 
-internal sealed class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyCommand, Result<CompanyUpdatedResponseDTO>>
+internal sealed class UpdateCompanyCommandHandler : ICommandHandler<UpdateCompanyCommand, CompanyUpdatedResponseDTO>
 {
-    private readonly IMapper _mapper;
     private readonly ICompanyRepository _companyRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCompanyCommandHandler(IMapper mapper, ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
+    public UpdateCompanyCommandHandler(ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
     {
-        _mapper = mapper;
         _companyRepository = companyRepository;
         _unitOfWork = unitOfWork;
     }
