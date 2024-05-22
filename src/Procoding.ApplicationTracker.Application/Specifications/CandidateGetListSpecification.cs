@@ -1,5 +1,4 @@
 ﻿using Ardalis.Specification;
-using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
 using Procoding.ApplicationTracker.Domain.Entities;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,10 +7,12 @@ namespace Procoding.ApplicationTracker.Application.Specifications;
 
 public class CandidateGetListSpecification : Specification<Candidate>
 {
-    public CandidateGetListSpecification(int? pageNumber, int? pageSize, List<Filter> filters)
+    public CandidateGetListSpecification(int? pageNumber, int? pageSize, List<Filter> filters, List<Sort> sort)
     {
 
         Query.ApplyFilters(filters.ToList());
+
+        Query.ApplySorting(sort.ToList());
 
         if (pageNumber.HasValue)
         {

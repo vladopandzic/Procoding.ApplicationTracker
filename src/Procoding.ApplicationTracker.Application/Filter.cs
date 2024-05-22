@@ -1,4 +1,4 @@
-﻿namespace Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
+﻿namespace Procoding.ApplicationTracker.Application;
 
 public sealed class Filter
 {

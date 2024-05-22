@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
+using Procoding.ApplicationTracker.Application;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -19,7 +19,7 @@ public static class SpecificationBuilderExtensions
 
         foreach (var filter in filters)
         {
-            if (string.IsNullOrEmpty(filter.Key))
+            if (string.IsNullOrEmpty(filter.Key) || filter.Value is null)
             {
                 continue;
             }
@@ -29,7 +29,7 @@ public static class SpecificationBuilderExtensions
             {
                 continue;
             }
-         
+
             var parameter = Expression.Parameter(typeof(T), "x");
             var property = Expression.Property(parameter, propertyInfo);
             var constant = Expression.Constant(filter.Value);
@@ -121,6 +121,77 @@ public static class SpecificationBuilderExtensions
             {
                 var lambda = Expression.Lambda<Func<T, bool>>(filterExpression, parameter);
                 specificationBuilder.Where(lambda);
+            }
+        }
+
+        return specificationBuilder;
+    }
+
+    public static ISpecificationBuilder<T> ApplySorting<T>(this ISpecificationBuilder<T> specificationBuilder, IEnumerable<Sort> sorts)
+    {
+        if (specificationBuilder is null)
+        {
+            throw new ArgumentNullException(nameof(specificationBuilder));
+        }
+
+        if (sorts is null || !sorts.Any())
+        {
+            return specificationBuilder;
+        }
+
+        bool isFirstSort = true;
+
+        foreach (var sort in sorts)
+        {
+            if (string.IsNullOrEmpty(sort.SortBy))
+            {
+                continue;
+            }
+
+            var propertyInfo = typeof(T).GetProperty(sort.SortBy, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (propertyInfo is null)
+            {
+                continue;
+            }
+
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, propertyInfo);
+
+
+            // Handle value objects (e.g., Email.Value)
+            if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
+            {
+                var underlyingPropertyInfo = propertyInfo.PropertyType.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                if (underlyingPropertyInfo is not null)
+                {
+                    property = Expression.Property(property, underlyingPropertyInfo);
+                }
+            }
+
+            var lambda = Expression.Lambda<Func<T, object>>(Expression.Convert(property, typeof(object)), parameter);
+
+            if (isFirstSort)
+            {
+                if (sort.Descending)
+                {
+                    specificationBuilder.OrderByDescending(lambda);
+                }
+                else
+                {
+                    specificationBuilder.OrderBy(lambda);
+                }
+                isFirstSort = false;
+            }
+            else
+            {
+                if (sort.Descending)
+                {
+                    specificationBuilder.OrderByDescending(lambda);
+                }
+                else
+                {
+                    specificationBuilder.OrderBy(lambda);
+                }
             }
         }
 

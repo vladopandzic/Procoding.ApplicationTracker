@@ -18,17 +18,6 @@ public class CandidateListViewModel : ViewModelBase
         _candidateService = candidateService;
     }
 
-    public async Task InitializeViewModel(CancellationToken cancellationToken = default)
-    {
-        //IsLoading = true;
-        //var response = await _candidateService.GetCandidatesAsync(Request, cancellationToken);
-        //IsLoading = false;
-
-        //if (response.IsSuccess)
-        //{
-        //    Candidates = response.Value.Candidates;
-        //}
-    }
 
     public async Task GetCandidates(CancellationToken cancellationToken = default)
     {

@@ -1,6 +1,7 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Application;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
@@ -26,6 +27,11 @@ public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<CandidateG
                                                        Key = x.Key,
                                                        Operator = x.Operator,
                                                        Value = x.Value
+                                                   }).ToList(),
+                                                   sort: request.Sort.Select(x => new Sort()
+                                                   {
+                                                       SortBy = x.SortBy,
+                                                       Descending = x.Descending
                                                    }).ToList()), cancellationToken);
     }
 }
