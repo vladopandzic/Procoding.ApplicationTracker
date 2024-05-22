@@ -24,95 +24,96 @@ public static class SpecificationBuilderExtensions
                 continue;
             }
 
-            var propertyInfo = typeof(T).GetProperty(filter.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-            if (propertyInfo is null)
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var propertyExpression = GetNestedPropertyExpression(parameter, filter.Key);
+            if (propertyExpression == null)
             {
                 continue;
             }
-
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(parameter, propertyInfo);
+            //var property = Expression.Property(parameter, propertyInfo);
             var constant = Expression.Constant(filter.Value);
             Expression? filterExpression = null;
 
 
-            // Handle value objects (e.g., Email.Value)
-            if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
-            {
-                var underlyingPropertyInfo = propertyInfo.PropertyType.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-                if (underlyingPropertyInfo is not null)
-                {
-                    property = Expression.Property(property, underlyingPropertyInfo);
-                }
-            }
+            //// Handle value objects (e.g., Email.Value)
+            //if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
+            //{
+            //    var underlyingPropertyInfo = propertyInfo.PropertyType.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            //    if (underlyingPropertyInfo is not null)
+            //    {
+            //        property = Expression.Property(property, underlyingPropertyInfo);
+            //    }
+            //}
 
 
             switch (filter.Operator?.ToLower())
             {
                 case "equals":
-                    filterExpression = Expression.Equal(property, constant);
+                    filterExpression = Expression.Equal(propertyExpression, constant);
                     break;
 
                 case "not equals":
-                    filterExpression = Expression.NotEqual(property, constant);
+                    filterExpression = Expression.NotEqual(propertyExpression, constant);
                     break;
 
                 case "contains":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    propertyExpression = GetUnderlyingPropertyExpression(propertyExpression);
+
+                    if (propertyExpression.Type == typeof(string))
                     {
                         var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         if (containsMethod is not null)
                         {
-                            filterExpression = Expression.Call(property, containsMethod, constant);
+                            filterExpression = Expression.Call(propertyExpression, containsMethod, constant);
                         }
                     }
                     break;
 
                 case "not contains":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    if (propertyExpression.Type == typeof(string))
                     {
                         var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         if (containsMethod is not null)
                         {
-                            var containsCall = Expression.Call(property, containsMethod, constant);
+                            var containsCall = Expression.Call(propertyExpression, containsMethod, constant);
                             filterExpression = Expression.Not(containsCall);
                         }
                     }
                     break;
 
                 case "starts with":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    if (propertyExpression.Type == typeof(string))
                     {
                         var startsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
                         if (startsWithMethod is not null)
                         {
-                            filterExpression = Expression.Call(property, startsWithMethod, constant);
+                            filterExpression = Expression.Call(propertyExpression, startsWithMethod, constant);
                         }
                     }
                     break;
 
                 case "ends with":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    if (propertyExpression.Type == typeof(string))
                     {
                         var endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
                         if (endsWithMethod is not null)
                         {
-                            filterExpression = Expression.Call(property, endsWithMethod, constant);
+                            filterExpression = Expression.Call(propertyExpression, endsWithMethod, constant);
                         }
                     }
                     break;
 
                 case "is empty":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    if (propertyExpression.Type == typeof(string))
                     {
-                        filterExpression = Expression.Equal(property, Expression.Constant(string.Empty));
+                        filterExpression = Expression.Equal(propertyExpression, Expression.Constant(string.Empty));
                     }
                     break;
 
                 case "is not empty":
-                    if (propertyInfo.PropertyType == typeof(string) || property.Type == typeof(string))
+                    if (propertyExpression.Type == typeof(string))
                     {
-                        filterExpression = Expression.NotEqual(property, Expression.Constant(string.Empty));
+                        filterExpression = Expression.NotEqual(propertyExpression, Expression.Constant(string.Empty));
                     }
                     break;
             }
@@ -125,6 +126,34 @@ public static class SpecificationBuilderExtensions
         }
 
         return specificationBuilder;
+    }
+
+    private static Expression? GetNestedPropertyExpression(Expression parameter, string propertyPath)
+    {
+        Expression propertyExpression = parameter;
+        foreach (var propertyName in propertyPath.Split('.'))
+        {
+            var propertyInfo = propertyExpression.Type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (propertyInfo == null)
+            {
+                return null;
+            }
+            propertyExpression = Expression.Property(propertyExpression, propertyInfo);
+        }
+        return propertyExpression;
+    }
+
+    private static Expression GetUnderlyingPropertyExpression(Expression propertyExpression)
+    {
+        if (propertyExpression.Type.IsClass && propertyExpression.Type != typeof(string))
+        {
+            var underlyingPropertyInfo = propertyExpression.Type.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (underlyingPropertyInfo != null)
+            {
+                propertyExpression = Expression.Property(propertyExpression, underlyingPropertyInfo);
+            }
+        }
+        return propertyExpression;
     }
 
     public static ISpecificationBuilder<T> ApplySorting<T>(this ISpecificationBuilder<T> specificationBuilder, IEnumerable<Sort> sorts)
