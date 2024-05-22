@@ -16,9 +16,16 @@ public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<CandidateG
     }
 
     [HttpGet("candidates")]
+
     public override Task<CandidateListResponseDTO> HandleAsync([FromQuery] CandidateGetListRequestDTO request, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetCandidatesQuery(pageNumber: request.PageNumber,
-                                                   pageSize: request.PageSize), cancellationToken);
+                                                   pageSize: request.PageSize,
+                                                   filters: request.Filters.Select(x => new Filter()
+                                                   {
+                                                       Key = x.Key,
+                                                       Operator = x.Operator,
+                                                       Value = x.Value
+                                                   }).ToList()), cancellationToken);
     }
 }

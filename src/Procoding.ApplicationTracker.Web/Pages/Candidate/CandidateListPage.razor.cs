@@ -20,8 +20,16 @@ public partial class CandidateListPage
     {
         ViewModel.Request.PageSize = state.PageSize;
         ViewModel.Request.PageNumber = state.Page + 1;
-
+        ViewModel.Request.Filters = state.FilterDefinitions.Select(x => new DTOs.Request.Base.FilterModelDto()
+        {
+            Key = x.Title,
+            Value = x.Value as string,
+            Operator = x.Operator
+        }).ToList();
+        
         await ViewModel.GetCandidates();
+
+
 
         GridData<CandidateDTO> data = new GridData<CandidateDTO>
         {

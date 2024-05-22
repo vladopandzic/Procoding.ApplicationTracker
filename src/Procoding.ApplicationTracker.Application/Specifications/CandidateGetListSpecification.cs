@@ -1,13 +1,18 @@
 ﻿using Ardalis.Specification;
+using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
 using Procoding.ApplicationTracker.Domain.Entities;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Procoding.ApplicationTracker.Application.Specifications;
 
 public class CandidateGetListSpecification : Specification<Candidate>
 {
-    public CandidateGetListSpecification(int? pageNumber, int? pageSize)
+    public CandidateGetListSpecification(int? pageNumber, int? pageSize, List<Filter> filters)
     {
-        
+
+        Query.ApplyFilters(filters.ToList());
+
         if (pageNumber.HasValue)
         {
             Query.Skip((pageNumber.Value - 1) * (pageSize ?? 1000));
@@ -16,5 +21,10 @@ public class CandidateGetListSpecification : Specification<Candidate>
         {
             Query.Take(pageSize.Value);
         }
+    }
+
+    public void ApplyCriteria(Expression<Func<Candidate, bool>> criteria)
+    {
+        Query.Where(criteria);
     }
 }

@@ -16,7 +16,7 @@ internal sealed class GetCandidateQueryHandler : IQueryHandler<GetCandidatesQuer
 
     public async Task<CandidateListResponseDTO> Handle(GetCandidatesQuery request, CancellationToken cancellationToken)
     {
-        var specification = new Specifications.CandidateGetListSpecification(request.PageNumber, request.PageSize);
+        var specification = new Specifications.CandidateGetListSpecification(request.PageNumber, request.PageSize, request.Filters);
 
         var candidates = await _candidateRepository.GetCandidatesAsync(specification, cancellationToken);
         var count = await _candidateRepository.CountAsync(specification, cancellationToken);

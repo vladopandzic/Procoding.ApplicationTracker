@@ -34,9 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.Architecture.Tests", "test\Procoding.Architecture.Tests\Procoding.Architecture.Tests.csproj", "{AA92A8E7-1D2C-4E44-885A-394710C9D40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.AppHost", "src\Procoding.ApplicationTracker.AppHost\Procoding.ApplicationTracker.AppHost.csproj", "{65C1B76A-01B8-4711-8EE5-CB76946AC6D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.AppHost", "src\Procoding.ApplicationTracker.AppHost\Procoding.ApplicationTracker.AppHost.csproj", "{65C1B76A-01B8-4711-8EE5-CB76946AC6D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.ServiceDefaults", "src\Procoding.ApplicationTracker.ServiceDefaults\Procoding.ApplicationTracker.ServiceDefaults.csproj", "{731264B1-13D7-4291-879E-56CA597792A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Web.Tests", "test\Procoding.ApplicationTracker.Web.Tests\Procoding.ApplicationTracker.Web.Tests.csproj", "{592B84B5-F356-4E17-90FE-26F33B8B586D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +98,10 @@ Global
 		{731264B1-13D7-4291-879E-56CA597792A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{731264B1-13D7-4291-879E-56CA597792A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{731264B1-13D7-4291-879E-56CA597792A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{592B84B5-F356-4E17-90FE-26F33B8B586D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592B84B5-F356-4E17-90FE-26F33B8B586D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592B84B5-F356-4E17-90FE-26F33B8B586D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592B84B5-F356-4E17-90FE-26F33B8B586D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{AA92A8E7-1D2C-4E44-885A-394710C9D40D} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
 		{65C1B76A-01B8-4711-8EE5-CB76946AC6D5} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 		{731264B1-13D7-4291-879E-56CA597792A3} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
+		{592B84B5-F356-4E17-90FE-26F33B8B586D} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23C9585D-5823-475F-884E-4A8D6FFF1F93}
