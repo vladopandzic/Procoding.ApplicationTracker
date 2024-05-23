@@ -26,7 +26,7 @@ else
             <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                 <CellTemplate Context="data">
                     <MudStack Row>
-                        <MudLink Href="@($"job-applications/{data.Item.ApplicationSource.Id}")">
+                        <MudLink Href="@($"job-applications/{data.Item.Id}")">
                             <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
                         </MudLink>
                     </MudStack>

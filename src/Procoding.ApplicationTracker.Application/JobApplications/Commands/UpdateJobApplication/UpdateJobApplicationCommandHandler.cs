@@ -1,4 +1,5 @@
 ﻿using LanguageExt.Common;
+using MediatR;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
@@ -6,9 +7,9 @@ using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
-namespace Procoding.ApplicationTracker.Application.JobApplications.Commands.ApplyForJob;
+namespace Procoding.ApplicationTracker.Application.JobApplications.Commands.UpdateJobApplication;
 
-internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, JobApplicationInsertedResponseDTO>
+internal class UpdateJobApplicationCommandHandler : ICommandHandler<UpdateJobApplicationCommand, JobApplicationUpdatedResponseDTO>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly ICandidateRepository _candidateRepository;
@@ -17,12 +18,12 @@ internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, J
     private readonly IJobApplicationRepository _jobApplicationRepository;
     private readonly TimeProvider _timeProvider;
 
-    public ApplyForJobCommandHandler(ICompanyRepository companyRepository,
-                                     ICandidateRepository candidateRepository,
-                                     IJobApplicationSourceRepository jobApplicationSourceRepository,
-                                     IUnitOfWork unitOfWork,
-                                     IJobApplicationRepository jobApplicationRepository,
-                                     TimeProvider timeProvider)
+    public UpdateJobApplicationCommandHandler(ICompanyRepository companyRepository,
+                                              ICandidateRepository candidateRepository,
+                                              IJobApplicationSourceRepository jobApplicationSourceRepository,
+                                              IUnitOfWork unitOfWork,
+                                              IJobApplicationRepository jobApplicationRepository,
+                                              TimeProvider timeProvider)
     {
         _companyRepository = companyRepository;
         _candidateRepository = candidateRepository;
@@ -32,8 +33,16 @@ internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, J
         _timeProvider = timeProvider;
     }
 
-    public async Task<Result<JobApplicationInsertedResponseDTO>> Handle(ApplyForJobCommand request, CancellationToken cancellationToken)
+    public async Task<Result<JobApplicationUpdatedResponseDTO>> Handle(UpdateJobApplicationCommand request, CancellationToken cancellationToken)
     {
+
+        var jobApplication = await _jobApplicationRepository.GetJobApplicationAsync(request.Id, cancellationToken);
+
+        if (jobApplication is null)
+        {
+            throw new JobApplicationDoesNotExistException("Job application does not exist");
+        }
+
         var company = await _companyRepository.GetCompanyAsync(request.CompanyId, cancellationToken);
 
         if (company is null)
@@ -55,9 +64,7 @@ internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, J
             throw new JobApplicationSourceDoesNotExistException("Candidate does not exist");
         }
 
-        var jobApplication = candidate.ApplyForAJob(company, jobApplicationSource, _timeProvider);
-
-        await _jobApplicationRepository.InsertAsync(jobApplication, cancellationToken);
+        jobApplication.Update(company, jobApplicationSource, candidate);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -65,10 +72,10 @@ internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, J
                                             jobApplication.Candidate.Name,
                                             jobApplication.Candidate.Surname,
                                             jobApplication.Candidate.Email.Value);
+
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 
-        return new JobApplicationInsertedResponseDTO(new JobApplicationDTO(jobApplication.Id, candidateDto, jobApplicationSourceDto, companyDto));
-
+        return new JobApplicationUpdatedResponseDTO(new JobApplicationDTO(jobApplication.Id, candidateDto, jobApplicationSourceDto, companyDto));
     }
 }

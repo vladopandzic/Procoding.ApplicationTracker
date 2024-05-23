@@ -1,21 +1,13 @@
-﻿using Ardalis.Specification.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Procoding.ApplicationTracker.DTOs.Request.Candidates;
+﻿using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
-using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplications;
 
 [TestFixture]
-public class InsertJobApplicationEndpointTests
+public class UpdateJobApplicationEndpointTests
 {
     private CustomWebApplicationFactory _factory;
 
@@ -38,7 +30,7 @@ public class InsertJobApplicationEndpointTests
     }
 
     [Test]
-    public async Task InsertJobApplication_ShouldInsertNewJobApplication()
+    public async Task UpdateJobApplication_ShouldUpdateJobApplication()
     {
         //Arrange
         var client = _factory.CreateClient();
@@ -47,21 +39,21 @@ public class InsertJobApplicationEndpointTests
         var company = await dbContext.Companies.FirstAsync();
         var jobApplicationSource = await dbContext.JobApplicationSources.FirstAsync();
         var allJobApplicationsBefore = await dbContext.JobApplications.ToListAsync();
+        var firstFromDb = dbContext.JobApplications.FirstOrDefault();
+
 
         //Act
-        var response = await client.PostAsJsonAsync($"job-applications",
-                                                    new JobApplicationInsertRequestDTO(CandidateId: candidate.Id,
-                                                                                       JobApplicationSourceId: jobApplicationSource.Id,
-                                                                                       CompanyId: company.Id));
-        var json = await response.Content.ReadFromJsonAsync<JobApplicationInsertedResponseDTO>();
-        using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        var allJobApplicationsAfter = await dbContext2.JobApplications.ToListAsync();
+        var response = await client.PutAsJsonAsync($"job-applications",
+                                                   new JobApplicationUpdateRequestDTO(Id: firstFromDb!.Id,
+                                                                                      CandidateId: candidate.Id,
+                                                                                      JobApplicationSourceId: jobApplicationSource.Id,
+                                                                                      CompanyId: company.Id));
+        var json = await response.Content.ReadFromJsonAsync<JobApplicationUpdatedResponseDTO>();
 
+        //Assert
         //Assert
         Assert.That(response, Is.Not.Null);
         Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(allJobApplicationsAfter.Count(), Is.EqualTo(allJobApplicationsBefore.Count() + 1));
-
         Assert.That(json!.JobApplication.Candidate.Name, Is.EqualTo(candidate.Name));
         Assert.That(json!.JobApplication.Candidate.Surname, Is.EqualTo(candidate.Surname));
         Assert.That(json!.JobApplication.Candidate.Email, Is.EqualTo(candidate.Email.Value));

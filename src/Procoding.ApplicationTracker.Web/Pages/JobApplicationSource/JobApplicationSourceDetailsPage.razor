@@ -21,7 +21,11 @@ else if (ViewModel.JobApplicationSource is not null)
             <MudCardContent>
                 <MudForm @ref=mudForm Model="ViewModel.JobApplicationSource" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
-                    <MudTextField @bind-Value=ViewModel.JobApplicationSource.Name T="string" Label="Name" Validation="ViewModel.Validator.ValidateValue" Immediate="true" For="(()=>ViewModel.JobApplicationSource.Name)" />
+                    <MudTextField @bind-Value=ViewModel.JobApplicationSource.Name 
+                                  T="string" Label="Name" 
+                                  Validation="ViewModel.Validator.ValidateValue" 
+                                  Immediate="true" 
+                                  For="(()=>ViewModel.JobApplicationSource.Name)" />
 
                     <br />
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />

@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Procoding.ApplicationTracker.Domain\Procoding.ApplicationTracker.Domain.csproj" />
 	  <ProjectReference Include="..\Procoding.ApplicationTracker.DTOs\Procoding.ApplicationTracker.DTOs.csproj" />
 	</ItemGroup>
 

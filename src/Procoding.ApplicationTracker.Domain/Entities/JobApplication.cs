@@ -94,6 +94,17 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
         return interview;
     }
 
+    public JobApplication Update(Company company, JobApplicationSource jobApplicationSource, Candidate candidate)
+    {
+        Company = company;
+        ApplicationSource = jobApplicationSource;
+        Candidate = candidate;
+
+        this.AddDomainEvent(new JobApplicationUpdatedDomainEvent(Id, company, jobApplicationSource, candidate));
+
+        return this;
+    }
+
     /// <summary>
     /// Represents time when candidate applied for the job.
     /// </summary>
@@ -102,7 +113,7 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     /// <summary>
     /// Application source through candidate applied.
     /// </summary>
-    public JobApplicationSource ApplicationSource { get; }
+    public JobApplicationSource ApplicationSource { get; private set; }
 
     /// <summary>
     /// Current job application status.
@@ -112,12 +123,12 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     /// <summary>
     /// Company the candidate applies for.
     /// </summary>
-    public Company Company { get; }
+    public Company Company { get; private set; }
 
     /// <summary>
     /// The candidate for the job.
     /// </summary>
-    public Candidate Candidate { get; }
+    public Candidate Candidate { get; private set; }
 
     /// <summary>
     /// Interview steps each job application has. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".

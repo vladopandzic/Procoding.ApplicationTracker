@@ -1,8 +1,5 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
-using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
-using Procoding.ApplicationTracker.DTOs.Response.Companies;
-using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
@@ -18,9 +15,7 @@ public class CompanyDetailsViewModel : EditViewModelBase
 
     public CompanyValidator Validator { get; }
 
-    public CompanyDetailsViewModel(ICompanyService companyService,
-                                   INotificationService notificationService,
-                                   CompanyValidator validator)
+    public CompanyDetailsViewModel(ICompanyService companyService, INotificationService notificationService, CompanyValidator validator)
     {
         _companyService = companyService;
         _notificationService = notificationService;
@@ -60,8 +55,7 @@ public class CompanyDetailsViewModel : EditViewModelBase
 
         if (Company!.Id == Guid.Empty)
         {
-            var result = await _companyService.InsertCompanyAsync(
-           new CompanyInsertRequestDTO(Company!.CompanyName, Company.OfficialWebSiteLink));
+            var result = await _companyService.InsertCompanyAsync(new CompanyInsertRequestDTO(Company!.CompanyName, Company.OfficialWebSiteLink));
 
             if (result.IsSuccess)
             {
@@ -71,8 +65,7 @@ public class CompanyDetailsViewModel : EditViewModelBase
         }
         else
         {
-            var result = await _companyService.UpdateCompanyAsync(
-               new CompanyUpdateRequestDTO(Company!.Id, Company!.CompanyName, Company.OfficialWebSiteLink));
+            var result = await _companyService.UpdateCompanyAsync(new CompanyUpdateRequestDTO(Company!.Id, Company!.CompanyName, Company.OfficialWebSiteLink));
 
             _notificationService.ShowMessageFromResult(result);
         }

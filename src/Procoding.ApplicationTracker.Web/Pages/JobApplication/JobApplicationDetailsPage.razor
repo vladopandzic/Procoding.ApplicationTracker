@@ -1,5 +1,63 @@
-﻿<h3>JobApplicationDetailsPage</h3>
+﻿@page "/job-applications/{Id}"
+@using MudBlazor;
 
-@code {
+@using Microsoft.AspNetCore.Components.Web;
+@using FluentValidation.Validators;
+@using Blazored.FluentValidation
+@using Procoding.ApplicationTracker.DTOs.Model
+<PageTitle>Job aaplication for: @ViewModel.JobApplication?.Company?.CompanyName</PageTitle>
 
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+
+}
+else if (ViewModel.JobApplication is not null)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">New job application</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+                    <MudAutocomplete T="CandidateDTO"
+                                     Label="Candidate"
+                                     ResetValueOnEmptyText="true"
+                                     @bind-Value="ViewModel.JobApplication.Candidate"
+                                     For="(()=>ViewModel.JobApplication.Candidate)"
+                                     ToStringFunc=CandidatesToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchCandidatesFunc" />
+
+                    <MudAutocomplete T="CompanyDTO"
+                                     Label="Company"
+                                     ResetValueOnEmptyText="true"
+                                     @bind-Value="ViewModel.JobApplication.Company"
+                                     For="(()=>ViewModel.JobApplication.Company)"
+                                     ToStringFunc=CompaniesToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchCompaniesFunc" />
+
+                    <MudAutocomplete T="JobApplicationSourceDTO"
+                                     Label="Job application source"
+                                     ResetValueOnEmptyText="true"
+                                     @bind-Value="ViewModel.JobApplication.ApplicationSource"
+                                     For="(()=>ViewModel.JobApplication.ApplicationSource)"
+                                     ToStringFunc=JobApplicationSourcesToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchJobApplicationSourceFunc" />
+
+
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
+
+                </MudForm>
+            </MudCardContent>
+        </MudCard>
+
+    </MudContainer>
 }
