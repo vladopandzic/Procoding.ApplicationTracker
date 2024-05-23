@@ -16,7 +16,7 @@ else
     <br />
     <MudDataGrid Items="@ViewModel.Companies" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
-            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true"  />
+            <PropertyColumn Property="x => x.CompanyName" Title="Name" Resizable="true" Filterable="true"  />
             <PropertyColumn Property="x => x.OfficialWebSiteLink" Title="Official website" Resizable="true" Filterable="true" />
 
             <TemplateColumn CellClass="d-flex justify-end" Filterable="false">

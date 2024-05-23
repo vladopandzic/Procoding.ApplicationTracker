@@ -61,7 +61,7 @@ public class CompanyDetailsViewModel : EditViewModelBase
         if (Company!.Id == Guid.Empty)
         {
             var result = await _companyService.InsertCompanyAsync(
-           new CompanyInsertRequestDTO(Company!.Name, Company.OfficialWebSiteLink));
+           new CompanyInsertRequestDTO(Company!.CompanyName, Company.OfficialWebSiteLink));
 
             if (result.IsSuccess)
             {
@@ -72,7 +72,7 @@ public class CompanyDetailsViewModel : EditViewModelBase
         else
         {
             var result = await _companyService.UpdateCompanyAsync(
-               new CompanyUpdateRequestDTO(Company!.Id, Company!.Name, Company.OfficialWebSiteLink));
+               new CompanyUpdateRequestDTO(Company!.Id, Company!.CompanyName, Company.OfficialWebSiteLink));
 
             _notificationService.ShowMessageFromResult(result);
         }

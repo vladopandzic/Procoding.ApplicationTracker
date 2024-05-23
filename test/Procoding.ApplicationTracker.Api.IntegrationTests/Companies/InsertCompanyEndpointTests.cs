@@ -57,7 +57,7 @@ internal class InsertCompanyEndpointTests
         //Assert
         Assert.That(response, Is.Not.Null);
         Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(json!.Company.Name, Is.EqualTo("CompanyName"));
+        Assert.That(json!.Company.CompanyName, Is.EqualTo("CompanyName"));
         Assert.That(json!.Company.OfficialWebSiteLink, Is.EqualTo("https://www.company.hr"));
 
         Assert.That(allCompaniesAfter.Count(), Is.EqualTo(allCompanies.Count() + 1));

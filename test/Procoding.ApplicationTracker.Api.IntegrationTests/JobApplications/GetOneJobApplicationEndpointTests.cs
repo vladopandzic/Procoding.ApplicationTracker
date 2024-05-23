@@ -51,8 +51,8 @@ public class GetOneJobApplicationEndpointTests
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.JobApplication.JobApplicationSource.Name, Is.EqualTo(firstFromDb.ApplicationSource.Name));
-        Assert.That(response.JobApplication.Company.Name, Is.EqualTo(firstFromDb.Company.CompanyName.Value));
+        Assert.That(response.JobApplication.ApplicationSource.Name, Is.EqualTo(firstFromDb.ApplicationSource.Name));
+        Assert.That(response.JobApplication.Company.CompanyName, Is.EqualTo(firstFromDb.Company.CompanyName.Value));
         Assert.That(response.JobApplication.Company.OfficialWebSiteLink, Is.EqualTo(firstFromDb.Company.OfficialWebSiteLink.Value));
         Assert.That(response.JobApplication.Candidate.Name, Is.EqualTo(firstFromDb.Candidate.Name));
         Assert.That(response.JobApplication.Candidate.Surname, Is.EqualTo(firstFromDb.Candidate.Surname));

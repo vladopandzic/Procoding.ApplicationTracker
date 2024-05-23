@@ -30,7 +30,6 @@ internal class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJobApplic
             var companyDto = new CompanyDTO(x.Company.Id, x.Company.CompanyName.Value, x.Company.OfficialWebSiteLink.Value);
 
             return new JobApplicationDTO(x.Id, candidateDto, jobApplicationSourceDto, companyDto);
-
         }).ToList();
 
         return new JobApplicationListResponseDTO(jobApplicationsDto.AsReadOnly(), count);

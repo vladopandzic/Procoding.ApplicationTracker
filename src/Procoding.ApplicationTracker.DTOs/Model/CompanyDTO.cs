@@ -9,16 +9,16 @@ namespace Procoding.ApplicationTracker.DTOs.Model;
 public class CompanyDTO
 {
 
-    public CompanyDTO(Guid id, string name, string officialWebSiteLink)
+    public CompanyDTO(Guid id, string companyName, string officialWebSiteLink)
     {
         Id = id;
-        Name = name;
+        CompanyName = companyName;
         OfficialWebSiteLink = officialWebSiteLink;
     }
 
     public Guid Id { get; set; }
 
-    public string Name { get; set; }
+    public string CompanyName { get; set; }
 
     public string OfficialWebSiteLink { get; set; }
 }

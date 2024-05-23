@@ -55,7 +55,7 @@ internal class UpdateCompanyEndpointTests
         //Assert
         Assert.That(response, Is.Not.Null);
         Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(json!.Company.Name, Is.EqualTo("NewName"));
+        Assert.That(json!.Company.CompanyName, Is.EqualTo("NewName"));
         Assert.That(firstFromDb.CompanyName.Value, Is.Not.EqualTo("NewName"));
         Assert.That(json!.Company.OfficialWebSiteLink, Is.EqualTo("https://www.newLink.com"));
         Assert.That(firstFromDb.OfficialWebSiteLink.Value, Is.Not.EqualTo("https://www.newLink.com"));

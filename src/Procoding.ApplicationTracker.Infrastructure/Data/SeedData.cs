@@ -28,9 +28,9 @@ public static class SeedData
         //to that related entities get saved and get an id.
         await dbContext.SaveChangesAsync();
 
-        var candidate = dbContext.Candidates.First();
-        var company = dbContext.Companies.First();
-        var jobApplicationSource = dbContext.JobApplicationSources.First();
+        var candidate = dbContext.Candidates.Skip(1).Take(1).First();
+        var company = dbContext.Companies.Skip(1).Take(1).First();
+        var jobApplicationSource = dbContext.JobApplicationSources.Skip(1).Take(1).First();
 
         var jobApplications = Enumerable.Range(1, 10).Select(x => JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System));
 

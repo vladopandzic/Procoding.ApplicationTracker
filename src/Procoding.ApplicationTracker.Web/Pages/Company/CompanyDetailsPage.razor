@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Web;
 @using FluentValidation.Validators;
 @using Blazored.FluentValidation
-<PageTitle>@ViewModel.Company?.Name</PageTitle>
+<PageTitle>@ViewModel.Company?.CompanyName</PageTitle>
 
 @if (ViewModel.IsLoading)
 {
@@ -15,17 +15,17 @@ else if (ViewModel.Company is not null)
     <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
         <MudCard>
             <MudCardHeader>
-                <MudText Typo="Typo.h4">@ViewModel.Company.Name</MudText>
+                <MudText Typo="Typo.h4">@ViewModel.Company.CompanyName</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudForm @ref=mudForm Model="ViewModel.Company"  ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
-                    <MudTextField @bind-Value=ViewModel.Company.Name
+                    <MudTextField @bind-Value=ViewModel.Company.CompanyName
                                   T="string" 
                                   Label="Name" 
                                   Validation="ViewModel.Validator.ValidateValue" 
                                   Immediate="true" 
-                                  For="(()=>ViewModel.Company.Name)" />
+                                  For="(()=>ViewModel.Company.CompanyName)" />
 
                     <MudTextField @bind-Value=ViewModel.Company.OfficialWebSiteLink
                                   T="string"

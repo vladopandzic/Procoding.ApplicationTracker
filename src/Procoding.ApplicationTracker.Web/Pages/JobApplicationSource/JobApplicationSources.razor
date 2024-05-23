@@ -3,32 +3,32 @@
 
 
 @if (ViewModel.IsLoading)
-{  
-     <MudProgressCircular Color="Color.Primary" Indeterminate="true" />  
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 }
 else
 {
     <MudText Typo="Typo.h4">Job application sources</MudText>
-    <br/>
+    <br />
     <MudLink Href="@($"job-application-sources/new")">
         <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
     </MudLink>
     <br />
-    <MudDataGrid Items="@ViewModel.JobApplicationSources" Hover=true RowsPerPage="10"  >
-    <Columns>
-            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore" />
-        <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
-            <CellTemplate Context="data">
-                <MudStack Row>
-                    <MudLink Href="@($"job-application-sources/{data.Item.Id}")">
-                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
-                    </MudLink>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-    <PagerContent>
-        <MudDataGridPager T="DTOs.Model.JobApplicationSourceDTO" />
-    </PagerContent>
-</MudDataGrid>
+    <MudDataGrid Items="@ViewModel.JobApplicationSources" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
+        <Columns>
+            <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
+            <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
+                <CellTemplate Context="data">
+                    <MudStack Row>
+                        <MudLink Href="@($"job-application-sources/{data.Item.Id}")">
+                            <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
+                        </MudLink>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="DTOs.Model.JobApplicationSourceDTO" />
+        </PagerContent>
+    </MudDataGrid>
 }

@@ -47,7 +47,7 @@ public class GetOneCompanyEndpointTests
 
         //Assert
         Assert.That(response, Is.Not.Null);
-        Assert.That(response.Company.Name, Is.EqualTo(firstFromDb.CompanyName.Value));
+        Assert.That(response.Company.CompanyName, Is.EqualTo(firstFromDb.CompanyName.Value));
         Assert.That(response.Company.OfficialWebSiteLink, Is.EqualTo(firstFromDb.OfficialWebSiteLink.Value));
 
     }

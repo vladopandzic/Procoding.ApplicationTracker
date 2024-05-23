@@ -30,20 +30,8 @@ public static class SpecificationBuilderExtensions
             {
                 continue;
             }
-            //var property = Expression.Property(parameter, propertyInfo);
             var constant = Expression.Constant(filter.Value);
             Expression? filterExpression = null;
-
-
-            //// Handle value objects (e.g., Email.Value)
-            //if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
-            //{
-            //    var underlyingPropertyInfo = propertyInfo.PropertyType.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-            //    if (underlyingPropertyInfo is not null)
-            //    {
-            //        property = Expression.Property(property, underlyingPropertyInfo);
-            //    }
-            //}
 
 
             switch (filter.Operator?.ToLower())
@@ -177,27 +165,17 @@ public static class SpecificationBuilderExtensions
                 continue;
             }
 
-            var propertyInfo = typeof(T).GetProperty(sort.SortBy, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-            if (propertyInfo is null)
+
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var propertyExpression = GetNestedPropertyExpression(parameter, sort.SortBy);
+            if (propertyExpression == null)
             {
                 continue;
             }
 
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(parameter, propertyInfo);
-
-
-            // Handle value objects (e.g., Email.Value)
-            if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
-            {
-                var underlyingPropertyInfo = propertyInfo.PropertyType.GetProperty("Value", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-                if (underlyingPropertyInfo is not null)
-                {
-                    property = Expression.Property(property, underlyingPropertyInfo);
-                }
-            }
-
-            var lambda = Expression.Lambda<Func<T, object>>(Expression.Convert(property, typeof(object)), parameter);
+            propertyExpression = GetUnderlyingPropertyExpression(propertyExpression);
+            var converted = Expression.Convert(propertyExpression, typeof(object));
+            var lambda = Expression.Lambda<Func<T, object>>(converted, parameter);
 
             if (lambda is null)
             {

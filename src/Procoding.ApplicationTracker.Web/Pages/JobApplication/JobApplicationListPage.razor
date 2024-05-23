@@ -20,13 +20,13 @@ else
             <PropertyColumn Property="x => x.Candidate.Name" header Title="Candidate.Name" Filterable="true" />
             <PropertyColumn Property="x => x.Candidate.Surname" Title="Candidate.Surname" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.Candidate.Email" Title="Candidate.Email" Resizable="true" Filterable="true" />
-            <PropertyColumn Property="x => x.Company.Name" Title="Company.CompanyName" Resizable="true" Filterable="true" />
-            <PropertyColumn Property="x => x.JobApplicationSource.Name" Title="ApplicationSource.Name" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Company.CompanyName" Title="Company.CompanyName" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.ApplicationSource.Name" Title="ApplicationSource.Name" Resizable="true" Filterable="true" />
 
             <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                 <CellTemplate Context="data">
                     <MudStack Row>
-                        <MudLink Href="@($"job-applications/{data.Item.JobApplicationSource.Id}")">
+                        <MudLink Href="@($"job-applications/{data.Item.ApplicationSource.Id}")">
                             <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Details</MudButton>
                         </MudLink>
                     </MudStack>
