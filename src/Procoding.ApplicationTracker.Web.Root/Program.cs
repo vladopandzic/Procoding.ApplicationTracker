@@ -1,10 +1,14 @@
-﻿using MudBlazor.Services;
+﻿using Microsoft.AspNetCore.Identity;
+using MudBlazor.Services;
 using Polly;
 using Procoding.ApplicationTracker.Application;
+using Procoding.ApplicationTracker.Domain.Entities;
+using Procoding.ApplicationTracker.Infrastructure.Data;
 using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.ViewModels;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
+using System;
 
 namespace Procoding.ApplicationTracker.Web.Root;
 
@@ -43,6 +47,9 @@ internal class Program
                                                                                                  3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
             x.AddTransient<INotificationService, NotificationService>();
+
+            //x.AddIdentity<Employee, IdentityRole<Guid>>().AddEntityFrameworkStores<ApplicationDbContext>();
+            //x.AddIdentityCore<Candidate>().AddEntityFrameworkStores<ApplicationDbContext>();
         });
 
 

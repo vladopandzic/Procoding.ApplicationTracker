@@ -46,7 +46,7 @@ public static class QueryStringExtensions
                     }
                 }
             }
-            else
+            else if(value is not IList)
             {
                 queryStringBuilder.Append($"{prefix}{property.Name}={Uri.EscapeDataString(value.ToString())}&");
             }

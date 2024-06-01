@@ -2,7 +2,7 @@
 
 namespace Procoding.ApplicationTracker.Domain.Events;
 
-public class JobApplicationUpdatedDomainEvent : IDomainEvent
+public sealed class JobApplicationUpdatedDomainEvent : IDomainEvent
 {
     public JobApplicationUpdatedDomainEvent(Guid id, Company company, JobApplicationSource jobApplicationSource, Candidate candidate)
     {
@@ -12,11 +12,11 @@ public class JobApplicationUpdatedDomainEvent : IDomainEvent
         Candidate = candidate;
     }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; }
 
-    public Company Company { get; set; }
+    public Company Company { get; }
 
-    public JobApplicationSource JobApplicationSource { get; set; }
+    public JobApplicationSource JobApplicationSource { get; }
 
-    public Candidate Candidate { get; set; }
+    public Candidate Candidate { get; }
 }

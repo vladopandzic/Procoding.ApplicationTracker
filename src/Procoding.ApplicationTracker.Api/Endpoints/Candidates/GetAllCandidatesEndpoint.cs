@@ -9,7 +9,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Api.Endpoints.Candidates;
 
-public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<CandidateGetListRequestDTO>.WithResult<CandidateListResponseDTO>
+public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<EmployeeGetListRequestDTO>.WithResult<CandidateListResponseDTO>
 {
     readonly ISender _sender;
     public GetAllCandidatesEndpoint(ISender sender)
@@ -19,7 +19,7 @@ public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<CandidateG
 
     [HttpGet("candidates")]
 
-    public override Task<CandidateListResponseDTO> HandleAsync([FromQuery] CandidateGetListRequestDTO request, CancellationToken cancellationToken = default)
+    public override Task<CandidateListResponseDTO> HandleAsync([FromQuery] EmployeeGetListRequestDTO request, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetCandidatesQuery(pageNumber: request.PageNumber,
                                                    pageSize: request.PageSize,

@@ -39,7 +39,7 @@ public class CompanyAverageGrossSalaryTests
         int year = DateTime.Now.Year;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => CompanyAverageGrossSalary.Create(null, id, grossSalary, year, currency));
+        Assert.Throws<ArgumentNullException>(() => CompanyAverageGrossSalary.Create(null!, id, grossSalary, year, currency));
     }
 
     [Test]

@@ -26,11 +26,18 @@ public class GetOneCandidateEndpointTests
                                                    });
     }
 
+
     [TearDown]
     public async Task TearDown()
     {
+
         if (_factory is not null)
+        {
+            await _factory.TestDatabaseHelper.DeleteAsync();
             await _factory.DisposeAsync();
+
+        }
+
     }
 
     [Test]

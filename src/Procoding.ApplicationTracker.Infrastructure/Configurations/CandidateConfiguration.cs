@@ -33,5 +33,20 @@ public sealed class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
         builder.HasMany(x => x.JobApplications)
                .WithOne(x => x.Candidate)
                .OnDelete(DeleteBehavior.Cascade);
+
+
+        builder.Property(x => x.ConcurrencyStamp).HasMaxLength(256);
+
+        builder.Property(x => x.NormalizedEmail).HasMaxLength(256);
+
+        builder.Property(x => x.UserName).HasMaxLength(512);
+
+        builder.Property(x => x.NormalizedUserName).HasMaxLength(512);
+
+        builder.Property(x => x.PasswordHash).HasMaxLength(1024);
+
+        builder.Property(x => x.SecurityStamp).HasMaxLength(1024);
+
+        builder.Property(x => x.PhoneNumber).HasMaxLength(256);
     }
 }

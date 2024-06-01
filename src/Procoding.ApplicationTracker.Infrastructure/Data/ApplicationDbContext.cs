@@ -17,6 +17,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     public DbSet<Candidate> Candidates { get; set; }
 
+    public DbSet<Employee> Employees { get; set; }
+
     public DbSet<JobApplication> JobApplications { get; set; }
 
     public DbSet<Company> Companies { get; set; }
@@ -26,6 +28,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
 
        
         base.OnModelCreating(modelBuilder);

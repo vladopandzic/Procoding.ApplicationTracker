@@ -13,5 +13,7 @@ public class CandidateGetListSpecification : Specification<Candidate>
         Query.ApplyFilters(filters.ToList());
 
         Query.ApplySorting(sort.ToList());
+     
+
     }
 }

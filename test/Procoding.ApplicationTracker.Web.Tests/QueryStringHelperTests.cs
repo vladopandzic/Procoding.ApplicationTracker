@@ -11,7 +11,7 @@ public class QueryStringHelperTests
     public void ToQueryString_WithApiRequestModel_ReturnsCorrectQueryString()
     {
         // Arrange
-        var apiRequest = new CandidateGetListRequestDTO
+        var apiRequest = new EmployeeGetListRequestDTO
         {
             PageNumber = 1,
             PageSize = 10,

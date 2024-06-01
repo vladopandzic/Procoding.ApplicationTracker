@@ -1,16 +1,15 @@
-﻿using Procoding.ApplicationTracker.Domain.Abstractions;
+﻿using Microsoft.AspNetCore.Identity;
+using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Common;
 using Procoding.ApplicationTracker.Domain.Events;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
 /// <summary>
 /// Represents job interview candidate.
 /// </summary>
-public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableEntity
+public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAuditableEntity, IEntityBase, IAggregateRoot
 {
 
     private readonly List<JobApplication> _jobApplications = new();
@@ -36,6 +35,7 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// </summary>
     public static readonly int MinLengthForSurname = 2;
 
+    private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
     /// <summary>
     /// Initializies new instance of <see cref="Candidate"/>. Required only by EF Core.
@@ -60,8 +60,9 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// </param>
     /// <param name="email">Email for the candidate. Must be valid email address.</param>
     /// <exception cref="ArgumentException"></exception>
-    private Candidate(Guid id, string name, string surname, Email email) : base(id)
+    private Candidate(Guid id, string name, string surname, Email email)
     {
+        Id = id;
         Validate(name, surname, email);
         Name = name;
         Surname = surname;
@@ -145,7 +146,7 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
     /// <summary>
     /// Candidates email address.
     /// </summary>
-    public Email Email { get; private set; }
+    public new Email Email { get; private set; }
 
     /// <summary>
     /// Job applications for the candidate. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".
@@ -162,6 +163,8 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
 
     /// <inheritdoc/>
     public DateTime ModifiedOnUtc { get; private set; }
+
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.ToList();
 
     /// <summary>
     ///  Applies for a job for <paramref name="company"/>.
@@ -193,5 +196,16 @@ public sealed class Candidate : AggregateRoot, ISoftDeletableEntity, IAuditableE
         //TODO: see where domain event should reside!
 
 
+    }
+
+
+    /// <summary>
+    /// Adds the specified <see cref="IDomainEvent"/> to the <see cref="IAggregateRoot"/>.
+    /// </summary>
+    /// <param name="domainEvent">The domain event.</param>
+    public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 }

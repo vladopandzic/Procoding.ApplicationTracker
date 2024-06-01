@@ -15,6 +15,11 @@ public static class DatabaseSeedData
         return [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"))];
     }
 
+    public static List<Employee> GetEmployees()
+    {
+        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email("pandzic.vlado@gmail.com"))];
+    }
+
     public static List<Company> GetCompanies()
     {
         return [Company.Create(new CompanyName("CompanyName Ltd."), new Link("https://www.company.com"))];

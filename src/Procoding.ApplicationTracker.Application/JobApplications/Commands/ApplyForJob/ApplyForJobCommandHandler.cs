@@ -8,7 +8,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Commands.ApplyForJob;
 
-internal class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, JobApplicationInsertedResponseDTO>
+internal sealed class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCommand, JobApplicationInsertedResponseDTO>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly ICandidateRepository _candidateRepository;

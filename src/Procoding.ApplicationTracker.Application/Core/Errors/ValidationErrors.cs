@@ -29,7 +29,7 @@ internal static class ValidationErrors
     }
 
     /// <summary>
-    /// Contains the company errors.
+    /// Contains the candidates errors.
     /// </summary>
     internal static class Candidates
     {
@@ -40,6 +40,35 @@ internal static class ValidationErrors
         internal static Error EmailIsRequired => new Error("Candidates.EmailIsRequired", "Email is required.");
 
         internal static Error EmailAlreadyExists => new Error("Candidates.EmailAlreadyExist", "Candidate with that email already exist.");
+
+    }
+
+    /// <summary>
+    /// Contains the company errors.
+    /// </summary>
+    internal static class Employees
+    {
+        internal static Error NameIsRequried => new Error("Employees.NameIsRequired", "Name is required.");
+
+        internal static Error SurnameIsRequired => new Error("Employees.SurnameIsRequired", "Surname is required.");
+
+        internal static Error EmailIsRequired => new Error("Employees.EmailIsRequired", "Email is required.");
+
+        internal static Error EmailAlreadyExists => new Error("Employees.EmailAlreadyExist", "Employee with that email already exist.");
+
+    }
+
+    /// <summary>
+    /// Contains the job application errors.
+    /// </summary>
+    internal static class JobApplications
+    {
+        internal static Error CandidateIsRequired => new Error("JobApplications.CandidateIsRequired", "Candidate is required.");
+
+        internal static Error JobApplicationSourceIsRequired => new Error("JobApplications.JobApplicationSourceIsRequired", "JobApplicationSource is required.");
+
+        internal static Error CompanyIsRequired => new Error("JobApplications.CompanyIsRequired", "Company is required.");
+
 
     }
 }

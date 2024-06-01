@@ -12,7 +12,7 @@ public static class QueryStringExtensions
         var properties = obj.GetType()
                             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                             .Where(p => p.GetValue(obj, null) != null)
-                            .Select(p => $"{Uri.EscapeDataString(p.Name)}={Uri.EscapeDataString(p.GetValue(obj, null).ToString())}");
+                            .Select(p => $"{Uri.EscapeDataString(p.Name)}={Uri.EscapeDataString(p.GetValue(obj, null)?.ToString() ?? "")}");
 
         return string.Join("&", properties);
     }

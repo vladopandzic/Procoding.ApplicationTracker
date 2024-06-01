@@ -19,7 +19,7 @@ public partial class CandidateListPage
     private async Task<GridData<CandidateDTO>> LoadGridData(GridState<CandidateDTO> state)
     {
 
-        ViewModel.Request = GridStateConverter.ConvertToRequest<CandidateGetListRequestDTO, CandidateDTO>(state);
+        ViewModel.Request = GridStateConverter.ConvertToRequest<EmployeeGetListRequestDTO, CandidateDTO>(state);
 
         await ViewModel.GetCandidates();
 

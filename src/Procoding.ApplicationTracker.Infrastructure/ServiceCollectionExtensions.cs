@@ -22,6 +22,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
 
+        services.AddScoped<IEmployeeRepository, EmployeesRepository>();
+
+
         return services;
     }
 }

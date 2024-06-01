@@ -3,7 +3,7 @@
 /// <summary>
 /// Represetnts the base class that all entities derive from.
 /// </summary>
-public abstract class EntityBase : IEquatable<EntityBase>
+public abstract class EntityBase : IEquatable<EntityBase>, IEntityBase
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Entity"/> class.
@@ -33,12 +33,12 @@ public abstract class EntityBase : IEquatable<EntityBase>
 
     public static bool operator ==(EntityBase a, EntityBase b)
     {
-        if(a is null && b is null)
+        if (a is null && b is null)
         {
             return true;
         }
 
-        if(a is null || b is null)
+        if (a is null || b is null)
         {
             return false;
         }
@@ -51,7 +51,7 @@ public abstract class EntityBase : IEquatable<EntityBase>
     /// <inheritdoc/>
     public bool Equals(EntityBase? other)
     {
-        if(other is null)
+        if (other is null)
         {
             return false;
         }
@@ -62,27 +62,27 @@ public abstract class EntityBase : IEquatable<EntityBase>
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        if(obj is null)
+        if (obj is null)
         {
             return false;
         }
 
-        if(ReferenceEquals(this, obj))
+        if (ReferenceEquals(this, obj))
         {
             return true;
         }
 
-        if(obj.GetType() != GetType())
+        if (obj.GetType() != GetType())
         {
             return false;
         }
 
-        if(!(obj is EntityBase other))
+        if (!(obj is EntityBase other))
         {
             return false;
         }
 
-        if(Id == Guid.Empty || other.Id == Guid.Empty)
+        if (Id == Guid.Empty || other.Id == Guid.Empty)
         {
             return false;
         }

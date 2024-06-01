@@ -1,12 +1,11 @@
 ﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Model;
-using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Queries.GetOneJobApplication;
 
-internal class GetOneJobApplicationQueryHandler : IQueryHandler<GetOneJobApplicationQuery, JobApplicationResponseDTO>
+internal sealed class GetOneJobApplicationQueryHandler : IQueryHandler<GetOneJobApplicationQuery, JobApplicationResponseDTO>
 {
     private readonly IJobApplicationRepository _jobApplicationRepository;
 

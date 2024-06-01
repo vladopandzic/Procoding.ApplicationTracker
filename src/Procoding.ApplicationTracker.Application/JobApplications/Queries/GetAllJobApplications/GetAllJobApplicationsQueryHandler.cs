@@ -5,7 +5,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Queries.GetAllJobApplications;
 
-internal class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJobApplicationsQuery, JobApplicationListResponseDTO>
+internal sealed class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJobApplicationsQuery, JobApplicationListResponseDTO>
 {
     private readonly IJobApplicationRepository _jobApplicationRepository;
 

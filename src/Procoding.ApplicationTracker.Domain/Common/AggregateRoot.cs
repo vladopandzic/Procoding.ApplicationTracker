@@ -2,7 +2,7 @@
 
 namespace Procoding.ApplicationTracker.Domain.Common;
 
-public abstract class AggregateRoot : EntityBase
+public abstract class AggregateRoot : EntityBase, IAggregateRoot
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AggregateRoot"/> class.

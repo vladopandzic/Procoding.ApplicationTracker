@@ -9,7 +9,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Commands.UpdateJobApplication;
 
-internal class UpdateJobApplicationCommandHandler : ICommandHandler<UpdateJobApplicationCommand, JobApplicationUpdatedResponseDTO>
+internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<UpdateJobApplicationCommand, JobApplicationUpdatedResponseDTO>
 {
     private readonly ICompanyRepository _companyRepository;
     private readonly ICandidateRepository _candidateRepository;

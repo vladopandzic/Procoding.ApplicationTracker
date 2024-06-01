@@ -21,7 +21,7 @@ public interface ICandidateService
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Result<CandidateListResponseDTO>> GetCandidatesAsync(CandidateGetListRequestDTO request, CancellationToken cancellationToken = default);
+    Task<Result<CandidateListResponseDTO>> GetCandidatesAsync(EmployeeGetListRequestDTO request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Inserts one candidate.

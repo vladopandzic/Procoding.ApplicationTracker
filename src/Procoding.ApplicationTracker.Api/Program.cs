@@ -2,6 +2,7 @@ using FluentValidation;
 using LanguageExt.Common;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Procoding.ApplicationTracker.Api.Extensions;
@@ -13,6 +14,7 @@ using Procoding.ApplicationTracker.Application.Core.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -48,10 +50,16 @@ public class Program
 
         builder.Services.AddFluentValidationAutoValidation();
 
+        builder.Services.AddIdentity<Employee, IdentityRole<Guid>>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
+            .AddApiEndpoints();
+
+        //x.AddIdentityCore<Candidate>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+        //builder.Services.AddIdentityApiEndpoints<Employee>().AddApiEndpoints();
 
         var app = builder.Build();
 
-        using ApplicationDbContext context = await SeedDatabaseAsync(app);
+        //using ApplicationDbContext context = await SeedDatabaseAsync(app);
 
         app.MapDefaultEndpoints();
 
@@ -60,6 +68,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.MapIdentityApi<Employee>();
 
 
         app.UseHttpsRedirection();

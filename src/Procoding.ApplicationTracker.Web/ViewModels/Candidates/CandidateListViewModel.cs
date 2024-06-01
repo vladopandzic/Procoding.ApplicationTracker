@@ -11,7 +11,7 @@ public class CandidateListViewModel : ViewModelBase
     public IReadOnlyCollection<CandidateDTO> Candidates { get; set; } = new List<CandidateDTO>();
 
     public int TotalNumberOfCandidates { get; set; }
-    public CandidateGetListRequestDTO Request { get; set; } = new CandidateGetListRequestDTO();
+    public EmployeeGetListRequestDTO Request { get; set; } = new EmployeeGetListRequestDTO();
 
     public CandidateListViewModel(ICandidateService candidateService)
     {

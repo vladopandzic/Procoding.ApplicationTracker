@@ -4,7 +4,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Commands.UpdateJobApplication;
 
-public class UpdateJobApplicationCommand : ICommand<Result<JobApplicationUpdatedResponseDTO>>
+public sealed class UpdateJobApplicationCommand : ICommand<Result<JobApplicationUpdatedResponseDTO>>
 {
     public UpdateJobApplicationCommand(Guid id, Guid candidateId, Guid companyId, Guid jobApplicationSourceId)
     {

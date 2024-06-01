@@ -13,7 +13,7 @@ public class TestDatabaseHelper
 
     public TestDatabaseHelper()
     {
-        _databaseName = $"TestDb_{Guid.NewGuid()}";
+        _databaseName = $"TestDb2_{Guid.NewGuid()}";
         _connectionString = $"Server={DATABASE_SERVER_NAME};Database={_databaseName};Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
         _options = new DbContextOptionsBuilder<ApplicationDbContext>()
                                                                     .UseSqlServer(_connectionString)
@@ -34,6 +34,7 @@ public class TestDatabaseHelper
         await context.JobApplicationSources.AddRangeAsync(DatabaseSeedData.GetJobApplicationSources());
         await context.Companies.AddRangeAsync(DatabaseSeedData.GetCompanies());
         await context.Candidates.AddRangeAsync(DatabaseSeedData.GetCandidates());
+        await context.Employees.AddRangeAsync(DatabaseSeedData.GetEmployees());
 
         await context.SaveChangesAsync();
 

@@ -75,7 +75,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
 
     private async Task GetCandidates(CancellationToken cancellationToken)
     {
-        var candidatesResult = await _candidateService.GetCandidatesAsync(new CandidateGetListRequestDTO(), cancellationToken);
+        var candidatesResult = await _candidateService.GetCandidatesAsync(new EmployeeGetListRequestDTO(), cancellationToken);
         if (candidatesResult.IsSuccess)
         {
             Candidates = candidatesResult.Value.Candidates.ToList();

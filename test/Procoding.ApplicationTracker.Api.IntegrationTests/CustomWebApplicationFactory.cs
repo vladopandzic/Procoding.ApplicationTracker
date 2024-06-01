@@ -16,13 +16,13 @@ namespace Procoding.ApplicationTracker.Api.IntegrationTests;
 
 internal class CustomWebApplicationFactory : WebApplicationFactory<Api.Program>
 {
-    private readonly TestDatabaseHelper _testDatabaseHelper;
+    public TestDatabaseHelper TestDatabaseHelper;
     private readonly Action<IServiceCollection> _configureServices;
 
 
     public CustomWebApplicationFactory(TestDatabaseHelper testDatabaseHelper, Action<IServiceCollection> configureServices)
     {
-        _testDatabaseHelper = testDatabaseHelper;
+        TestDatabaseHelper = testDatabaseHelper;
         _configureServices = configureServices ?? throw new ArgumentNullException(nameof(configureServices));
     }
 
@@ -49,9 +49,11 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Api.Program>
             {
                 services.Remove(descriptor);
             }
-            var connectionString = _testDatabaseHelper.GetDbContextOptions()!.FindExtension<SqlServerOptionsExtension>()!.ConnectionString;
+#pragma warning disable EF1001 // Internal EF Core API usage.
+            var connectionString = TestDatabaseHelper.GetDbContextOptions()!.FindExtension<SqlServerOptionsExtension>()!.ConnectionString;
+#pragma warning restore EF1001 // Internal EF Core API usage.
             // Add DbContext using the connection string from TestDatabaseHelper
-         
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);

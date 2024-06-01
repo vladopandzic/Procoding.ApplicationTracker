@@ -3,7 +3,7 @@ using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
 namespace Procoding.ApplicationTracker.Application.JobApplications.Queries.GetOneJobApplication;
 
-public class GetOneJobApplicationQuery : IQuery<JobApplicationResponseDTO>
+public sealed class GetOneJobApplicationQuery : IQuery<JobApplicationResponseDTO>
 {
     public GetOneJobApplicationQuery(Guid id)
     {

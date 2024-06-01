@@ -16,7 +16,7 @@ public abstract class Enumeration : IComparable
                  .Select(f => f.GetValue(null))
                  .Cast<T>();
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if(obj is not Enumeration otherValue)
         {
@@ -29,5 +29,6 @@ public abstract class Enumeration : IComparable
         return typeMatches && valueMatches;
     }
 
-    public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
+    public int CompareTo(object? other) => Id.CompareTo(((Enumeration?)other)?.Id);
+
 }

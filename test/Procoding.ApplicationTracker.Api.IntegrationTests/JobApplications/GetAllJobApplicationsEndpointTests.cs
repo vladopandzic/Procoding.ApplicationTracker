@@ -26,11 +26,17 @@ public class GetAllJobApplicationsEndpointTests
         });
     }
 
+
     [TearDown]
     public async Task TearDown()
     {
+
         if (_factory is not null)
+        {
+            await _factory.TestDatabaseHelper.DeleteAsync();
             await _factory.DisposeAsync();
+
+        }
     }
 
     [Test]
@@ -62,7 +68,7 @@ public class GetAllJobApplicationsEndpointTests
         await dbContext.SaveChangesAsync();
 
         //Act
-        var newRequest = new CandidateGetListRequestDTO()
+        var newRequest = new EmployeeGetListRequestDTO()
         {
             PageNumber = 1,
             PageSize = 10
