@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IEmployeeRepository, EmployeesRepository>();
 
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }

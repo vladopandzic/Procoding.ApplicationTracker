@@ -1,25 +1,21 @@
 using FluentValidation;
-using LanguageExt.Common;
 using MapsterMapper;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Api.Infrastructure;
 using Procoding.ApplicationTracker.Api.Validation;
-using Procoding.ApplicationTracker.Application;
+using Procoding.ApplicationTracker.Application.Authentication;
+using Procoding.ApplicationTracker.Application.Authentication.JwtTokens;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 using Procoding.ApplicationTracker.Application.Core.Extensions;
-using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
-using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.UpdateJobApplicationSource;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Query.GetJobApplicationSources;
 using Procoding.ApplicationTracker.Domain.Entities;
-using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
 using Procoding.ApplicationTracker.Infrastructure;
+using Procoding.ApplicationTracker.Infrastructure.Authentication;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
-using System.Reflection;
 namespace Procoding.ApplicationTracker.Api;
 
 public class Program
@@ -31,12 +27,13 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGenWithBearerAuthorization("Bearer");
+
         builder.Services.AddTransient<IMapper, Mapper>();
         builder.Services.AddMediatR(x =>
         {
             x.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(GetJobApplicationSourcesQuery).Assembly)
-             .AddHandlerValidations();     
+             .AddHandlerValidations();
         });
         builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("JobApplicationDatabase")));
         builder.Services.AddPersistance();
@@ -44,18 +41,40 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
-        builder.Services.AddValidatorsFromAssemblies([typeof(CandidateInsertRequestDTOValidator).Assembly, 
+        builder.Services.AddValidatorsFromAssemblies([typeof(CandidateInsertRequestDTOValidator).Assembly,
                                                       typeof(UpdateCandidateCommand).Assembly]);
 
 
         builder.Services.AddFluentValidationAutoValidation();
 
-        builder.Services.AddIdentity<Employee, IdentityRole<Guid>>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
-            .AddApiEndpoints();
+        builder.Services.AddIdentityCore<Employee>()
+                        .AddUserStore<EmployeeUserStore>()
+                        .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        //x.AddIdentityCore<Candidate>().AddEntityFrameworkStores<ApplicationDbContext>();
+        var jwtTokenOptions = builder.Configuration.GetSection("EmployeeJwtTokenSettings").Get<JwtTokenOptions<Employee>>()!;
 
-        //builder.Services.AddIdentityApiEndpoints<Employee>().AddApiEndpoints();
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+        }).AddJwtBearer(config =>
+        {
+            SecurityKey? secretKey = new JwtTokenCreator<Employee>(jwtTokenOptions).GetDefaultSigningCredentials(secretkey: jwtTokenOptions!.SecretKey).Key;
+
+            config.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = jwtTokenOptions.Issuer,
+                ValidAudience = jwtTokenOptions.Audience,
+                IssuerSigningKey = secretKey,
+                ValidateLifetime = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        }).AddJwtCreator<Employee>(builder.Configuration, "EmployeeJwtTokenSettings");
+
+
+        builder.Services.AddAuthorization();
 
         var app = builder.Build();
 
@@ -68,13 +87,14 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        app.MapIdentityApi<Employee>();
 
 
         app.UseHttpsRedirection();
 
         app.UseExceptionHandler();
 
+        app.UseAuthentication();
+        app.UseRouting();
         app.UseAuthorization();
 
         app.MapControllers();

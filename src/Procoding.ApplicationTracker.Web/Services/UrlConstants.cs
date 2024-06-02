@@ -45,6 +45,28 @@ public static class UrlConstants
 
     }
 
+    public static class Employees
+    {
+
+        public const string GET_ALL_URL = "employees";
+
+        public static string GetOne(Guid id)
+        {
+            return $"{GET_ALL_URL}/{id}";
+        }
+
+        public static string UpdateUrl()
+        {
+            return $"{GET_ALL_URL}";
+        }
+
+        public static string InsertUrl()
+        {
+            return $"{GET_ALL_URL}";
+        }
+
+    }
+
     public static class Companies
     {
 

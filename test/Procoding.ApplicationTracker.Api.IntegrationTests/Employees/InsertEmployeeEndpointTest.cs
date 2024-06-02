@@ -48,7 +48,7 @@ internal class InsertEmployeeEndpointTests
         var allEmployees = await dbContext.Employees.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com"));
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "pass123"));
         var json = await response.Content.ReadFromJsonAsync<EmployeeInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();
@@ -71,7 +71,7 @@ internal class InsertEmployeeEndpointTests
         var allEmployees = await dbContext.Employees.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", ""));
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "",""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();

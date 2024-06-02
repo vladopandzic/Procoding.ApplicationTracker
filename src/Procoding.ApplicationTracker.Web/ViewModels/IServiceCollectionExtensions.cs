@@ -1,5 +1,6 @@
 ﻿using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
 using Procoding.ApplicationTracker.Web.ViewModels.Companies;
+using Procoding.ApplicationTracker.Web.ViewModels.Employees;
 using Procoding.ApplicationTracker.Web.ViewModels.JobApplications;
 using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
@@ -20,5 +21,8 @@ public static class IServiceCollectionExtensions
 
         services.AddTransient<JobApplicationListViewModel, JobApplicationListViewModel>();
         services.AddTransient<JobApplicationDetailsViewModel, JobApplicationDetailsViewModel>();
+
+        services.AddTransient<EmployeeListViewModel, EmployeeListViewModel>();
+        services.AddTransient<EmployeeDetailsViewModel, EmployeeDetailsViewModel>();
     }
 }

@@ -22,9 +22,12 @@ public class InsertEmployeeEndpoint : EndpointBaseAsync.WithRequest<EmployeeInse
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public override async Task<IActionResult> HandleAsync(EmployeeInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(new InsertEmployeeCommand(request.Name, request.Surname, request.Email), cancellationToken);
+        var result = await _sender.Send(new InsertEmployeeCommand(name: request.Name,
+                                                                  surname: request.Surname,
+                                                                  email: request.Email,
+                                                                  password: request.Password),
+                                        cancellationToken);
 
         return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
-
     }
 }

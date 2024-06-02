@@ -1,4 +1,6 @@
-﻿using LanguageExt.Common;
+﻿using FluentValidation;
+using LanguageExt.Common;
+using Microsoft.AspNetCore.Identity;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
@@ -11,13 +13,15 @@ namespace Procoding.ApplicationTracker.Application.Employees.Commands.InsertEmpl
 
 internal sealed class InsertEmployeeCommandHandler : ICommandHandler<InsertEmployeeCommand, EmployeeInsertedResponseDTO>
 {
-    private readonly IEmployeeRepository _EmployeeRepository;
+    private readonly IEmployeeRepository _employeeRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher<Employee> _passwordHasher;
 
-    public InsertEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
+    public InsertEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork, IPasswordHasher<Employee> passwordHasher)
     {
-        _EmployeeRepository = employeeRepository;
+        _employeeRepository = employeeRepository;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Result<EmployeeInsertedResponseDTO>> Handle(InsertEmployeeCommand request, CancellationToken cancellationToken)
@@ -26,12 +30,22 @@ internal sealed class InsertEmployeeCommandHandler : ICommandHandler<InsertEmplo
         var email = new Email(request.Email);
         var employee = Employee.Create(id, name: request.Name, surname: request.Surname, email: email);
 
-        await _EmployeeRepository.InsertAsync(employee, cancellationToken);
 
+        var result = await _employeeRepository.InsertAsync(employee, request.Password, cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            return new Result<EmployeeInsertedResponseDTO>(new ValidationException(result.Errors.Select(x => new FluentValidation.Results.ValidationFailure("",
+                                                                                                                                                            x.Description))));
+        }
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var employeeDto = new EmployeeDTO(id: employee.Id, name: employee.Name, surname: employee.Surname, email: employee.Email.Value);
+        var employeeDto = new EmployeeDTO(id: employee.Id,
+                                          name: employee.Name,
+                                          surname: employee.Surname,
+                                          email: employee.Email.Value,
+                                          password: employee.PasswordHash);
 
         return new EmployeeInsertedResponseDTO(employeeDto);
     }

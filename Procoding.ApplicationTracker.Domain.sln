@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.ServiceDefaults", "src\Procoding.ApplicationTracker.ServiceDefaults\Procoding.ApplicationTracker.ServiceDefaults.csproj", "{731264B1-13D7-4291-879E-56CA597792A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Web.Tests", "test\Procoding.ApplicationTracker.Web.Tests\Procoding.ApplicationTracker.Web.Tests.csproj", "{592B84B5-F356-4E17-90FE-26F33B8B586D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.Web.Tests", "test\Procoding.ApplicationTracker.Web.Tests\Procoding.ApplicationTracker.Web.Tests.csproj", "{592B84B5-F356-4E17-90FE-26F33B8B586D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

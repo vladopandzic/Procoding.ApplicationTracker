@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Microsoft.AspNetCore.Identity;
 using Procoding.ApplicationTracker.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ public interface IEmployeeRepository
     /// Inserts the specified employee to the database.
     /// </summary>
     /// <param name="Employee">The employee to be inserted to the database.</param>
-    Task InsertAsync(Employee employee, CancellationToken cancellationToken);
+    /// <param name="password">The password to be inserted to the database.</param>
+    Task<IdentityResult> InsertAsync(Employee employee, string password, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets list of employees.

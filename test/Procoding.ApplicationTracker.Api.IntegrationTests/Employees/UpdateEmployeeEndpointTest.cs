@@ -29,20 +29,18 @@ internal class UpdateEmployeeEndpointTests
         await testDatabaseHelper.SetupDatabase();
         _factory = new CustomWebApplicationFactory(testDatabaseHelper,
                                                    (x) =>
-                                                   {
-                                                   });
+        {
+        });
     }
 
 
     [TearDown]
     public async Task TearDown()
     {
-
         if (_factory is not null)
         {
             await _factory.TestDatabaseHelper.DeleteAsync();
             await _factory.DisposeAsync();
-
         }
     }
 
@@ -80,7 +78,7 @@ internal class UpdateEmployeeEndpointTests
         var firstFromDb = dbContext.Employees.FirstOrDefault();
 
         //Act
-        var response = await client.PutAsJsonAsync($"employees", new EmployeeUpdateRequestDTO(firstFromDb!.Id, "", "", ""));
+        var response = await client.PutAsJsonAsync($"employees", new EmployeeUpdateRequestDTO(firstFromDb!.Id, "", "", "", ""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();

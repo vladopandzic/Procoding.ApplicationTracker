@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetCandidates;
@@ -17,7 +18,7 @@ public class GetAllCandidatesEndpoint : EndpointBaseAsync.WithRequest<EmployeeGe
         this._sender = sender;
     }
 
-    [HttpGet("candidates")]
+    [HttpGet("candidates"), Authorize]
 
     public override Task<CandidateListResponseDTO> HandleAsync([FromQuery] EmployeeGetListRequestDTO request, CancellationToken cancellationToken = default)
     {

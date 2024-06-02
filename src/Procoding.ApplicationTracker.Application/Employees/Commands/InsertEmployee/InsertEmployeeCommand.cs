@@ -6,11 +6,12 @@ namespace Procoding.ApplicationTracker.Application.Employees.Commands.InsertEmpl
 
 public sealed class InsertEmployeeCommand : ICommand<Result<EmployeeInsertedResponseDTO>>
 {
-    public InsertEmployeeCommand(string name, string surname, string email)
+    public InsertEmployeeCommand(string name, string surname, string email, string password)
     {
         Name = name;
         Surname = surname;
         Email = email;
+        Password = password;
     }
 
     public string Name { get; }
@@ -18,4 +19,6 @@ public sealed class InsertEmployeeCommand : ICommand<Result<EmployeeInsertedResp
     public string Surname { get; }
 
     public string Email { get; }
+
+    public string Password { get; set; }
 }

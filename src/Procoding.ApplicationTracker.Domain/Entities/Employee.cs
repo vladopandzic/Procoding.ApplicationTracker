@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Procoding.ApplicationTracker.Domain.Abstractions;
+using Procoding.ApplicationTracker.Domain.Common;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
-public class Employee : IdentityUser<Guid>
+public class Employee : IdentityUser<Guid>, IEntityBase, IAuditableEntity, ISoftDeletableEntity
 {
-
     /// <summary>
     /// Max allowed length for the <see cref="Name"/> property.
     /// </summary>
@@ -42,6 +43,12 @@ public class Employee : IdentityUser<Guid>
     /// </summary>
     public new Email Email { get; private set; }
 
+    public DateTime CreatedOnUtc { get; private set; }
+
+    public DateTime ModifiedOnUtc { get; private set; }
+
+    public DateTime? DeletedOnUtc { get; private set; }
+
 
     /// <summary>
     /// Initializies new instance of <see cref="Candidate"/>. Required only by EF Core.
@@ -72,6 +79,7 @@ public class Employee : IdentityUser<Guid>
         Name = name;
         Surname = surname;
         Email = email;
+        UserName = email.Value;
     }
 
     /// <summary>
@@ -84,14 +92,11 @@ public class Employee : IdentityUser<Guid>
     /// <returns></returns>
     public static Employee Create(Guid id, string name, string surname, Email email)
     {
-        var candidate = new Employee(id: id,
-                                      name: name,
-                                      surname: surname,
-                                      email: email);
+        var employee = new Employee(id: id, name: name, surname: surname, email: email);
         //TODO: consider
         //  candidate.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
 
-        return candidate;
+        return employee;
     }
 
     private static void Validate(string name, string surname, Email email)

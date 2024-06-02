@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Domain.Exceptions;
 
 namespace Procoding.ApplicationTracker.Api.Extensions;
 
@@ -18,9 +19,16 @@ public static class ExceptionExtensions
 
         if (exception is ValidationException validationException)
         {
-            problemDetails.Status = 400;
+            problemDetails.Status = StatusCodes.Status400BadRequest;
             problemDetails.Title = "Validation Error";
             problemDetails.Extensions["errors"] = GetValidationErrors(validationException.Errors);
+        }
+
+        if (exception is Unauthorized401Exception exception401)
+        {
+            problemDetails.Status = StatusCodes.Status401Unauthorized;
+            problemDetails.Title = "Unauthorized exception";
+            problemDetails.Extensions["errors"] = GetValidationErrors([new ValidationFailure("", exception401.Message)]);
         }
 
         return problemDetails;

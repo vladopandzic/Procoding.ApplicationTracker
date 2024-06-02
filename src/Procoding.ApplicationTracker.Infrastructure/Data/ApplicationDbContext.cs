@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Procoding.ApplicationTracker.Domain.Abstractions;
+using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.Domain.Entities;
 using System.Reflection;
 
@@ -24,6 +25,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     public DbSet<Company> Companies { get; set; }
 
     public DbSet<JobApplicationSource> JobApplicationSources { get; set; }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

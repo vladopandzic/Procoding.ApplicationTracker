@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MudBlazor.Services;
+﻿using MudBlazor.Services;
 using Polly;
 using Procoding.ApplicationTracker.Application;
-using Procoding.ApplicationTracker.Domain.Entities;
-using Procoding.ApplicationTracker.Infrastructure.Data;
 using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.ViewModels;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
-using System;
 
 namespace Procoding.ApplicationTracker.Web.Root;
 
@@ -45,6 +41,11 @@ internal class Program
                    .AddTransientHttpErrorPolicy(policyBuilder =>
                                                                                              policyBuilder.WaitAndRetryAsync(
                                                                                                  3, retryNumber => TimeSpan.FromMilliseconds(600)));
+
+            x.AddHttpClient<IEmployeeService, EmployeeService>(x => x.BaseAddress = new Uri(baseApiUrl))
+                .AddTransientHttpErrorPolicy(policyBuilder =>
+                                                                                          policyBuilder.WaitAndRetryAsync(
+                                                                                              3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
             x.AddTransient<INotificationService, NotificationService>();
 

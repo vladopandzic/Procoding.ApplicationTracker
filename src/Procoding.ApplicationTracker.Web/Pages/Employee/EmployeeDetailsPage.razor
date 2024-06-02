@@ -1,0 +1,59 @@
+﻿@page "/employees/{Id}"
+@using MudBlazor
+@using Microsoft.AspNetCore.Components.Web;
+@using FluentValidation.Validators;
+@using Blazored.FluentValidation
+<PageTitle>@ViewModel.Employee?.Name</PageTitle>
+
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+
+}
+else if (ViewModel.Employee is not null)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">@ViewModel.Employee.Name</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref=mudForm Model="ViewModel.Employee" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+                    <MudTextField @bind-Value=ViewModel.Employee.Name
+                                  T="string"
+                                  Label="Name"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Employee.Name)" />
+
+                    <MudTextField @bind-Value=ViewModel.Employee.Surname
+                                  T="string"
+                                  Label="Surname"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Employee.Surname)" />
+
+                    <MudTextField @bind-Value=ViewModel.Employee.Email
+                                  T="string"
+                                  Label="Email"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Employee.Email)" />
+
+                    <MudTextField @bind-Value=ViewModel.Employee.Password
+                                  T="string"
+                                  Label="Password"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  InputType="InputType.Password"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.Employee.Password)" />
+
+                    <br />
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
+                </MudForm>
+            </MudCardContent>
+        </MudCard>
+
+    </MudContainer>
+}

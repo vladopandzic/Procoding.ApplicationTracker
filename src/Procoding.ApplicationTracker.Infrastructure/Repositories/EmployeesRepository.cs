@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
@@ -10,9 +11,11 @@ namespace Procoding.ApplicationTracker.Infrastructure.Repositories;
 public class EmployeesRepository : IEmployeeRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    readonly UserManager<Employee> _employeeManager;
 
-    public EmployeesRepository(ApplicationDbContext dbContext)
+    public EmployeesRepository(ApplicationDbContext dbContext, UserManager<Employee> employeeManager)
     {
+        _employeeManager = employeeManager;
         _dbContext = dbContext;
     }
 
@@ -32,9 +35,9 @@ public class EmployeesRepository : IEmployeeRepository
         return await query.CountAsync();
     }
 
-    public async Task InsertAsync(Employee Employee, CancellationToken cancellationToken)
+    public async Task<IdentityResult> InsertAsync(Employee employee, string password, CancellationToken cancellationToken)
     {
-        await _dbContext.Employees.AddAsync(Employee, cancellationToken);
+        return await _employeeManager.CreateAsync(employee, password);
     }
 
     public async Task<bool> ExistsAsync(string email, Guid id, CancellationToken cancellationToken)
