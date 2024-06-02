@@ -27,6 +27,7 @@ internal class RefreshTokenRepository : IRefreshTokenRepository
 
     public async Task MarkAsUsed(RefreshToken refreshToken)
     {
+        refreshToken.MarkAsUsed();
         _ = _dbContext.RefreshTokens.Update(refreshToken);
         await Task.CompletedTask;
     }

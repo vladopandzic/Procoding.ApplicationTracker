@@ -21,23 +21,28 @@ public static class ExceptionExtensions
         {
             problemDetails.Status = StatusCodes.Status400BadRequest;
             problemDetails.Title = "Validation Error";
-            problemDetails.Extensions["errors"] = GetValidationErrors(validationException.Errors);
+            problemDetails.Extensions["errors"] = GetValidationErrors(validationException.Message, validationException.Errors);
         }
 
         if (exception is Unauthorized401Exception exception401)
         {
             problemDetails.Status = StatusCodes.Status401Unauthorized;
             problemDetails.Title = "Unauthorized exception";
-            problemDetails.Extensions["errors"] = GetValidationErrors([new ValidationFailure("", exception401.Message)]);
+            problemDetails.Extensions["errors"] = GetValidationErrors(exception401.Message, [new ValidationFailure("", exception401.Message)]);
         }
 
         return problemDetails;
     }
 
-    private static IDictionary<string, string[]> GetValidationErrors(IEnumerable<ValidationFailure> errors)
+    private static IDictionary<string, string[]> GetValidationErrors(string errorMessage, IEnumerable<ValidationFailure> errors)
     {
         var errorDictionary = new Dictionary<string, string[]>();
 
+        if (!errors.Any())
+        {
+            errorDictionary[""] = [errorMessage];
+            return errorDictionary;
+        }
         foreach (var error in errors)
         {
             if (errorDictionary.ContainsKey(error.PropertyName))

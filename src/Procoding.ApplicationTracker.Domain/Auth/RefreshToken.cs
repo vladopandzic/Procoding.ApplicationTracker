@@ -14,16 +14,26 @@ public class RefreshToken
         EmployeeId = employeeId;
     }
 
-    public string Token { get; set; } = default!;
+    public string Token { get; private set; } = default!;
 
-    public DateTimeOffset ExpiryDate { get; set; }
+    public DateTimeOffset ExpiryDate { get; private set; }
 
-    public string AccessToken { get; set; } = default!;
+    public string AccessToken { get; private set; } = default!;
 
-    public bool Invalidated { get; set; }
+    public bool Invalidated { get; private set; }
 
-    public bool IsUsed { get; set; }
+    public bool IsUsed { get; private set; }
 
-    public Guid? EmployeeId { get; set; }
+    public Guid? EmployeeId { get; private set; }
+
+    public bool HasExpired(TimeProvider timeProvider)
+    {
+        return ExpiryDate < timeProvider.GetLocalNow();
+    }
+
+    public void MarkAsUsed()
+    {
+        IsUsed = true;
+    }
 
 }

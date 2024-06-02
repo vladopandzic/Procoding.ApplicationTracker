@@ -1,44 +1,32 @@
-﻿//using Azure;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
-//using Procoding.ApplicationTracker.Application.Authentication;
-//using System.Globalization;
+﻿using Ardalis.ApiEndpoints;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Procoding.ApplicationTracker.Api.Extensions;
+using Procoding.ApplicationTracker.Application.Employees.Commands.LoginEmployee;
+using Procoding.ApplicationTracker.Application.Employees.Commands.RefreshLoginTokenForEmployee;
+using Procoding.ApplicationTracker.Domain.Exceptions;
+using Procoding.ApplicationTracker.DTOs.Request.Employees;
+using Procoding.ApplicationTracker.DTOs.Response.Employees;
 
-//namespace Procoding.ApplicationTracker.Api.Endpoints.Employees;
+namespace Procoding.ApplicationTracker.Api.Endpoints.Employees;
 
-//public class EmployeeRefreshTokenEndpoint
-//{
-//    [HttpPost("employee/refresh")]
-//    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-//    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<List<AlecsReportResponseDto>>))]
-//    [AllowAnonymous]
-//    [ApiExplorerSettings(IgnoreApi = true)]
-//    public async Task<IActionResult> Refresh([FromBody] TokenModel tokenModel)
-//    {
-//        var refreshToken = await _refreshTokenService.GetByToken(tokenModel.RefreshToken);
+public class EmployeeRefreshTokenEndpoint : EndpointBaseAsync.WithRequest<TokenRequestDTO>.WithResult<IActionResult>
+{
+    private readonly ISender _sender;
 
-//        if (refreshToken == null || refreshToken.HasExpired() || refreshToken.Invalidated)
-//        {
-//            return BadRequest("Invalid refresh token");
-//        }
-//        string userIdFromToken = GetUserIdFromAccessToken(tokenModel);
-//        var user = (await _userManager.FindByIdAsync(userIdFromToken))!;
+    public EmployeeRefreshTokenEndpoint(ISender sender)
+    {
+        _sender = sender;
+    }
 
-//        if (userIdFromToken != refreshToken.UserId.ToString(CultureInfo.InvariantCulture))
-//        {
-//            return BadRequest("Invalid refresh token");
-//        }
-//        if (user.DeletedAt != null)
-//        {
-//            return BadRequest("Invalid refresh token!");
-//        }
+    [HttpPost("employees/login/refresh")]
+    [ProducesResponseType(typeof(EmployeeLoginResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+    public override async Task<IActionResult> HandleAsync(TokenRequestDTO request, CancellationToken cancellationToken = default)
+    {
+        var result = await _sender.Send(new RefreshLoginTokenForEmployeeCommand(request.AccessToken, request.RefreshToken), cancellationToken);
 
-//        await _refreshTokenService.MarkAsUsed(refreshToken);
-
-//        TokenResponse tokenResponse = await _authService.GenerateTokenFromUser(user);
-
-//        return Ok(tokenResponse);
-//    }
-
-//}
+        return result.Match<IActionResult>(Ok, err => err is Unauthorized401Exception ? Unauthorized(err.MapToResponse()) : BadRequest(err.MapToResponse()));
+    }
+}
