@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
-using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using static MudBlazor.CategoryTypes;
+using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Web.Pages.JobApplicationSource;
 
+[Authorize]
 public partial class JobApplicationSourceDetailsPage
 {
     [Inject]
@@ -35,6 +36,5 @@ public partial class JobApplicationSourceDetailsPage
     {
         await mudForm!.Validate();
         await ViewModel.SaveAsync();
-
     }
 }

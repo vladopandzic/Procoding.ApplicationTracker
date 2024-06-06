@@ -1,7 +1,65 @@
-﻿@page "/"
+﻿@attribute [Authorize]
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Components.Authorization
+@using Procoding.ApplicationTracker.Web.Auth
+@page "/"
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+@code {
+
+    [CascadingParameter] Task<AuthenticationState> authenticationStateTask { get; set; }
+
+
+    [Inject]
+    public TokenProvider TokenProvider { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public ITokenProvider TokenProviderService { get; set; }
+
+    public string AccessToken { get; set; }
+
+    public string RefreshToken { get; set; }
+
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask;
+        if (HttpContext is not null)
+        {
+            TokenProvider.AccessToken = AccessToken = await HttpContext.GetTokenAsync("access_token");
+            TokenProvider.RefreshToken = RefreshToken = await HttpContext.GetTokenAsync("refresh_token");
+        }
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var authState = await authenticationStateTask;
+        var accessToken = authState.User.Claims.FirstOrDefault(x => x.Type == "access_token")?.Value;
+        var refreshToken = authState.User.Claims.FirstOrDefault(x => x.Type == "refresh_token")?.Value;
+
+        await TokenProviderService.SaveAccessAndRefreshToken(accessToken, refreshToken);
+
+    }
+}

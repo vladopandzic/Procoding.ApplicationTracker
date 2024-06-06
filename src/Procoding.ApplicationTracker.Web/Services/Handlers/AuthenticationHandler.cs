@@ -1,4 +1,4 @@
-﻿using Procoding.ApplicationTracker.Web.Services.Interfaces;
+﻿using Procoding.ApplicationTracker.Web.Auth;
 using System.Net;
 using System.Net.Http.Headers;
 
@@ -6,11 +6,11 @@ namespace Procoding.ApplicationTracker.Web.Services.Handlers;
 
 public class AuthenticationHandler : DelegatingHandler
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IApplicationAuthenticationService _authenticationService;
     private bool _refreshing;
 
 
-    public AuthenticationHandler(IAuthenticationService authenticationService)
+    public AuthenticationHandler(IApplicationAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
@@ -26,7 +26,7 @@ public class AuthenticationHandler : DelegatingHandler
 
         var response = await base.SendAsync(request, cancellationToken);
 
-        if (!_refreshing && string.IsNullOrEmpty(accessToken) && response.StatusCode == HttpStatusCode.Unauthorized)
+        if (!_refreshing && !string.IsNullOrEmpty(accessToken) && response.StatusCode == HttpStatusCode.Unauthorized)
         {
             try
             {

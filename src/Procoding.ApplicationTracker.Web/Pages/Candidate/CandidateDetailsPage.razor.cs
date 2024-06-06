@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Candidate;
 
+[Authorize]
 public partial class CandidateDetailsPage
 {
     [Inject]

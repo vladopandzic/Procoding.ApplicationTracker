@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.Web.ViewModels.Companies;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Company;
-
+[Authorize]
 public partial class CompanyDetailsPage
 {
     [Inject]

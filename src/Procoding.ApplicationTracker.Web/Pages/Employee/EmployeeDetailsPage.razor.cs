@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.Web.ViewModels.Employees;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Employee;
 
+[Authorize]
 public partial class EmployeeDetailsPage
 {
     [Inject]

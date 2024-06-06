@@ -1,9 +1,11 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Web.Pages.JobApplicationSource;
 
+[Authorize]
 public partial class JobApplicationSources
 {
     [Inject]

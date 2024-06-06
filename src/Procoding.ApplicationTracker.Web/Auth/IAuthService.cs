@@ -1,10 +1,10 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Request.Employees;
 
-namespace Procoding.ApplicationTracker.Web.Services.Interfaces
+namespace Procoding.ApplicationTracker.Web.Auth
 {
-    public interface IAuthenticationService
+    public interface IApplicationAuthenticationService
     {
-        ValueTask<string> GetAccessTokenAsync();
+        ValueTask<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default);
 
         Task LoginAsync(EmployeeLoginRequestDTO loginModel, CancellationToken cancellationToken = default);
 
@@ -12,6 +12,6 @@ namespace Procoding.ApplicationTracker.Web.Services.Interfaces
 
         Task<bool> RefreshAsync(CancellationToken cancellationToken = default);
 
-        event Action<string?>? LoginChanged;
+        event Action<string?>? LoginChange;
     }
 }

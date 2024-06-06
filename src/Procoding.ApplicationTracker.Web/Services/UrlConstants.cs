@@ -60,6 +60,16 @@ public static class UrlConstants
             return $"{GET_ALL_URL}";
         }
 
+        public static string LoginEmployee()
+        {
+            return $"{GET_ALL_URL}/login";
+        }
+
+        public static string LoginRefreshEmployee()
+        {
+            return $"{GET_ALL_URL}/login/refresh";
+        }
+
         public static string InsertUrl()
         {
             return $"{GET_ALL_URL}";

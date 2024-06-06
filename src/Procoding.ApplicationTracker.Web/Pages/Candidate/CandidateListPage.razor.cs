@@ -1,18 +1,25 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
+using Procoding.ApplicationTracker.Web.Auth;
 using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Candidate;
 
-public partial class CandidateListPage
+[Authorize]
+public partial class CandidateListPage 
 {
     [Inject]
     public CandidateListViewModel ViewModel { get; set; } = default!;
 
+    [Inject]
+    TokenProvider TokenProvider { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        var a = TokenProvider.AccessToken;
         await base.OnInitializedAsync();
     }
 

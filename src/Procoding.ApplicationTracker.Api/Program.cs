@@ -61,6 +61,14 @@ public class Program
         {
             SecurityKey? secretKey = new JwtTokenCreator<Employee>(jwtTokenOptions).GetDefaultSigningCredentials(secretkey: jwtTokenOptions!.SecretKey).Key;
 
+            config.Events = new JwtBearerEvents()
+            {
+                OnChallenge = (t1) =>
+                {
+                    return Task.CompletedTask;
+                }
+            };
+
             config.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = jwtTokenOptions.Issuer,
@@ -69,7 +77,8 @@ public class Program
                 ValidateLifetime = true,
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+
             };
         }).AddJwtCreator<Employee>(builder.Configuration, "EmployeeJwtTokenSettings");
 

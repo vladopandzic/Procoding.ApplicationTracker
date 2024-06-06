@@ -1,0 +1,39 @@
+﻿@layout LoginLayout
+
+@* @page "/login" *@
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+
+<MudPaper Elevation="4" Class="pa-4 mx-auto mt-12" MaxWidth="400px">
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
+        <MudCard>
+        
+            <MudCardContent>
+                <MudForm @ref=mudForm Model="ViewModel.LoginRequest" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+                    <MudTextField @bind-Value=ViewModel.LoginRequest.Email
+                                  T="string"
+                                  Label="Email"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.LoginRequest.Email)" />
+
+                    <MudTextField @bind-Value=ViewModel.LoginRequest.Password
+                                  T="string"
+                                  Label="Password"
+                                  Validation="ViewModel.Validator.ValidateValue"
+                                  Immediate="true"
+                                  For="(()=>ViewModel.LoginRequest.Password)" />
+
+                    <br />
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
+                </MudForm>
+            </MudCardContent>
+        </MudCard>
+
+    </MudContainer>
+</MudPaper>
+
+@code {
+    
+}

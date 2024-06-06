@@ -2,6 +2,9 @@ using Procoding.ApplicationTracker.Web.Components;
 using System.Reflection;
 using FluentValidation;
 using Procoding.ApplicationTracker.Web.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Endpoints.Infrastructure;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Procoding.ApplicationTracker.Web;
 
@@ -36,10 +39,20 @@ public class AppAdapter
 
         _app.UseStaticFilesFromAssembly(Assembly.GetExecutingAssembly());
 
+
+        var builderRazor = _app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+        _app.UseRouting();
+        _app.UseAuthentication(); // Use authentication
+        _app.UseAuthorization();
+
+
         _app.UseAntiforgery();
 
-        _app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+        _app.UseEndpoints(x => { });
 
+        _app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Login}/{action=Index}/{id?}");
     }
 
 

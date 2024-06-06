@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
@@ -6,6 +7,7 @@ using Procoding.ApplicationTracker.Web.ViewModels.JobApplications;
 
 namespace Procoding.ApplicationTracker.Web.Pages.JobApplication;
 
+[Authorize]
 public partial class JobApplicationListPage
 {
     [Inject]
