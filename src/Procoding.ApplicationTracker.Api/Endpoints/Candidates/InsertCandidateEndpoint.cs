@@ -21,7 +21,7 @@ public class InsertCandidateEndpoint : EndpointBaseAsync.WithRequest<CandidateIn
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public override async Task<IActionResult> HandleAsync(CandidateInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(new InsertCandidateCommand(request.Name, request.Surname, request.Email), cancellationToken);
+        var result = await _sender.Send(new InsertCandidateCommand(request.Name, request.Surname, request.Email, request.Password), cancellationToken);
 
         return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
 

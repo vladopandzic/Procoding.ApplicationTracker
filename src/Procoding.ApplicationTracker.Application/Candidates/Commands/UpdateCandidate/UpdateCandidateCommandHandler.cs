@@ -37,7 +37,11 @@ internal sealed class UpdateCandidateCommandHandler : ICommandHandler<UpdateCand
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         //TODO: in case of failure
-        var candidateDto = new CandidateDTO(candidate.Id, name: candidate.Name, surname: candidate.Surname, email: candidate.Email.Value);
+        var candidateDto = new CandidateDTO(candidate.Id,
+                                            name: candidate.Name,
+                                            surname: candidate.Surname,
+                                            email: candidate.Email.Value,
+                                            password: candidate.PasswordHash);
 
         return new CandidateUpdatedResponseDTO(candidateDto);
     }

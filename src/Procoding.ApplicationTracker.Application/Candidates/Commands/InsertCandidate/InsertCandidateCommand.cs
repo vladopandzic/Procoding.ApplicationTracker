@@ -6,11 +6,12 @@ namespace Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCan
 
 public sealed class InsertCandidateCommand : ICommand<Result<CandidateInsertedResponseDTO>>
 {
-    public InsertCandidateCommand(string name, string surname, string email)
+    public InsertCandidateCommand(string name, string surname, string email, string password)
     {
         Name = name;
         Surname = surname;
         Email = email;
+        Password = password;
     }
 
     public string Name { get; }
@@ -18,4 +19,6 @@ public sealed class InsertCandidateCommand : ICommand<Result<CandidateInsertedRe
     public string Surname { get; }
 
     public string Email { get; }
+
+    public string Password { get; }
 }

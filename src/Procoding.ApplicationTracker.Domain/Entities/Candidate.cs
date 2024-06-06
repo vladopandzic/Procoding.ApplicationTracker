@@ -67,6 +67,7 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
         Name = name;
         Surname = surname;
         Email = email;
+        UserName = email.Value;
     }
 
     private static void Validate(string name, string surname, Email email)
@@ -105,13 +106,13 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     /// <param name="surname"></param>
     /// <param name="email"></param>
     /// <returns></returns>
-    public static Candidate Create(Guid id, string name, string surname, Email email)
+    public static Candidate Create(Guid id, string name, string surname, Email email, string password, IPasswordHasher<Candidate> passwordHasher)
     {
         var candidate = new Candidate(id: id,
                                       name: name,
                                       surname: surname,
                                       email: email);
-
+        candidate.PasswordHash = passwordHasher.HashPassword(candidate, password);
         candidate.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
 
         return candidate;

@@ -21,7 +21,7 @@ internal sealed class GetOneCandidateQueryHandler : IQueryHandler<GetOneCandidat
         if (candidate is null)
             throw new Domain.Exceptions.CandidateDoesNotExistException();
 
-        var companyDTO = new CandidateDTO(candidate.Id, candidate.Name, candidate.Surname, candidate.Email.Value);
+        var companyDTO = new CandidateDTO(candidate.Id, candidate.Name, candidate.Surname, candidate.Email.Value, candidate.PasswordHash);
 
         return new CandidateResponseDTO(companyDTO);
     }

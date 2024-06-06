@@ -12,12 +12,12 @@ public static class DatabaseSeedData
 
     public static List<Candidate> GetCandidates()
     {
-        return [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"))];
+        return [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"), "", new FakePasswordHasher<Candidate>())];
     }
 
     public static List<Employee> GetEmployees()
     {
-        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email("pandzic.vlado@gmail.com"))];
+        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email("pandzic.vlado@gmail.com"), "www", new FakePasswordHasher<Employee>())];
     }
 
     public static List<Company> GetCompanies()
@@ -27,7 +27,6 @@ public static class DatabaseSeedData
 
     public static JobApplication GetJobApplication(Candidate candidate, Company company, JobApplicationSource jobApplicationSource)
     {
-
         var jobApplication = JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System);
         return jobApplication;
     }

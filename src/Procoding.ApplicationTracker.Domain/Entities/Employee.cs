@@ -90,9 +90,13 @@ public class Employee : IdentityUser<Guid>, IEntityBase, IAuditableEntity, ISoft
     /// <param name="surname"></param>
     /// <param name="email"></param>
     /// <returns></returns>
-    public static Employee Create(Guid id, string name, string surname, Email email)
+    public static Employee Create(Guid id, string name, string surname, Email email, string password, IPasswordHasher<Employee> passwordHasher)
     {
         var employee = new Employee(id: id, name: name, surname: surname, email: email);
+
+        var hashedPassword = passwordHasher.HashPassword(employee, password);
+
+        employee.PasswordHash = hashedPassword;
         //TODO: consider
         //  candidate.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
 

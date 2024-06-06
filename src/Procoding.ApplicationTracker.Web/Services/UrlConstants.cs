@@ -28,6 +28,17 @@ public static class UrlConstants
 
         public const string GET_ALL_URL = "candidates";
 
+
+        public static string LoginCandidate()
+        {
+            return $"{GET_ALL_URL}/login";
+        }
+
+        public static string SignupCandidate()
+        {
+            return $"{GET_ALL_URL}/signup";
+        }
+
         public static string GetOne(Guid id)
         {
             return $"{GET_ALL_URL}/{id}";

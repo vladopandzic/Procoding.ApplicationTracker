@@ -28,7 +28,9 @@ internal sealed class InsertEmployeeCommandHandler : ICommandHandler<InsertEmplo
     {
         var id = Guid.NewGuid();
         var email = new Email(request.Email);
-        var employee = Employee.Create(id, name: request.Name, surname: request.Surname, email: email);
+
+
+        var employee = Employee.Create(id, name: request.Name, surname: request.Surname, email: email, password: request.Password, _passwordHasher);
 
 
         var result = await _employeeRepository.InsertAsync(employee, request.Password, cancellationToken);

@@ -22,7 +22,11 @@ internal sealed class GetOneJobApplicationQueryHandler : IQueryHandler<GetOneJob
         {
             throw new Domain.Exceptions.JobApplicationDoesNotExistException();
         }
-        var candidateDto = new CandidateDTO(jobApplication.Candidate.Id, jobApplication.Candidate.Name, jobApplication.Candidate.Surname, jobApplication.Candidate.Email.Value);
+        var candidateDto = new CandidateDTO(jobApplication.Candidate.Id,
+                                            jobApplication.Candidate.Name,
+                                            jobApplication.Candidate.Surname,
+                                            jobApplication.Candidate.Email.Value,
+                                            jobApplication.Candidate.PasswordHash);
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 

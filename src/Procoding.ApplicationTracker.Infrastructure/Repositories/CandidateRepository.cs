@@ -1,20 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
-using Ardalis.Specification.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Ardalis.Specification;
 
 namespace Procoding.ApplicationTracker.Infrastructure.Repositories;
 
 internal class CandidateRepository : ICandidateRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly UserManager<Candidate> _userManager;
 
-    public CandidateRepository(ApplicationDbContext dbContext)
+    public CandidateRepository(ApplicationDbContext dbContext, UserManager<Candidate> userManager)
     {
         _dbContext = dbContext;
+        _userManager = userManager;
     }
 
     public async Task<Candidate?> GetCandidateAsync(Guid id, CancellationToken cancellationToken)
@@ -33,9 +35,9 @@ internal class CandidateRepository : ICandidateRepository
         return await query.CountAsync();
     }
 
-    public async Task InsertAsync(Candidate candidate, CancellationToken cancellationToken)
+    public async Task<IdentityResult> InsertAsync(Candidate candidate, string password, CancellationToken cancellationToken)
     {
-        await _dbContext.Candidates.AddAsync(candidate, cancellationToken);
+        return await _userManager.CreateAsync(candidate, password);
     }
 
     public async Task<bool> ExistsAsync(string email, Guid id, CancellationToken cancellationToken)

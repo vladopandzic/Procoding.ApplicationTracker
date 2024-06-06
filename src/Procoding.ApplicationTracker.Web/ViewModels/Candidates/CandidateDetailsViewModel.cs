@@ -30,7 +30,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
     {
         if (id is null)
         {
-            Candidate = new CandidateDTO(Guid.Empty, "", "", "");
+            Candidate = new CandidateDTO(Guid.Empty, "", "", "", "");
             return;
         }
         IsLoading = true;
@@ -50,7 +50,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
 
     public async Task SaveAsync()
     {
-       
+
         if (!(await IsValidAsync()))
         {
             return;
@@ -61,7 +61,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
         if (Candidate!.Id == Guid.Empty)
         {
             var result = await _candidateService.InsertCandidateAsync(
-                         new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email));
+                         new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email, Candidate.Password));
 
             if (result.IsSuccess)
             {

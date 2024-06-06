@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Microsoft.AspNetCore.Identity;
 using Procoding.ApplicationTracker.Domain.Entities;
 
 namespace Procoding.ApplicationTracker.Domain.Repositories;
@@ -20,7 +21,7 @@ public interface ICandidateRepository
     /// Inserts the specified candidate to the database.
     /// </summary>
     /// <param name="candidate">The candidate to be inserted to the database.</param>
-    Task InsertAsync(Candidate candidate, CancellationToken cancellationToken);
+    Task<IdentityResult> InsertAsync(Candidate candidate, string password, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets list of candidates.

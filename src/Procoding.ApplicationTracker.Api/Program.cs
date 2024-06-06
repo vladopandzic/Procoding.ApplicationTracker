@@ -1,6 +1,7 @@
 using FluentValidation;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Procoding.ApplicationTracker.Api.Extensions;
@@ -51,28 +52,26 @@ public class Program
                         .AddUserStore<EmployeeUserStore>()
                         .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        var jwtTokenOptions = builder.Configuration.GetSection("EmployeeJwtTokenSettings").Get<JwtTokenOptions<Employee>>()!;
+        builder.Services.AddIdentityCore<Candidate>()
+                        .AddUserStore<CandidateUserStore>()
+                        .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 
         builder.Services.AddAuthentication(x =>
         {
             x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-        }).AddJwtBearer(config =>
+        }).AddJwtBearer("BearerEmployee", config =>
         {
-            SecurityKey? secretKey = new JwtTokenCreator<Employee>(jwtTokenOptions).GetDefaultSigningCredentials(secretkey: jwtTokenOptions!.SecretKey).Key;
+            var jwtTokenOptionsEmployee = builder.Configuration.GetSection("EmployeeJwtTokenSettings").Get<JwtTokenOptions<Employee>>()!;
 
-            config.Events = new JwtBearerEvents()
-            {
-                OnChallenge = (t1) =>
-                {
-                    return Task.CompletedTask;
-                }
-            };
+            SecurityKey? secretKey = new JwtTokenCreator<Employee>(jwtTokenOptionsEmployee).GetDefaultSigningCredentials(secretkey: jwtTokenOptionsEmployee!.SecretKey).Key;
 
             config.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = jwtTokenOptions.Issuer,
-                ValidAudience = jwtTokenOptions.Audience,
+                ValidIssuer = jwtTokenOptionsEmployee.Issuer,
+                ValidAudience = jwtTokenOptionsEmployee.Audience,
                 IssuerSigningKey = secretKey,
                 ValidateLifetime = true,
                 ValidateIssuer = true,
@@ -80,7 +79,25 @@ public class Program
                 ClockSkew = TimeSpan.Zero,
 
             };
-        }).AddJwtCreator<Employee>(builder.Configuration, "EmployeeJwtTokenSettings");
+        }).AddJwtCreator<Employee>(builder.Configuration, "EmployeeJwtTokenSettings")
+        .AddJwtBearer("BearerCandidate", config =>
+        {
+            var jwtTokenOptionsCandidate = builder.Configuration.GetSection("CandidateJwtTokenSettings").Get<JwtTokenOptions<Candidate>>()!;
+            SecurityKey? secretKey = new JwtTokenCreator<Candidate>(jwtTokenOptionsCandidate).GetDefaultSigningCredentials(secretkey: jwtTokenOptionsCandidate!.SecretKey).Key;
+
+            config.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = jwtTokenOptionsCandidate.Issuer,
+                ValidAudience = jwtTokenOptionsCandidate.Audience,
+                IssuerSigningKey = secretKey,
+                ValidateLifetime = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ClockSkew = TimeSpan.Zero,
+
+            };
+
+        }).AddJwtCreator<Candidate>(builder.Configuration, "CandidateJwtTokenSettings");
 
 
         builder.Services.AddAuthorization();
@@ -114,7 +131,8 @@ public class Program
     private static async Task<ApplicationDbContext> SeedDatabaseAsync(WebApplication app)
     {
         var context = app.Services.GetRequiredScopedService<ApplicationDbContext>();
-        await SeedData.SeedAsync(context);
+        var passwordHasher = app.Services.GetRequiredScopedService<IPasswordHasher<Candidate>>();
+        await SeedData.SeedAsync(context,passwordHasher);
         return context;
     }
 }

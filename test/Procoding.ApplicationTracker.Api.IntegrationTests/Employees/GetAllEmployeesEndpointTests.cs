@@ -1,4 +1,6 @@
 ﻿using Bogus;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
@@ -58,7 +60,8 @@ public class GetAllEmployeesEndpointTests
         //Arrange
         var client = _factory.CreateClient();
         using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        await dbContext.AddRangeAsync(GenerateEmployees(50));
+        var passwordHasher = _factory.Services.GetRequiredService<IPasswordHasher<Employee>>();
+        await dbContext.AddRangeAsync(GenerateEmployees(50, passwordHasher));
         await dbContext.SaveChangesAsync();
 
         //Act
@@ -74,13 +77,15 @@ public class GetAllEmployeesEndpointTests
         Assert.That(response.Employees.Count, Is.EqualTo(10));
     }
 
-    public static List<Employee> GenerateEmployees(int count)
+    public static List<Employee> GenerateEmployees(int count, IPasswordHasher<Employee> passwordHasher)
     {
         var faker = new Faker<Employee>().CustomInstantiator(f =>
         Employee.Create(id: Guid.NewGuid(),
                         name: f.Name.FirstName(),
                         surname: f.Name.LastName(),
-                        email: new Email(f.Internet.Email())));
+                        email: new Email(f.Internet.Email()),
+                        password:"test123",
+                        passwordHasher));
 
 
         return faker.Generate(count);

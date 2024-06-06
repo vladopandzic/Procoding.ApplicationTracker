@@ -1,17 +1,13 @@
 ﻿using Bogus;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
-using Procoding.ApplicationTracker.DTOs.Response;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.Candidates;
 
@@ -27,21 +23,18 @@ public class GetAllCandidatesEndpointTests
         await testDatabaseHelper.SetupDatabase();
         _factory = new CustomWebApplicationFactory(testDatabaseHelper,
                                                    (x) =>
-                                                   {
-                                                   });
+        {
+        });
     }
 
     [TearDown]
     public async Task TearDown()
     {
-
         if (_factory is not null)
         {
             await _factory.TestDatabaseHelper.DeleteAsync();
             await _factory.DisposeAsync();
-
         }
-
     }
 
     [Test]
@@ -64,7 +57,8 @@ public class GetAllCandidatesEndpointTests
         //Arrange
         var client = _factory.CreateClient();
         using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        await dbContext.AddRangeAsync(GenerateCandidates(50));
+        var passwordHasher = _factory.Services.GetRequiredService<IPasswordHasher<Candidate>>();
+        await dbContext.AddRangeAsync(GenerateCandidates(50, passwordHasher));
         await dbContext.SaveChangesAsync();
 
         //Act
@@ -80,13 +74,14 @@ public class GetAllCandidatesEndpointTests
         Assert.That(response.Candidates.Count, Is.EqualTo(10));
     }
 
-    public static List<Candidate> GenerateCandidates(int count)
+    public static List<Candidate> GenerateCandidates(int count, IPasswordHasher<Candidate> passwordHasher)
     {
-        var faker = new Faker<Candidate>().CustomInstantiator(f =>
-        Candidate.Create(id: Guid.NewGuid(),
-                        name: f.Name.FirstName(),
-                        surname: f.Name.LastName(),
-                        email: new Email(f.Internet.Email())));
+        var faker = new Faker<Candidate>().CustomInstantiator(f => Candidate.Create(id: Guid.NewGuid(),
+                                                                                    name: f.Name.FirstName(),
+                                                                                    surname: f.Name.LastName(),
+                                                                                    email: new Email(f.Internet.Email()),
+                                                                                    password: f.Internet.Password(),
+                                                                                    passwordHasher));
 
 
         return faker.Generate(count);

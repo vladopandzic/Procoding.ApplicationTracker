@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Application.Behaviors;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.InsertCandidate;
+using Procoding.ApplicationTracker.Application.Candidates.Commands.SignupCandidate;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
 using Procoding.ApplicationTracker.Application.Companies.Commands.InsertCompany;
 using Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
@@ -28,7 +29,8 @@ public static class ValidationExtensions
               .AddValidation<InsertCandidateCommand, CandidateInsertedResponseDTO>()
               .AddValidation<UpdateCandidateCommand, CandidateUpdatedResponseDTO>()
               .AddValidation<InsertCompanyCommand, CompanyInsertedResponseDTO>()
-              .AddValidation<UpdateCompanyCommand, CompanyUpdatedResponseDTO>();
+              .AddValidation<UpdateCompanyCommand, CompanyUpdatedResponseDTO>()
+              .AddValidation<SignupCandidateCommand, CandidateSignupResponseDTO>();
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 
@@ -6,7 +7,7 @@ namespace Procoding.ApplicationTracker.Infrastructure.Data;
 
 public static class SeedData
 {
-    public static async Task SeedAsync(ApplicationDbContext dbContext)
+    public static async Task SeedAsync(ApplicationDbContext dbContext, IPasswordHasher<Candidate> passwordHasher)
     {
         List<JobApplicationSource> jobApplicationSources = [JobApplicationSource.Create(Guid.Empty, "RemoteOk"),
                                                            JobApplicationSource.Create(Guid.Empty, "MojPosao"),
@@ -20,8 +21,8 @@ public static class SeedData
 
         await dbContext.AddRangeAsync(companies);
 
-        List<Candidate> candidates = [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com")),
-                                      Candidate.Create(Guid.Empty, "Name2", "Surname2", new Email("email2@email.com"))];
+        List<Candidate> candidates = [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"),"test123",passwordHasher),
+                                      Candidate.Create(Guid.Empty, "Name2", "Surname2", new Email("email2@email.com"),"test123",passwordHasher)];
 
         await dbContext.AddRangeAsync(candidates);
 

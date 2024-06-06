@@ -20,9 +20,10 @@ public class CandidateTests
         var name = "John";
         var surname = "Doe";
         var email = new Email("john@example.com");
+        var password = "test123";
 
         // Act
-        var candidate = Candidate.Create(id: id, name: name, surname: surname, email: email);
+        var candidate = Candidate.Create(id: id, name: name, surname: surname, email: email, password: password, new FakePasswordHasher<Candidate>());
 
         // Assert
         Assert.That(candidate, Is.Not.Null);
@@ -42,7 +43,7 @@ public class CandidateTests
         var email = new Email("john@example.com");
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => Candidate.Create(id: id, name: name, surname: surname, email: email));
+        Assert.Throws<ArgumentException>(() => Candidate.Create(id: id, name: name, surname: surname, email: email, "", new FakePasswordHasher<Candidate>()));
     }
 
     [Test]
@@ -55,7 +56,7 @@ public class CandidateTests
         var email = new Email("john@example.com");
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => Candidate.Create(id: id, name: name, surname: surname, email: email));
+        Assert.Throws<ArgumentException>(() => Candidate.Create(id: id, name: name, surname: surname, email: email, "", new FakePasswordHasher<Candidate>()));
     }
 
     [Test]
@@ -67,7 +68,7 @@ public class CandidateTests
         var surname = "Doe";
 
         // Act & Assert
-        Assert.Throws<InvalidEmailException>(() => Candidate.Create(id: id, name: name, surname: surname, email: new Email("invalid-email")));
+        Assert.Throws<InvalidEmailException>(() => Candidate.Create(id: id, name: name, surname: surname, email: new Email("invalid-email"), "", new FakePasswordHasher<Candidate>()));
     }
 
     [Test]
@@ -80,7 +81,7 @@ public class CandidateTests
         var email = new Email("john@example.com");
 
         // Act
-        var candidate = Candidate.Create(id, name, surname, email);
+        var candidate = Candidate.Create(id, name, surname, email, "", new FakePasswordHasher<Candidate>());
 
         // Assert
         Assert.That(candidate.DomainEvents, Has.Count.EqualTo(1));
@@ -100,7 +101,7 @@ public class CandidateTests
         var email = new Email("john@example.com");
         Candidate? candidate = null;
         // Act
-        Assert.Throws<ArgumentException>(() => candidate = Candidate.Create(id, name, surname, email));
+        Assert.Throws<ArgumentException>(() => candidate = Candidate.Create(id, name, surname, email, "", new FakePasswordHasher<Candidate>()));
 
         // Assert
         Assert.That(candidate, Is.Null);

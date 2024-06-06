@@ -6,4 +6,4 @@ using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.DTOs.Request.Candidates;
 
-public record CandidateInsertRequestDTO(string Name, string Surname, string Email);
+public record CandidateInsertRequestDTO(string Name, string Surname, string Email, string Password);
