@@ -14,15 +14,6 @@ public partial class CandidateListPage
     [Inject]
     public CandidateListViewModel ViewModel { get; set; } = default!;
 
-    [Inject]
-    TokenProvider TokenProvider { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var a = TokenProvider.AccessToken;
-        await base.OnInitializedAsync();
-    }
-
     private async Task<GridData<CandidateDTO>> LoadGridData(GridState<CandidateDTO> state)
     {
 

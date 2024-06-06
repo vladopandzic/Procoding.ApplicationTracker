@@ -9,7 +9,6 @@ public static class ClaimsCreator
     public static List<Claim> GetClaimsFromToken(string accessToken, string refreshToken)
     {
         var claims = ParseClaimsFromJwt(accessToken).ToList();
-
         claims.Add(new Claim("access_token", accessToken));
         claims.Add(new Claim("refresh_token", refreshToken));
 

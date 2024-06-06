@@ -6,7 +6,6 @@ using Procoding.ApplicationTracker.Application;
 using Procoding.ApplicationTracker.Web.Auth;
 using Procoding.ApplicationTracker.Web.Controllers;
 using Procoding.ApplicationTracker.Web.Services;
-using Procoding.ApplicationTracker.Web.Services.Handlers;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.ViewModels;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
@@ -21,15 +20,11 @@ internal class Program
                                  typeof(Program),
                                  x =>
                                  {
-                                     x.AddScoped<TokenProvider>();
+                                     x.AddServerSideBlazor();
+
+                                     x.AddScoped<ITokenProvider, TokenProvider>();
 
                                      x.AddControllersWithViews().AddApplicationPart(typeof(LoginController).Assembly);
-
-                                     x.AddCircuitServicesAccessor();
-
-                                     x.AddScoped<IApplicationAuthenticationService, ApplicationAuthenticationService>();
-                                     x.AddScoped<ITokenProvider, LocalStorageTokenProvider>();
-                                     x.AddTransient<AuthenticationHandler>();
 
 
                                      x.AddScoped<AuthenticationStateProvider, RevalidatingServerAuthenticationState>();

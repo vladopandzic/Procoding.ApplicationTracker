@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.JsonWebTokens;
+﻿using LanguageExt.Pipes;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ public static class ClaimsFactory
     {
         var claimValues = new (string Type, string Value)[]
         {
+            (ClaimTypes.Name, userEmail),
             (JwtRegisteredClaimNames.Email, userEmail ?? ""),
             (JwtRegisteredClaimNames.Sub, userId),
             (JwtRegisteredClaimNames.GivenName, name),

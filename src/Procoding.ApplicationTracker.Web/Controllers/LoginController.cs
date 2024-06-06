@@ -21,6 +21,16 @@ public class LoginController : Controller
         return View();
     }
 
+
+    [HttpGet]
+    [Route("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return Redirect("/login");
+
+    }
+
     [HttpPost]
     public async Task<IActionResult> Login(EmployeeLoginRequestDTO model, CancellationToken cancellationToken)
     {
@@ -46,6 +56,6 @@ public class LoginController : Controller
             }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         }
-        return View(model);
+        return View("Index",model);
     }
 }

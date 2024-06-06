@@ -1,8 +1,20 @@
-﻿namespace Procoding.ApplicationTracker.Web.Auth;
+﻿
+using Microsoft.AspNetCore.Components.Authorization;
 
-public class TokenProvider
+namespace Procoding.ApplicationTracker.Web.Auth;
+
+public class TokenProvider : ITokenProvider
 {
-    public string AccessToken { get; set; }
+    private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-    public string RefreshToken { get; set; }
+    public TokenProvider(AuthenticationStateProvider authenticationStateProvider)
+    {
+        _authenticationStateProvider = authenticationStateProvider;
+    }
+
+    public async ValueTask<string?> GetAccessTokenAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        return authState.User.Claims.FirstOrDefault(x => x.Type == "access_token")?.Value;
+    }
 }
