@@ -1,0 +1,111 @@
+﻿@page "/my-job-applications/{Id}"
+@using MudBlazor;
+
+@using Microsoft.AspNetCore.Components.Web;
+@using FluentValidation.Validators;
+@using Blazored.FluentValidation
+@using Procoding.ApplicationTracker.DTOs.Model
+<PageTitle>Job aaplication for: @ViewModel.JobApplication?.Company?.CompanyName</PageTitle>
+@if (ViewModel.IsLoading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+
+}
+else if (ViewModel.JobApplication is not null)
+{
+
+    <MudDialog IsVisible="ViewModel.CreateNewCompanyDialogVisible"
+               IsVisibleChanged="(newValue)=>{ViewModel.CreateNewCompanyDialogVisible=newValue;}"
+               ContentStyle="min-width:500px"
+               Options="new DialogOptions(){CloseOnEscapeKey=true, CloseButton=true }"
+               @ref="dialogRef">
+        <TitleContent>
+            <MudText Typo="Typo.h6">Create new company</MudText>
+
+        </TitleContent>
+        <DialogContent>
+
+            <MudForm @ref=newNewCompanyForm Model="ViewModel.NewCompany" ValidationDelay="0" Validation="ViewModel.CompanyValidator.ValidateValue">
+
+                <MudTextField @bind-Value=ViewModel.NewCompany.CompanyName
+                              T="string"
+                              Label="Name"
+                              Validation="ViewModel.CompanyValidator.ValidateValue"
+                              Immediate="true"
+                              For="(()=>ViewModel.NewCompany.CompanyName)" />
+
+                <MudTextField @bind-Value=ViewModel.NewCompany.OfficialWebSiteLink
+                              T="string"
+                              Label="Official website link"
+                              Validation="ViewModel.CompanyValidator.ValidateValue"
+                              Immediate="true"
+                              For="(()=>ViewModel.NewCompany.OfficialWebSiteLink)" />
+
+                <br />
+                <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="SaveNewCompany" />
+            </MudForm>
+        </DialogContent>
+
+    </MudDialog>
+
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h4">New job application</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudForm @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+
+
+                    <MudAutocomplete T="CompanyDTO"
+                                     @ref=mudCompanyAutocomplete
+                                     Label="Company"
+                                     ResetValueOnEmptyText="true"
+                                     @bind-Value="ViewModel.JobApplication.Company"
+                                     For="(()=>ViewModel.JobApplication.Company)"
+                                     ToStringFunc=CompaniesToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     @bind-Text=ViewModel.NewCompany.CompanyName
+                                     SearchFunc="SearchCompaniesFunc">
+                        <NoItemsTemplate>
+                            <MudAlert Severity="Severity.Info" Variant=Variant.Text ContentAlignment="HorizontalAlignment.Center">
+
+                                Company with that name does not exist. Would you like to create it?
+
+                            </MudAlert>
+                            <div class="d-flex justify-center pa-5">
+                                <MudButton StartIcon="@Icons.Material.Outlined.Add"
+                                           Variant="Variant.Outlined"
+                                           OnClick="OpenCreateNewCompanyDialog"
+                                           Color="Color.Info">
+                                    Create new
+                                </MudButton>
+
+                            </div>
+
+
+
+                        </NoItemsTemplate>
+                    </MudAutocomplete>
+
+                    <MudAutocomplete T="JobApplicationSourceDTO"
+                                     Label="Job application source"
+                                     ResetValueOnEmptyText="true"
+                                     @bind-Value="ViewModel.JobApplication.ApplicationSource"
+                                     For="(()=>ViewModel.JobApplication.ApplicationSource)"
+                                     ToStringFunc=JobApplicationSourcesToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchJobApplicationSourceFunc" />
+
+
+                    <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
+
+                </MudForm>
+            </MudCardContent>
+        </MudCard>
+
+    </MudContainer>
+}

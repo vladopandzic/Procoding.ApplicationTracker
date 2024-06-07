@@ -49,6 +49,7 @@ internal class Program
                                          x.SnackbarConfiguration.HideTransitionDuration = 100;
                                          x.SnackbarConfiguration.ShowTransitionDuration = 200;
                                      });
+                                     x.AddMudBlazorDialog();
                                      var baseApiUrl = "https://localhost:7140/";
                                      x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
                                                  //.AddHttpMessageHandler<AuthenticationHandler>()

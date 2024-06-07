@@ -28,5 +28,7 @@ public static class IServiceCollectionExtensions
 
         services.AddTransient<LoginViewModel, LoginViewModel>();
 
+        services.AddTransient<MyJobApplicationViewModel, MyJobApplicationViewModel>();
+
     }
 }

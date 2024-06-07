@@ -85,6 +85,15 @@ public class Program
             var jwtTokenOptionsCandidate = builder.Configuration.GetSection("CandidateJwtTokenSettings").Get<JwtTokenOptions<Candidate>>()!;
             SecurityKey? secretKey = new JwtTokenCreator<Candidate>(jwtTokenOptionsCandidate).GetDefaultSigningCredentials(secretkey: jwtTokenOptionsCandidate!.SecretKey).Key;
 
+            config.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = (x) =>
+                {
+                    return Task.CompletedTask;
+                }
+            };
+
+
             config.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = jwtTokenOptionsCandidate.Issuer,
@@ -132,7 +141,7 @@ public class Program
     {
         var context = app.Services.GetRequiredScopedService<ApplicationDbContext>();
         var passwordHasher = app.Services.GetRequiredScopedService<IPasswordHasher<Candidate>>();
-        await SeedData.SeedAsync(context,passwordHasher);
+        await SeedData.SeedAsync(context, passwordHasher);
         return context;
     }
 }
