@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Candidates.Queries.GetOneCandidate;
 using Procoding.ApplicationTracker.Application.Companies.Queries.GetOneCompany;
@@ -16,7 +17,7 @@ public class GetOneCandidateEndpoint : EndpointBaseAsync.WithRequest<Guid>.WithR
     }
 
     [HttpGet("candidates/{id}")]
-
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
     public override Task<CandidateResponseDTO> HandleAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetOneCandidateQuery(id), cancellationToken);

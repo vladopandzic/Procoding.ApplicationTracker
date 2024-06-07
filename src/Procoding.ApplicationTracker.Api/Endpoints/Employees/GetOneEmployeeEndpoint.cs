@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Employees.Queries.GetOneEmployee;
 using Procoding.ApplicationTracker.DTOs.Response.Employees;
@@ -15,7 +16,7 @@ public class GetOneEmployeeEndpoint : EndpointBaseAsync.WithRequest<Guid>.WithRe
     }
 
     [HttpGet("employees/{id}")]
-
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
     public override Task<EmployeeResponseDTO> HandleAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetOneEmployeeQuery(id), cancellationToken);

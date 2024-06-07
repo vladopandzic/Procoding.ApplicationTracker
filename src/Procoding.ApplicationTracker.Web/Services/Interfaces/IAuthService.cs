@@ -8,10 +8,11 @@ namespace Procoding.ApplicationTracker.Web.Services.Interfaces;
 
 public interface IAuthService
 {
+    Task<Result<CandidateLoginResponseDTO>> RefreshLoginTokenForCandidate(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default);
     Task<Result<CandidateSignupResponseDTO>> SignupCandidate(CandidateSignupRequestDTO requestDTO, CancellationToken cancellationToken);
     Task<Result<CandidateLoginResponseDTO>> LoginCandidate(CandidateLoginRequestDTO requestDTO, CancellationToken cancellationToken);
     Task<Result<EmployeeLoginResponseDTO>> LoginEmployee(EmployeeLoginRequestDTO requestDTO, CancellationToken cancellationToken = default);
 
-    Task<Result<EmployeeLoginResponseDTO>> RefreshLoginToken(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default);
+    Task<Result<EmployeeLoginResponseDTO>> RefreshLoginTokenForEmployee(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default);
 
 }

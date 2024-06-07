@@ -1,13 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager NavigationManager
 <Router AppAssembly="@typeof(AppAdapter).Assembly">
-   
+
     <Found Context="routeData">
 
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)">
-          
+
             <NotAuthorized>
-                <LoginRedirect />
+                <MudAlert Severity="Severity.Error" Class="p-5">
+                    You are not authorized to visit this page
+                </MudAlert>
+
             </NotAuthorized>
             <Authorizing>
                 Logging in...

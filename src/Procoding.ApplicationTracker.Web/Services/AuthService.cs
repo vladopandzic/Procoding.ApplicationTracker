@@ -38,10 +38,17 @@ public class AuthService : IAuthService
         return await response.HandleResponseAsync<CandidateSignupResponseDTO>(cancellationToken);
     }
 
-    public async Task<Result<EmployeeLoginResponseDTO>> RefreshLoginToken(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default)
+    public async Task<Result<EmployeeLoginResponseDTO>> RefreshLoginTokenForEmployee(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient.PostAsJsonAsync($"{UrlConstants.Employees.LoginRefreshEmployee()}", requestDTO);
 
         return await response.HandleResponseAsync<EmployeeLoginResponseDTO>(cancellationToken);
+    }
+
+    public async Task<Result<CandidateLoginResponseDTO>> RefreshLoginTokenForCandidate(TokenRequestDTO requestDTO, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.PostAsJsonAsync($"{UrlConstants.Candidates.LoginRefreshCandidate()}", requestDTO);
+
+        return await response.HandleResponseAsync<CandidateLoginResponseDTO>(cancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Application.Core.Query;
 using Procoding.ApplicationTracker.Application.JobApplications.Queries.GetAllJobApplications;
@@ -17,6 +18,7 @@ public class GetAllJobApplicationsEndpoint : EndpointBaseAsync.WithRequest<JobAp
     }
 
     [HttpGet("job-applications")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
 
     public override async Task<JobApplicationListResponseDTO> HandleAsync([FromQuery] JobApplicationGetListRequestDTO request, CancellationToken cancellationToken = default)
     {

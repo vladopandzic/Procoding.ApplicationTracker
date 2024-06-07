@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.Candidates.Commands.UpdateCandidate;
@@ -22,6 +23,7 @@ public class UpdateCandidateEndpoint : EndpointBaseAsync.WithRequest<CandidateUp
     [HttpPut("candidates")]
     [ProducesResponseType(typeof(CandidateUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
     public override async Task<IActionResult> HandleAsync(CandidateUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new UpdateCandidateCommand(request.Id, request.Name, request.Surname, request.Email), cancellationToken);

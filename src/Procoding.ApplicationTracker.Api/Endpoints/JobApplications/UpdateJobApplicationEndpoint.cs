@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplications.Commands.ApplyForJob;
@@ -20,6 +21,8 @@ public class UpdateJobApplicationEndpoint : EndpointBaseAsync.WithRequest<JobApp
     [HttpPut("job-applications")]
     [ProducesResponseType(typeof(JobApplicationUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+
     public override async Task<IActionResult> HandleAsync(JobApplicationUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new UpdateJobApplicationCommand(id: request.Id, 

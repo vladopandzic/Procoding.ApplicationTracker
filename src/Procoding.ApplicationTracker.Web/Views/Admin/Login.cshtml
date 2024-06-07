@@ -1,4 +1,4 @@
-﻿@model Procoding.ApplicationTracker.DTOs.Request.Candidates.CandidateLoginRequestDTO;
+﻿@model Procoding.ApplicationTracker.DTOs.Request.Employees.EmployeeLoginRequestDTO;
 @using Procoding.ApplicationTracker.Web.Pages.Auth;
 @{
     ViewBag.Title = "Login";
@@ -19,7 +19,7 @@
 </style>
 
 
-@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+@using (Html.BeginForm("Login", "Admin", FormMethod.Post))
 {
     <div class="container">
         <div class="row">

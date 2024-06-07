@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.DTOs.Response;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplicationSources;
@@ -15,6 +16,8 @@ public class GetAllJobApplicationSourcesEndpoint : Ardalis.ApiEndpoints.Endpoint
     }
 
     [HttpGet("job-application-sources")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+
     public override Task<JobApplicationSourceListResponseDTO> HandleAsync(CancellationToken cancellationToken = default)
     {
         return _mediator.Send(new Application.JobApplicationSources.Query.GetJobApplicationSources.GetJobApplicationSourcesQuery(), cancellationToken);

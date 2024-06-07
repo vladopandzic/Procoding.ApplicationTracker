@@ -11,13 +11,9 @@ public partial class CompanyListPage
     [Inject]
     public CompanyListViewModel ViewModel { get; set; } = default!;
 
-    [Inject]
-    ILocalStorageService LocalStorage { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
-        await LocalStorage.SetItemAsync("aa", "bb");
         await ViewModel.InitializeViewModel();
         await base.OnInitializedAsync();
     }

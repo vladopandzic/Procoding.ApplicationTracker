@@ -25,43 +25,75 @@ public class RevalidatingServerAuthenticationState : RevalidatingServerAuthentic
         var currentAccessToken = authenticationState.User.Claims.FirstOrDefault(x => x.Type == "access_token")?.Value;
         var currentRefreshToken = authenticationState.User.Claims.FirstOrDefault(x => x.Type == "refresh_token")?.Value;
         var tokenRequest = new TokenRequestDTO() { AccessToken = currentAccessToken!, RefreshToken = currentRefreshToken! };
+        var isEmployee = authenticationState.User.IsInRole("Employee");
 
-
-        var result = await _authService.RefreshLoginToken(tokenRequest, cancellationToken);
-
-        var identity = authenticationState.User.Identities.First();
-
-        var oldClaims = identity.Claims.ToList();
-
-        identity.Claims.ToList().Clear();
-
-
-        for (int i = 0; i < identity.Claims.Count(); i++)
-        {
-            var claim = identity.Claims.ToList()[i];
-            identity.TryRemoveClaim(claim);
-        }
-
+        var isCandidate = authenticationState.User.IsInRole("Candidate");
         try
         {
+            var newAccessToken = "";
+            var newRefreshToken = "";
+
+            if (isEmployee)
+            {
+                var result = await _authService.RefreshLoginTokenForEmployee(tokenRequest, cancellationToken);
+                if (!result.IsSuccess)
+                {
+
+                    //TODO: give user information about that!
+                    return false;
+                }
+                newAccessToken = result.Value.AccessToken;
+                newRefreshToken = result.Value.RefreshToken;
+            }
+            else if (isCandidate)
+            {
+                var result = await _authService.RefreshLoginTokenForCandidate(tokenRequest, cancellationToken);
+                if (!result.IsSuccess)
+                {
+
+                    //TODO: give user information about that!
+                    return false;
+                }
+                newAccessToken = result.Value.AccessToken;
+                newRefreshToken = result.Value.RefreshToken;
+
+            }
+
+
+            var identity = authenticationState.User.Identities.First();
+
+            var oldClaims = identity.Claims.ToList();
+
+            identity.Claims.ToList().Clear();
+
+
+            for (int i = 0; i < identity.Claims.Count(); i++)
+            {
+                var claim = identity.Claims.ToList()[i];
+                identity.TryRemoveClaim(claim);
+            }
+
+
             foreach (var claim in oldClaims)
             {
                 identity.TryRemoveClaim(claim);
             }
+
+
+            var newClaims = ClaimsCreator.GetClaimsFromToken(newAccessToken, newRefreshToken);
+
+            foreach (var item in newClaims)
+            {
+                identity.AddClaim(item);
+            }
+
+            var newAuthState = Task.FromResult(new AuthenticationState(authenticationState.User));
+
+            SetAuthenticationState(newAuthState);
         }
         catch (Exception ex)
         {
         }
-        var newClaims = ClaimsCreator.GetClaimsFromToken(result.Value.AccessToken, result.Value.RefreshToken);
-
-        foreach (var item in newClaims)
-        {
-            identity.AddClaim(item);
-        }
-
-        var newAuthState = Task.FromResult(new AuthenticationState(authenticationState.User));
-
-        SetAuthenticationState(newAuthState);
         return true;
 
 

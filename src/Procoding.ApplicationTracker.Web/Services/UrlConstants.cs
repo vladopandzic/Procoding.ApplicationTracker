@@ -34,6 +34,11 @@ public static class UrlConstants
             return $"{GET_ALL_URL}/login";
         }
 
+        public static string LoginRefreshCandidate()
+        {
+            return $"{GET_ALL_URL}/login/refresh";
+        }
+
         public static string SignupCandidate()
         {
             return $"{GET_ALL_URL}/signup";

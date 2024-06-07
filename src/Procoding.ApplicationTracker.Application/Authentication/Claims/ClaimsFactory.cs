@@ -26,4 +26,14 @@ public static class ClaimsFactory
             .Select(cv => new Claim(cv.Type, cv.Value))
             .ToList();
     }
+
+    public static List<Claim> CreateEmployeeClaims()
+    {
+        return [new Claim(ClaimTypes.Role, "Employee")];
+    }
+
+    public static List<Claim> CreateCandidateClaims()
+    {
+        return [new Claim(ClaimTypes.Role, "Candidate")];
+    }
 }

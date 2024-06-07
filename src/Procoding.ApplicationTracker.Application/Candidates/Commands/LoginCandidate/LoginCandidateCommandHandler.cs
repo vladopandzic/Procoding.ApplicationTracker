@@ -51,6 +51,9 @@ internal class LoginCandidateCommandHandler : ICommandHandler<LoginCandidateComm
                                                 name: candidate.Name,
                                                 surname: candidate.Surname);
 
+        claims.AddRange(ClaimsFactory.CreateCandidateClaims());
+
+
         var expiryDate = _timeProvider.GetLocalNow().AddMonths(6);
 
         var tokenResponse = new CandidateLoginResponseDTO()

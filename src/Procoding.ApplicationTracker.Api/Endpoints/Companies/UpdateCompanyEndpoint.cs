@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
@@ -21,6 +22,7 @@ public class UpdateCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyUpdate
     [HttpPut("companies")]
     [ProducesResponseType(typeof(CompanyUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
     public override async Task<IActionResult> HandleAsync(CompanyUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new UpdateCompanyCommand(request.Id, request.Name, request.OfficialWebSiteLink), cancellationToken);

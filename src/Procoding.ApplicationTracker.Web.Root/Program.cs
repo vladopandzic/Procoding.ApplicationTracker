@@ -24,7 +24,7 @@ internal class Program
 
                                      x.AddScoped<ITokenProvider, TokenProvider>();
 
-                                     x.AddControllersWithViews().AddApplicationPart(typeof(LoginController).Assembly);
+                                     x.AddControllersWithViews().AddApplicationPart(typeof(AdminController).Assembly);
 
 
                                      x.AddScoped<AuthenticationStateProvider, RevalidatingServerAuthenticationState>();
@@ -33,6 +33,7 @@ internal class Program
                                      x.AddAuthentication().AddCookie(x =>
                                      {
                                          x.LoginPath = "/login";
+                                         x.AccessDeniedPath = "/no-access";
                                      });
 
                                      x.AddAuthorization();

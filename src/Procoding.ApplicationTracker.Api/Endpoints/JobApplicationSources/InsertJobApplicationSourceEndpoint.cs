@@ -2,6 +2,7 @@
 using Ardalis.ApiEndpoints;
 using LanguageExt;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplicationSources.Commands.InsertJobApplicationSource;
@@ -22,6 +23,8 @@ public class InsertJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<
     [HttpPost("job-application-sources")]
     [ProducesResponseType(typeof(JobApplicationSourceInsertedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+
     public override async Task<IActionResult> HandleAsync(JobApplicationSourceInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new AddJobApplicationSourceCommand(request.Name), cancellationToken);

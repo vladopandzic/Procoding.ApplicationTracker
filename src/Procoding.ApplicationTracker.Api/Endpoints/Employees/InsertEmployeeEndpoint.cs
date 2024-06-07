@@ -1,5 +1,6 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
@@ -20,6 +21,7 @@ public class InsertEmployeeEndpoint : EndpointBaseAsync.WithRequest<EmployeeInse
     [HttpPost("employees")]
     [ProducesResponseType(typeof(EmployeeInsertedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
     public override async Task<IActionResult> HandleAsync(EmployeeInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new InsertEmployeeCommand(name: request.Name,

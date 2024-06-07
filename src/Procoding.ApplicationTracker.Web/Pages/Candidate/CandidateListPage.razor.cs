@@ -8,8 +8,8 @@ using Procoding.ApplicationTracker.Web.ViewModels.Candidates;
 
 namespace Procoding.ApplicationTracker.Web.Pages.Candidate;
 
-[Authorize]
-public partial class CandidateListPage 
+[Authorize(Roles = "Employee")]
+public partial class CandidateListPage
 {
     [Inject]
     public CandidateListViewModel ViewModel { get; set; } = default!;

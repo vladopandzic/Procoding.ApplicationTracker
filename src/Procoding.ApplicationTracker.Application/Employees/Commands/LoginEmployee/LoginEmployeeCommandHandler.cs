@@ -52,6 +52,8 @@ internal class LoginEmployeeCommandHandler : ICommandHandler<LoginEmployeeComman
                                                 name: employee.Name,
                                                 surname: employee.Surname);
 
+        claims.AddRange(ClaimsFactory.CreateEmployeeClaims());
+
         var expiryDate = _timeProvider.GetLocalNow().AddMonths(6);
 
         var tokenResponse = new EmployeeLoginResponseDTO()
