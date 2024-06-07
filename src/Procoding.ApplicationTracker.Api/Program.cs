@@ -27,6 +27,8 @@ public class Program
         builder.AddServiceDefaults();
 
         builder.Services.AddControllers();
+        builder.Services.AddHttpContextAccessor();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGenWithBearerAuthorization("Bearer");
 
@@ -109,8 +111,10 @@ public class Program
         }).AddJwtCreator<Candidate>(builder.Configuration, "CandidateJwtTokenSettings");
 
 
-        builder.Services.AddAuthorization();
-
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(Policies.EmployeeOnly, Policies.EmployeeOnlyPolicy());
+        });
         var app = builder.Build();
 
         //using ApplicationDbContext context = await SeedDatabaseAsync(app);

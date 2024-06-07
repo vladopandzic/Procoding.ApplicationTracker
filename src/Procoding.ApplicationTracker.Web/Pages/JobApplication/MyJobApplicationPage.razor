@@ -67,6 +67,7 @@ else if (ViewModel.JobApplication is not null)
                                      ToStringFunc=CompaniesToStringFunc
                                      Validation="ViewModel.Validator.ValidateValue"
                                      Immediate="true"
+                                     MaxItems="50"
                                      @bind-Text=ViewModel.NewCompany.CompanyName
                                      SearchFunc="SearchCompaniesFunc">
                         <NoItemsTemplate>

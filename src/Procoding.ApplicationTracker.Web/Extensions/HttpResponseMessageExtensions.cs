@@ -14,6 +14,14 @@ public static class HttpResponseMessageExtensions
             var successContent = await response.Content.ReadFromJsonAsync<TSuccess>(cancellationToken);
             return Result.Ok(successContent!);
         }
+        else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return Result.Fail<TSuccess>(new Error("You are not authorized. You can try to login again"));
+        }
+        else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+        {
+            return Result.Fail<TSuccess>(new Error($"You are not authorized to visit resource {response.RequestMessage?.RequestUri}"));
+        }
         else
         {
             var errorContent = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken);

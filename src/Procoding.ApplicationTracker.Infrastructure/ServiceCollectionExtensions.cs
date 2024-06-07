@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain.Abstractions;
+using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.Domain.Repositories;
+using Procoding.ApplicationTracker.Infrastructure.Authentication;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 using Procoding.ApplicationTracker.Infrastructure.Repositories;
 
@@ -11,6 +13,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddPersistance(this IServiceCollection services)
     {
         services.AddSingleton<TimeProvider>(x => TimeProvider.System);
+
+        services.AddScoped<IIdentityContext, IdentityContext>();
 
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
 

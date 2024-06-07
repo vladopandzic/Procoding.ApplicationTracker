@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.Domain.Entities;
+using Procoding.ApplicationTracker.Infrastructure.Authentication;
 using System.Reflection;
 
 namespace Procoding.ApplicationTracker.Infrastructure.Data;
@@ -10,10 +11,12 @@ namespace Procoding.ApplicationTracker.Infrastructure.Data;
 public class ApplicationDbContext : DbContext, IUnitOfWork
 {
     private readonly TimeProvider _timeProvider;
+    private readonly IIdentityContext _identityContext;
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TimeProvider timeProvider) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TimeProvider timeProvider, IIdentityContext identityContext) : base(options)
     {
         _timeProvider = timeProvider;
+        _identityContext = identityContext;
     }
 
     public DbSet<Candidate> Candidates { get; set; }
@@ -32,8 +35,11 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        modelBuilder.Entity<JobApplication>().HasQueryFilter(jobApp => _identityContext == null ||
+                                                                       (_identityContext.IsCandidate == true && jobApp.Candidate.Id == _identityContext.UserId));
+        ;
 
-       
+
         base.OnModelCreating(modelBuilder);
     }
 
