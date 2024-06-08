@@ -62,7 +62,7 @@ internal sealed class LoginCandidateCommandHandler : ICommandHandler<LoginCandid
             ExpiresIn = _jwtTokenOptions.ExpiresInSeconds,
             TokenType = "Bearer"
         };
-
+        //TODO: candidateId column to refreshToken database!
         await _refreshTokenRepository.InsertAsync(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
                                                                           accessToken: tokenResponse.AccessToken,
                                                                           refreshToken: tokenResponse.RefreshToken,

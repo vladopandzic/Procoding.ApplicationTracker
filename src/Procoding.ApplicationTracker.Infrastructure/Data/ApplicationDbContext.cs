@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.Domain.Entities;
-using Procoding.ApplicationTracker.Infrastructure.Authentication;
 using System.Reflection;
 
 namespace Procoding.ApplicationTracker.Infrastructure.Data;
@@ -36,8 +35,8 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         modelBuilder.Entity<JobApplication>().HasQueryFilter(jobApp => _identityContext == null ||
+                                                                       _identityContext.IsEmployee == true ||
                                                                        (_identityContext.IsCandidate == true && jobApp.Candidate.Id == _identityContext.UserId));
-        ;
 
 
         base.OnModelCreating(modelBuilder);

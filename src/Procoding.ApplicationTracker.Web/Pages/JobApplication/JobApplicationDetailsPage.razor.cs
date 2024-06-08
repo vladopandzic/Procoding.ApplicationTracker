@@ -8,7 +8,7 @@ using static MudBlazor.Colors;
 
 namespace Procoding.ApplicationTracker.Web.Pages.JobApplication;
 
-[Authorize]
+[Authorize(Roles = "Employee")]
 public partial class JobApplicationDetailsPage
 {
     [Inject]

@@ -11,24 +11,26 @@
 <MudLayout>
     <MudAppBar>
 
-            <MudSpacer />
-            @Name
-            <MudMenu AnchorOrigin="Origin.BottomLeft" Icon="@Icons.Material.Filled.MoreVert">
-                <MudMenuItem OnClick="Logout">Logout</MudMenuItem>
-            </MudMenu>
+        <MudSpacer />
+        @Name
+        <MudMenu AnchorOrigin="Origin.BottomLeft" Icon="@Icons.Material.Filled.MoreVert">
+            <MudMenuItem OnClick="Logout">Logout</MudMenuItem>
+        </MudMenu>
     </MudAppBar>
     <MudDrawer Open="true" ClipMode="DrawerClipMode.Always">
         <MudPaper Width="250px" Class="py-3" Elevation="0">
             <MudNavMenu>
                 <MudText Typo="Typo.h6" Class="px-4">Job application tracker</MudText>
-                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Admin view</MudText>
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">@(IsAdminView ? "Admin view" : "Candidates view")</MudText>
                 <MudDivider Class="my-2" />
                 <MudNavLink Href="/">Home</MudNavLink>
                 <MudNavLink Href="/my-job-applications/new">New job application</MudNavLink>
-                <MudNavLink Href="/job-applications">Job applications</MudNavLink>
-                <MudNavLink Href="/candidates">Candidates</MudNavLink>
-                <MudNavLink Href="/companies">Companies</MudNavLink>     
-                <MudNavLink Href="/job-application-sources">Job application sources</MudNavLink>
+                <AuthorizeView Roles="Employee">
+                    <MudNavLink Href="/job-applications">Job applications</MudNavLink>
+                    <MudNavLink Href="/candidates">Candidates</MudNavLink>
+                    <MudNavLink Href="/companies">Companies</MudNavLink>
+                    <MudNavLink Href="/job-application-sources">Job application sources</MudNavLink>
+                </AuthorizeView>
 
             </MudNavMenu>
         </MudPaper>
@@ -48,10 +50,13 @@
 
     public string? Name { get; set; }
 
+    public bool IsAdminView { get; set; }
+
     protected async override Task OnInitializedAsync()
     {
         var authstate = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authstate.User;
+        IsAdminView = user.IsInRole("Employee");
         Name = user.Identity?.Name;
     }
 

@@ -5,7 +5,7 @@ using Procoding.ApplicationTracker.Web.ViewModels.JobApplicationSources;
 
 namespace Procoding.ApplicationTracker.Web.Pages.JobApplicationSource;
 
-[Authorize]
+[Authorize(Roles = "Employee")]
 public partial class JobApplicationSourceDetailsPage
 {
     [Inject]
