@@ -23,7 +23,12 @@ public static class DatabaseSeedData
 
     public static List<Employee> GetEmployees(IPasswordHasher<Employee> passwordHasher)
     {
-        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email(LoginHelper.DEFAULT_EMPLOYEE_USER_EMAIL), LoginHelper.DEFAULT_EMPLOYEE_USER_PASSWORD, passwordHasher)];
+        return [Employee.Create(Guid.Empty,
+                                "Vlado",
+                                "Pandzic",
+                                new Email(LoginHelper.DEFAULT_EMPLOYEE_USER_EMAIL),
+                                LoginHelper.DEFAULT_EMPLOYEE_USER_PASSWORD,
+                                passwordHasher)];
     }
 
     public static List<Company> GetCompanies()
@@ -31,9 +36,25 @@ public static class DatabaseSeedData
         return [Company.Create(new CompanyName("CompanyName Ltd."), new Link("https://www.company.com"))];
     }
 
-    public static JobApplication GetJobApplication(Candidate candidate, Company company, JobApplicationSource jobApplicationSource)
+    public static JobApplication GetJobApplication(Candidate candidate,
+                                                   Company company,
+                                                   JobApplicationSource jobApplicationSource,
+                                                   string jobPositionTitle,
+                                                   Link jobAdLink,
+                                                   WorkLocationType workLocationType,
+                                                   JobType jobType,
+                                                   string? description = null)
     {
-        var jobApplication = JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System);
+        var jobApplication = JobApplication.Create(candidate: candidate,
+                                                   id: Guid.NewGuid(),
+                                                   jobApplicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   timeProvider: TimeProvider.System,
+                                                   jobType: jobType,
+                                                   workLocationType: workLocationType,
+                                                   jobAdLink: jobAdLink,
+                                                   jobPositionTitle: jobPositionTitle,
+                                                   description: description);
         return jobApplication;
     }
 }

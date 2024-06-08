@@ -12,11 +12,11 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
     private readonly TimeProvider _timeProvider;
     private readonly IIdentityContext _identityContext;
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TimeProvider timeProvider, IIdentityContext identityContext) : base(options)
-    {
-        _timeProvider = timeProvider;
-        _identityContext = identityContext;
-    }
+    //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, TimeProvider timeProvider, IIdentityContext identityContext) : base(options)
+    //{
+    //    _timeProvider = timeProvider;
+    //    _identityContext = identityContext;
+    //}
 
     public DbSet<Candidate> Candidates { get; set; }
 
@@ -128,6 +128,6 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=ApplicationTrackerDb;Trusted_Connection=True;TrustServerCertificate=True;");
+        optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=ApplicationTrackerDb;Trusted_Connection=True;TrustServerCertificate=True;");
     }
 }

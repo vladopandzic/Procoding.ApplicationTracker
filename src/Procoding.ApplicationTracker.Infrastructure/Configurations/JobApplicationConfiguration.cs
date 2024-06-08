@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Procoding.ApplicationTracker.Domain.Entities;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 
 namespace Procoding.ApplicationTracker.Infrastructure.Configurations;
 
@@ -29,6 +30,28 @@ public sealed class JobApplicationConfiguration : IEntityTypeConfiguration<JobAp
         builder.Property(x => x.JobApplicationStatus)
                .HasConversion<string>()
                .HasMaxLength(100);
+
+        builder.Property(x => x.JobPositionTitle).HasMaxLength(256);
+
+        builder.Property(x => x.Description).HasMaxLength(512);
+
+        builder.ComplexProperty(x => x.JobAdLink)
+               .IsRequired()
+               .Property(x => x.Value)
+               .HasMaxLength(Link.MaxLengthForValue)
+               .IsRequired();
+
+        builder.ComplexProperty(x => x.JobType)
+               .IsRequired()
+               .Property(x => x.Value)
+               .HasMaxLength(64)
+               .IsRequired();
+
+        builder.ComplexProperty(x => x.WorkLocationType)
+               .IsRequired()
+               .Property(x => x.Value)
+               .HasMaxLength(64)
+               .IsRequired();
 
     }
 }

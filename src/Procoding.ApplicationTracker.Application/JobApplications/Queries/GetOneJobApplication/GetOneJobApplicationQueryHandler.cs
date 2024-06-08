@@ -30,7 +30,18 @@ internal sealed class GetOneJobApplicationQueryHandler : IQueryHandler<GetOneJob
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 
-        var jobApplicationDto = new JobApplicationDTO(jobApplication.Id, candidateDto, jobApplicationSourceDto, companyDto);
+        var workLocationDto = new WorkLocationTypeDTO(jobApplication.WorkLocationType.Value);
+        var jobType = new JobTypeDTO(jobApplication.JobType.Value);
+
+        var jobApplicationDto = new JobApplicationDTO(id: jobApplication.Id,
+                                                      candidate: candidateDto,
+                                                      applicationSource: jobApplicationSourceDto,
+                                                      company: companyDto,
+                                                      jobPositionTitle: jobApplication.JobPositionTitle,
+                                                      jobAdLink: jobApplication.JobAdLink.Value,
+                                                      workLocation: workLocationDto,
+                                                      jobType: jobType,
+                                                      description: jobApplication.Description);
 
         return new JobApplicationResponseDTO(jobApplicationDto);
     }

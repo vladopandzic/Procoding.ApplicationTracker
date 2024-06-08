@@ -35,7 +35,6 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
 
     public async Task<Result<JobApplicationUpdatedResponseDTO>> Handle(UpdateJobApplicationCommand request, CancellationToken cancellationToken)
     {
-
         var jobApplication = await _jobApplicationRepository.GetJobApplicationAsync(request.Id, cancellationToken);
 
         if (jobApplication is null)
@@ -77,6 +76,17 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 
-        return new JobApplicationUpdatedResponseDTO(new JobApplicationDTO(jobApplication.Id, candidateDto, jobApplicationSourceDto, companyDto));
+        var workLocationDto = new WorkLocationTypeDTO(jobApplication.WorkLocationType.Value);
+        var jobType = new JobTypeDTO(jobApplication.JobType.Value);
+
+        return new JobApplicationUpdatedResponseDTO(new JobApplicationDTO(id: jobApplication.Id,
+                                                                          candidate: candidateDto,
+                                                                          applicationSource: jobApplicationSourceDto,
+                                                                          company: companyDto,
+                                                                          jobPositionTitle: jobApplication.JobPositionTitle,
+                                                                          jobAdLink: jobApplication.JobAdLink.Value,
+                                                                          workLocation: workLocationDto,
+                                                                          jobType: jobType,
+                                                                          description: jobApplication.Description));
     }
 }

@@ -71,7 +71,15 @@ public class MyJobApplicationViewModel : EditViewModelBase
             var jobApplicationSource = new JobApplicationSourceDTO(Guid.Empty, "");
             var company = new CompanyDTO(Guid.Empty, "", "");
 
-            JobApplication = new JobApplicationDTO(Guid.Empty, candidate, jobApplicationSource, company);
+            JobApplication = new JobApplicationDTO(id: Guid.Empty,
+                                                   candidate: candidate,
+                                                   applicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   jobPositionTitle: "",
+                                                   jobAdLink: "",
+                                                   jobType: new JobTypeDTO(""),
+                                                   workLocation: new WorkLocationTypeDTO(""),
+                                                   description: null);
 
             return;
         }

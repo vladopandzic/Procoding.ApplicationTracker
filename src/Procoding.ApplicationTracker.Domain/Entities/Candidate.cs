@@ -11,7 +11,6 @@ namespace Procoding.ApplicationTracker.Domain.Entities;
 /// </summary>
 public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAuditableEntity, IEntityBase, IAggregateRoot
 {
-
     private readonly List<JobApplication> _jobApplications = new();
 
     /// <summary>
@@ -108,10 +107,7 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     /// <returns></returns>
     public static Candidate Create(Guid id, string name, string surname, Email email, string password, IPasswordHasher<Candidate> passwordHasher)
     {
-        var candidate = new Candidate(id: id,
-                                      name: name,
-                                      surname: surname,
-                                      email: email);
+        var candidate = new Candidate(id: id, name: name, surname: surname, email: email);
         candidate.PasswordHash = passwordHasher.HashPassword(candidate, password);
         candidate.AddDomainEvent(new CandidateCreatedDomainEvent(candidate));
 
@@ -150,9 +146,10 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     public new Email Email { get; private set; }
 
     /// <summary>
-    /// Job applications for the candidate. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".
-    /// It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
-    /// https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx
+    /// Job applications for the candidate. Using AsReadOnly() will create a read only wrapper around the private list
+    /// so is protected against "external updates". It's much cheaper than .ToList() because it will not have to copy
+    /// all items in a new collection. (Just one heap alloc for the wrapper instance) https://msdn.microsoft.com/en-
+    /// us/library/e78dcd75(v=vs.110).aspx
     /// </summary>
     public IReadOnlyList<JobApplication> JobApplications => _jobApplications.AsReadOnly();
 
@@ -168,18 +165,30 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.ToList();
 
     /// <summary>
-    ///  Applies for a job for <paramref name="company"/>.
+    /// Applies for a job for <paramref name="company"/>.
     /// </summary>
     /// <param name="company"></param>
     /// <param name="jobApplicationSource"></param>
     /// <param name="timeProvider"></param>
     /// <returns></returns>
-    public JobApplication ApplyForAJob(Company company, JobApplicationSource jobApplicationSource, TimeProvider timeProvider)
+    public JobApplication ApplyForAJob(Company company,
+                                       JobApplicationSource jobApplicationSource,
+                                       TimeProvider timeProvider,
+                                       Link jobAdLink,
+                                       WorkLocationType workLocationType,
+                                       JobType jobType,
+                                       string jobPositionTitle,
+                                       string? description = null)
     {
         var jobApplication = JobApplication.Create(candidate: this,
                                                    id: Guid.NewGuid(),
                                                    jobApplicationSource: jobApplicationSource,
                                                    company: company,
+                                                   workLocationType: workLocationType,
+                                                   jobAdLink: jobAdLink,
+                                                   jobType: jobType,
+                                                   jobPositionTitle: jobPositionTitle,
+                                                   description: description,
                                                    timeProvider: timeProvider);
 
         _jobApplications.Add(jobApplication);
@@ -190,13 +199,9 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
 
     public void NewJobInterviewStep(JobApplication jobApplication, string description, InterviewStepType interviewStepType)
     {
-        var interviewStep = jobApplication.CreateNewInterview(id: Guid.NewGuid(),
-                                                              description: description,
-                                                              inteviewStepType: interviewStepType);
+        var interviewStep = jobApplication.CreateNewInterview(id: Guid.NewGuid(), description: description, inteviewStepType: interviewStepType);
 
         //TODO: see where domain event should reside!
-
-
     }
 
 
@@ -205,6 +210,7 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     /// </summary>
     /// <param name="domainEvent">The domain event.</param>
     public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();

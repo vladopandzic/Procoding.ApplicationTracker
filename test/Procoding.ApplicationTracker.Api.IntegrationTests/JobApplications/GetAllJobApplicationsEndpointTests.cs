@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Domain;
 using Procoding.ApplicationTracker.Domain.Entities;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -62,6 +63,11 @@ public class GetAllJobApplicationsEndpointTests : TestBase
                                                                                               id: Guid.NewGuid(),
                                                                                               jobApplicationSource: jobApplicationSource,
                                                                                               company: company,
+                                                                                              jobPositionTitle: f.Random.String(),
+                                                                                              jobAdLink: new Link(f.Internet.Url()),
+                                                                                              jobType: JobType.Contract,
+                                                                                              workLocationType: WorkLocationType.Remote,
+                                                                                              description: null,
                                                                                               timeProvider: TimeProvider.System));
 
 

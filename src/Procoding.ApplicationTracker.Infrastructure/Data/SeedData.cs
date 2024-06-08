@@ -21,8 +21,8 @@ public static class SeedData
 
         await dbContext.AddRangeAsync(companies);
 
-        List<Candidate> candidates = [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"),"test123",passwordHasher),
-                                      Candidate.Create(Guid.Empty, "Name2", "Surname2", new Email("email2@email.com"),"test123",passwordHasher)];
+        List<Candidate> candidates = [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"), "test123", passwordHasher),
+                                      Candidate.Create(Guid.Empty, "Name2", "Surname2", new Email("email2@email.com"), "test123", passwordHasher)];
 
         await dbContext.AddRangeAsync(candidates);
 
@@ -33,11 +33,19 @@ public static class SeedData
         var company = dbContext.Companies.Skip(1).Take(1).First();
         var jobApplicationSource = dbContext.JobApplicationSources.Skip(1).Take(1).First();
 
-        var jobApplications = Enumerable.Range(1, 10).Select(x => JobApplication.Create(candidate, Guid.NewGuid(), jobApplicationSource, company, TimeProvider.System));
+        var jobApplications = Enumerable.Range(1, 10).Select(x => JobApplication.Create(candidate: candidate,
+                                                                                        id: Guid.NewGuid(),
+                                                                                        jobApplicationSource: jobApplicationSource,
+                                                                                        company: company,
+                                                                                        timeProvider: TimeProvider.System,
+                                                                                        jobPositionTitle: "Senior .NET sw engineer",
+                                                                                        jobAdLink: new Link("https://www.link2.com"),
+                                                                                        workLocationType: WorkLocationType.Remote,
+                                                                                        jobType: JobType.FullTime,
+                                                                                        description: "desc"));
 
         await dbContext.JobApplications.AddRangeAsync(jobApplications.ToList());
 
         await dbContext.SaveChangesAsync();
-
     }
 }

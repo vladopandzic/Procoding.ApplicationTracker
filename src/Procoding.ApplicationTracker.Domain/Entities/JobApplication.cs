@@ -1,6 +1,7 @@
 ﻿using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Common;
 using Procoding.ApplicationTracker.Domain.Events;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 
 namespace Procoding.ApplicationTracker.Domain.Entities;
 
@@ -9,7 +10,6 @@ namespace Procoding.ApplicationTracker.Domain.Entities;
 /// </summary>
 public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAuditableEntity
 {
-
     private readonly List<InterviewStep> _interviewSteps = new();
 
     /// <summary>
@@ -31,17 +31,27 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     /// <param name="company">Company that the candidate applies for.</param>
     /// <param name="jobApplicationStatus">Job application status.</param>
     private JobApplication(Candidate candidate,
-                          Guid id,
-                          DateTime appliedOnUTC,
-                          JobApplicationSource applicationSource,
-                          Company company,
-                          JobApplicationStatus jobApplicationStatus) : base(id)
+                           Guid id,
+                           DateTime appliedOnUTC,
+                           JobApplicationSource applicationSource,
+                           Company company,
+                           JobApplicationStatus jobApplicationStatus,
+                           JobType jobType,
+                           WorkLocationType workLocationType,
+                           string jobPositionTitle,
+                           Link jobAdLink,
+                           string description) : base(id)
     {
         Candidate = candidate;
         AppliedOnUTC = appliedOnUTC;
         ApplicationSource = applicationSource;
         Company = company;
         JobApplicationStatus = jobApplicationStatus;
+        JobType = jobType;
+        WorkLocationType = workLocationType;
+        JobPositionTitle = jobPositionTitle;
+        Description = description;
+        JobAdLink = jobAdLink;
     }
 
     /// <summary>
@@ -57,20 +67,28 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
                                         Guid id,
                                         JobApplicationSource jobApplicationSource,
                                         Company company,
+                                        string jobPositionTitle,
+                                        Link jobAdLink,
+                                        JobType jobType,
+                                        WorkLocationType workLocationType,
+                                        string? description,
                                         TimeProvider timeProvider)
     {
-
         var newJobApplication = new JobApplication(candidate: candidate,
                                                    id: id,
                                                    appliedOnUTC: timeProvider.GetUtcNow().DateTime,
                                                    applicationSource: jobApplicationSource,
                                                    company: company,
+                                                   jobPositionTitle: jobPositionTitle,
+                                                   jobAdLink: jobAdLink,
+                                                   jobType: jobType,
+                                                   workLocationType: workLocationType,
+                                                   description: description,
                                                    jobApplicationStatus: JobApplicationStatus.Applied);
 
         newJobApplication.AddDomainEvent(new AppliedForAJobDomainEvent(newJobApplication));
 
         return newJobApplication;
-
     }
 
     /// <summary>
@@ -82,10 +100,7 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     /// <returns></returns>
     public InterviewStep CreateNewInterview(Guid id, string description, InterviewStepType inteviewStepType)
     {
-        var interview = new InterviewStep(jobApplication: this,
-                                          id: id,
-                                          description: description,
-                                          inteviewStepType: inteviewStepType);
+        var interview = new InterviewStep(jobApplication: this, id: id, description: description, inteviewStepType: inteviewStepType);
 
         _interviewSteps.Add(interview);
 
@@ -121,6 +136,26 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     public JobApplicationStatus JobApplicationStatus { get; }
 
     /// <summary>
+    /// Job type like <see cref="JobType.FullTime"/> or <see cref="JobType.PartTime"/>.
+    /// </summary>
+    public JobType JobType { get; }
+
+    /// <summary>
+    /// Work location type like <see cref="WorkLocationType.Remote"/> or <see cref="WorkLocationType.Hybrid"/>.
+    /// </summary>
+    public WorkLocationType WorkLocationType { get; }
+
+    //TODO: make it as separate table?
+    /// <summary>
+    /// Title for the position like Senior .NET software engineer.
+    /// </summary>
+    public string JobPositionTitle { get; }
+
+    public string? Description { get; }
+
+    public Link JobAdLink { get; }
+
+    /// <summary>
     /// Company the candidate applies for.
     /// </summary>
     public Company Company { get; private set; }
@@ -131,8 +166,9 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     public Candidate Candidate { get; private set; }
 
     /// <summary>
-    /// Interview steps each job application has. Using AsReadOnly() will create a read only wrapper around the private list so is protected against "external updates".
-    /// It's much cheaper than .ToList() because it will not have to copy all items in a new collection. (Just one heap alloc for the wrapper instance)
+    /// Interview steps each job application has. Using AsReadOnly() will create a read only wrapper around the private
+    /// list so is protected against "external updates". It's much cheaper than .ToList() because it will not have to
+    /// copy all items in a new collection. (Just one heap alloc for the wrapper instance)
     /// https://msdn.microsoft.com/en-us/library/e78dcd75(v=vs.110).aspx
     /// </summary>
     public IReadOnlyList<InterviewStep> InterviewSteps => _interviewSteps.AsReadOnly();

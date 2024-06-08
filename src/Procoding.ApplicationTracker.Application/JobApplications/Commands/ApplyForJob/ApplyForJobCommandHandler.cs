@@ -3,6 +3,7 @@ using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
@@ -55,7 +56,13 @@ internal sealed class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCom
             throw new JobApplicationSourceDoesNotExistException("Candidate does not exist");
         }
 
-        var jobApplication = candidate.ApplyForAJob(company, jobApplicationSource, _timeProvider);
+        var jobApplication = candidate.ApplyForAJob(company: company,
+                                                    jobApplicationSource: jobApplicationSource,
+                                                    timeProvider: _timeProvider,
+                                                    jobPositionTitle: "Senior .NET sw engineer",
+                                                    jobAdLink: new Link("https://www.link2.com"),
+                                                    workLocationType: WorkLocationType.Remote,
+                                                    jobType: JobType.FullTime);
 
         await _jobApplicationRepository.InsertAsync(jobApplication, cancellationToken);
 
@@ -69,6 +76,16 @@ internal sealed class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCom
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 
-        return new JobApplicationInsertedResponseDTO(new JobApplicationDTO(jobApplication.Id, candidateDto, jobApplicationSourceDto, companyDto));
+        var workLocationDto = new WorkLocationTypeDTO(jobApplication.WorkLocationType.Value);
+        var jobType = new JobTypeDTO(jobApplication.JobType.Value);
+        return new JobApplicationInsertedResponseDTO(new JobApplicationDTO(id: jobApplication.Id,
+                                                                           candidate: candidateDto,
+                                                                           applicationSource: jobApplicationSourceDto,
+                                                                           company: companyDto,
+                                                                           jobPositionTitle: jobApplication.JobPositionTitle,
+                                                                           jobAdLink: jobApplication.JobAdLink.Value,
+                                                                           workLocation: workLocationDto,
+                                                                           jobType: jobType,
+                                                                           description: jobApplication.Description));
     }
 }

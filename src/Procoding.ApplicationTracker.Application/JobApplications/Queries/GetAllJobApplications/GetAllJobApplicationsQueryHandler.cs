@@ -1,4 +1,5 @@
 ﻿using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
@@ -29,7 +30,18 @@ internal sealed class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJo
             var jobApplicationSourceDto = new JobApplicationSourceDTO(x.ApplicationSource.Id, x.ApplicationSource.Name);
             var companyDto = new CompanyDTO(x.Company.Id, x.Company.CompanyName.Value, x.Company.OfficialWebSiteLink.Value);
 
-            return new JobApplicationDTO(x.Id, candidateDto, jobApplicationSourceDto, companyDto);
+            var workLocationDto = new WorkLocationTypeDTO(x.WorkLocationType.Value);
+            var jobType = new JobTypeDTO(x.JobType.Value);
+
+            return new JobApplicationDTO(id: x.Id,
+                                         candidate: candidateDto,
+                                         applicationSource: jobApplicationSourceDto,
+                                         company: companyDto,
+                                         jobAdLink: x.JobAdLink.Value,
+                                         workLocation: workLocationDto,
+                                         jobType: jobType,
+                                         jobPositionTitle: x.JobPositionTitle,
+                                         description: null);
         }).ToList();
 
         return new JobApplicationListResponseDTO(jobApplicationsDto.AsReadOnly(), count);

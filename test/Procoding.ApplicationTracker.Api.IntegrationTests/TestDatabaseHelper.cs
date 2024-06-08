@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Domain.Entities;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests;
@@ -64,7 +65,11 @@ public class TestDatabaseHelper
 
         JobApplication jobApplication = DatabaseSeedData.GetJobApplication(context.Candidates.First(),
                                                                            context.Companies.First(),
-                                                                           context.JobApplicationSources.First());
+                                                                           context.JobApplicationSources.First(),
+                                                                           jobPositionTitle: "Senior .NET sw engineer",
+                                                                           jobAdLink: new Link("https://www.link2.com"),
+                                                                           workLocationType: WorkLocationType.Remote,
+                                                                           jobType: JobType.FullTime);
         await context.JobApplications.AddAsync(jobApplication);
 
         await context.SaveChangesAsync();

@@ -50,7 +50,15 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
             var jobApplicationSource = new JobApplicationSourceDTO(Guid.NewGuid(), "");
             var company = new CompanyDTO(Guid.NewGuid(), "", "");
 
-            JobApplication = new JobApplicationDTO(Guid.Empty, candidate, jobApplicationSource, company);
+            JobApplication = new JobApplicationDTO(id: Guid.Empty,
+                                                   candidate: candidate,
+                                                   applicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   jobPositionTitle: "",
+                                                   jobAdLink: "",
+                                                   workLocation: new WorkLocationTypeDTO(""),
+                                                   jobType: new JobTypeDTO(""),
+                                                   description: "");
 
             return;
         }
@@ -110,7 +118,12 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
             var result = await _jobApplicationService
                     .InsertJobApplicationAsync(new JobApplicationInsertRequestDTO(CandidateId: JobApplication.Candidate!.Id,
                                                                                   JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
-                                                                                  CompanyId: JobApplication.Company!.Id));
+                                                                                  CompanyId: JobApplication.Company!.Id,
+                                                                                  JobPositionTitle: JobApplication.JobPositionTitle,
+                                                                                  JobAdLink: JobApplication.JobAdLink,
+                                                                                  JobType: JobApplication.JobType,
+                                                                                  WorkLocationType: JobApplication.WorkLocation,
+                                                                                  Description: JobApplication.Description));
 
             if (result.IsSuccess)
             {

@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
@@ -33,7 +34,12 @@ public class InsertJobApplicationEndpointTests : TestBase
         var response = await client.PostAsJsonAsync($"job-applications",
                                                     new JobApplicationInsertRequestDTO(CandidateId: candidate.Id,
                                                                                        JobApplicationSourceId: jobApplicationSource.Id,
-                                                                                       CompanyId: company.Id));
+                                                                                       CompanyId: company.Id,
+                                                                                       JobPositionTitle: "Senior .NET engineer",
+                                                                                       JobAdLink: "https://www.link.com",
+                                                                                       JobType: new DTOs.Model.JobTypeDTO(JobType.Contract.Value),
+                                                                                       WorkLocationType: new DTOs.Model.WorkLocationTypeDTO(WorkLocationType.Remote.Value),
+                                                                                       Description: null));
         var json = await response.Content.ReadFromJsonAsync<JobApplicationInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allJobApplicationsAfter = await dbContext2.JobApplications.IgnoreQueryFilters().ToListAsync();

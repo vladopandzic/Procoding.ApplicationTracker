@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Events;
 using Procoding.ApplicationTracker.Domain.Tests.TestData;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 
 namespace Procoding.ApplicationTracker.Domain.Tests.Entities;
 
@@ -22,7 +23,16 @@ public class JobApplicationTests
         timeProvider.GetUtcNow().Returns(DateTime.UtcNow);
 
         // Act
-        var jobApplication = JobApplication.Create(candidate, id, jobApplicationSource, company, timeProvider);
+        var jobApplication = JobApplication.Create(candidate: candidate,
+                                                   id: id,
+                                                   jobApplicationSource: jobApplicationSource,
+                                                   company: company,
+                                                   timeProvider: timeProvider,
+                                                   jobPositionTitle: "Senior .NET sw engineer",
+                                                   jobAdLink: new Link("https://www.link2.com"),
+                                                   workLocationType: WorkLocationType.Remote,
+                                                   jobType: JobType.FullTime,
+                                                   description: "desc");
 
         // Assert
         Assert.That(jobApplication, Is.Not.Null);
@@ -31,6 +41,16 @@ public class JobApplicationTests
         Assert.That(jobApplication.ApplicationSource, Is.EqualTo(jobApplicationSource));
         Assert.That(jobApplication.Company, Is.EqualTo(company));
         Assert.That(jobApplication.JobApplicationStatus, Is.EqualTo(JobApplicationStatus.Applied));
+        Assert.That(jobApplication.JobPositionTitle, Is.EqualTo("Senior .NET sw engineer"));
+        Assert.That(jobApplication.Description, Is.EqualTo("desc"));
+        Assert.That(jobApplication.JobAdLink, Is.EqualTo(new Link("https://www.link2.com")));
+        Assert.That(jobApplication.WorkLocationType, Is.EqualTo(WorkLocationType.Remote));
+        Assert.That(jobApplication.JobType, Is.EqualTo(JobType.FullTime));
+
+
+
+
+
     }
 
     [Test]

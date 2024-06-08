@@ -68,7 +68,12 @@ public class CandidateTests
         var surname = "Doe";
 
         // Act & Assert
-        Assert.Throws<InvalidEmailException>(() => Candidate.Create(id: id, name: name, surname: surname, email: new Email("invalid-email"), "", new FakePasswordHasher<Candidate>()));
+        Assert.Throws<InvalidEmailException>(() => Candidate.Create(id: id,
+                                                                    name: name,
+                                                                    surname: surname,
+                                                                    email: new Email("invalid-email"),
+                                                                    "",
+                                                                    new FakePasswordHasher<Candidate>()));
     }
 
     [Test]
@@ -118,7 +123,13 @@ public class CandidateTests
         timeProvider.GetUtcNow().Returns(DateTime.UtcNow);
 
         // Act
-        candidate.ApplyForAJob(company, jobApplicationSource, timeProvider);
+        candidate.ApplyForAJob(company: company,
+                               jobApplicationSource: jobApplicationSource,
+                               timeProvider: timeProvider,
+                               jobPositionTitle: "Senior .NET sw engineer",
+                               jobAdLink: new Link("https://www.link2.com"),
+                               workLocationType: WorkLocationType.Remote,
+                               jobType: JobType.FullTime);
 
         // Assert
         Assert.That(candidate.JobApplications.First().DomainEvents, Has.Count.EqualTo(1));
