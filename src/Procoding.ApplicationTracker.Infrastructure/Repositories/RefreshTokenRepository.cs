@@ -15,17 +15,17 @@ internal class RefreshTokenRepository : IRefreshTokenRepository
         _dbContext = dbContext;
     }
 
-    public async Task<RefreshToken?> GetByToken(string token)
+    public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token);
+        return await _dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Token == token, cancellationToken);
     }
 
-    public async Task Insert(RefreshToken refreshToken)
+    public async Task InsertAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
     {
-        _ = await _dbContext.RefreshTokens.AddAsync(refreshToken);
+        _ = await _dbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
     }
 
-    public async Task MarkAsUsed(RefreshToken refreshToken)
+    public async Task MarkAsUsedAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
     {
         refreshToken.MarkAsUsed();
         _ = _dbContext.RefreshTokens.Update(refreshToken);

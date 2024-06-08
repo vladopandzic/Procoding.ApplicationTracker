@@ -1,45 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplications;
 
 [TestFixture]
-public class GetOneJobApplicationEndpointTests
+public class GetOneJobApplicationEndpointTests : TestBase
 {
-    private CustomWebApplicationFactory _factory;
-
-    [SetUp]
-    public async Task Setup()
-    {
-        var testDatabaseHelper = new TestDatabaseHelper();
-        await testDatabaseHelper.SetupDatabase();
-        _factory = new CustomWebApplicationFactory(testDatabaseHelper,
-                                                   (x) =>
-                                                   {
-                                                   });
-    }
-
-
-    [TearDown]
-    public async Task TearDown()
-    {
-
-        if (_factory is not null)
-        {
-            await _factory.TestDatabaseHelper.DeleteAsync();
-            await _factory.DisposeAsync();
-
-        }
-    }
-
     [Test]
     public async Task GetOneJobApplicationEndpointTests_ShouldReturnListOfJobApplications()
     {
@@ -50,9 +18,11 @@ public class GetOneJobApplicationEndpointTests
                                    .Include(x => x.Company)
                                    .Include(x => x.Candidate)
                                    .Include(x => x.ApplicationSource)
+                                   .IgnoreQueryFilters()
                                    .FirstOrDefault();
 
         //Act
+        await LoginHelper.LoginCandidate(client);
         var response = await client.GetFromJsonAsync<JobApplicationResponseDTO>($"job-applications/{firstFromDb!.Id}");
 
         //Assert

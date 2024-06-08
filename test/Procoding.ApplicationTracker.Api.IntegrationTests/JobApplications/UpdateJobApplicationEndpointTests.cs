@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -7,48 +9,24 @@ using System.Net.Http.Json;
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplications;
 
 [TestFixture]
-public class UpdateJobApplicationEndpointTests
+public class UpdateJobApplicationEndpointTests : TestBase
 {
-    private CustomWebApplicationFactory _factory;
-
-    [SetUp]
-    public async Task Setup()
-    {
-        var testDatabaseHelper = new TestDatabaseHelper();
-        await testDatabaseHelper.SetupDatabase();
-        _factory = new CustomWebApplicationFactory(testDatabaseHelper,
-                                                   (x) =>
-        {
-        });
-    }
-
-
-    [TearDown]
-    public async Task TearDown()
-    {
-
-        if (_factory is not null)
-        {
-            await _factory.TestDatabaseHelper.DeleteAsync();
-            await _factory.DisposeAsync();
-
-        }
-    }
-
     [Test]
     public async Task UpdateJobApplication_ShouldUpdateJobApplication()
     {
         //Arrange
         var client = _factory.CreateClient();
         using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
+        var identityContext = _factory.Services.GetRequiredScopedService<IIdentityContext>();
         var candidate = await dbContext.Candidates.FirstAsync();
         var company = await dbContext.Companies.FirstAsync();
         var jobApplicationSource = await dbContext.JobApplicationSources.FirstAsync();
         var allJobApplicationsBefore = await dbContext.JobApplications.ToListAsync();
-        var firstFromDb = dbContext.JobApplications.FirstOrDefault();
+        var firstFromDb = dbContext.JobApplications.IgnoreQueryFilters().FirstOrDefault();//because we use ApplicationDbContext of different scope
 
 
         //Act
+        await LoginHelper.LoginCandidate(client);
         var response = await client.PutAsJsonAsync($"job-applications",
                                                    new JobApplicationUpdateRequestDTO(Id: firstFromDb!.Id,
                                                                                       CandidateId: candidate.Id,

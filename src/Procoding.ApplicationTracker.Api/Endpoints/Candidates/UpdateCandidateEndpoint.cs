@@ -23,7 +23,7 @@ public class UpdateCandidateEndpoint : EndpointBaseAsync.WithRequest<CandidateUp
     [HttpPut("candidates")]
     [ProducesResponseType(typeof(CandidateUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override async Task<IActionResult> HandleAsync(CandidateUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new UpdateCandidateCommand(request.Id, request.Name, request.Surname, request.Email), cancellationToken);

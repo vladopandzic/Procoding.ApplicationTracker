@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Infrastructure;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -37,12 +38,14 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Api.Program>
     //        _configureServices(services);
     //    });
     //}
-
+    protected override IHostBuilder? CreateHostBuilder()
+    {
+        return base.CreateHostBuilder();
+    }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices((services) =>
         {
-            // Remove the existing DbContextOptions
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
             if (descriptor != null)
@@ -58,7 +61,6 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Api.Program>
             {
                 options.UseSqlServer(connectionString);
             });
-
         });
     }
 }

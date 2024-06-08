@@ -1,4 +1,5 @@
-﻿using Procoding.ApplicationTracker.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
 namespace Procoding.ApplicationTracker.Api.IntegrationTests;
 
@@ -10,14 +11,19 @@ public static class DatabaseSeedData
         return [JobApplicationSource.Create(Guid.Empty, "Linkedin")];
     }
 
-    public static List<Candidate> GetCandidates()
+    public static List<Candidate> GetCandidates(IPasswordHasher<Candidate> passwordHasher)
     {
-        return [Candidate.Create(Guid.Empty, "Name", "Surname", new Email("email@email.com"), "", new FakePasswordHasher<Candidate>())];
+        return [Candidate.Create(Guid.Empty,
+                                 "Name",
+                                 "Surname",
+                                 new Email(LoginHelper.DEFAULT_CANDIDATE_USER_EMAIL),
+                                 LoginHelper.DEFAULT_CANDIDATE_USER_PASSWORD,
+                                 passwordHasher)];
     }
 
-    public static List<Employee> GetEmployees()
+    public static List<Employee> GetEmployees(IPasswordHasher<Employee> passwordHasher)
     {
-        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email("pandzic.vlado@gmail.com"), "www", new FakePasswordHasher<Employee>())];
+        return [Employee.Create(Guid.Empty, "Vlado", "Pandzic", new Email(LoginHelper.DEFAULT_EMPLOYEE_USER_EMAIL), LoginHelper.DEFAULT_EMPLOYEE_USER_PASSWORD, passwordHasher)];
     }
 
     public static List<Company> GetCompanies()

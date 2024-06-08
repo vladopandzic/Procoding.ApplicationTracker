@@ -1,17 +1,12 @@
 ﻿using Procoding.ApplicationTracker.Domain.Auth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Domain.Repositories;
 
 public interface IRefreshTokenRepository
 {
-    Task Insert(RefreshToken refreshToken);
+    Task InsertAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
 
-    Task<RefreshToken?> GetByToken(string token);
+    Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default);
 
-    Task MarkAsUsed(RefreshToken refreshToken);
+    Task MarkAsUsedAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
 }

@@ -8,11 +8,10 @@ using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
-using Procoding.ApplicationTracker.DTOs.Response.Employees;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.LoginCandidate;
 
-internal class LoginCandidateCommandHandler : ICommandHandler<LoginCandidateCommand, CandidateLoginResponseDTO>
+internal sealed class LoginCandidateCommandHandler : ICommandHandler<LoginCandidateCommand, CandidateLoginResponseDTO>
 {
 
     readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -64,7 +63,7 @@ internal class LoginCandidateCommandHandler : ICommandHandler<LoginCandidateComm
             TokenType = "Bearer"
         };
 
-        await _refreshTokenRepository.Insert(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
+        await _refreshTokenRepository.InsertAsync(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
                                                                           accessToken: tokenResponse.AccessToken,
                                                                           refreshToken: tokenResponse.RefreshToken,
                                                                           employeeId: candidate.Id));

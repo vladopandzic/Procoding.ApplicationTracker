@@ -11,7 +11,6 @@ namespace Procoding.ApplicationTracker.Api.Endpoints.Employees;
 
 public class UpdateEmployeeEndpoint : EndpointBaseAsync.WithRequest<EmployeeUpdateRequestDTO>.WithResult<IActionResult>
 {
-
     readonly ISender _sender;
 
     public UpdateEmployeeEndpoint(ISender sender)
@@ -22,12 +21,16 @@ public class UpdateEmployeeEndpoint : EndpointBaseAsync.WithRequest<EmployeeUpda
     [HttpPut("employees")]
     [ProducesResponseType(typeof(EmployeeUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override async Task<IActionResult> HandleAsync(EmployeeUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(new UpdateEmployeeCommand(request.Id, request.Name, request.Surname, request.Email), cancellationToken);
+        var result = await _sender.Send(new UpdateEmployeeCommand(id: request.Id,
+                                                                  name: request.Name,
+                                                                  surname: request.Surname,
+                                                                  email: request.Email,
+                                                                  password: request.Password),
+                                        cancellationToken);
 
         return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));
-
     }
 }

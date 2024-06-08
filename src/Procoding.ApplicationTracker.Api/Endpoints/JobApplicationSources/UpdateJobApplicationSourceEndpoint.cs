@@ -22,7 +22,7 @@ public class UpdateJobApplicationSourceEndpoint : EndpointBaseAsync.WithRequest<
     [HttpPut("job-application-sources")]
     [ProducesResponseType(typeof(JobApplicationSourceUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
 
     public override async Task<IActionResult> HandleAsync(JobApplicationSourceUpdateRequestDTO request,
                                                           CancellationToken cancellationToken = default)

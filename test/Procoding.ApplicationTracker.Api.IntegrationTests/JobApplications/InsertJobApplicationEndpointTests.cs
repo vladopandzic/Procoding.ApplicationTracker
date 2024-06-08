@@ -2,47 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
-using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.JobApplications;
 
 [TestFixture]
-public class InsertJobApplicationEndpointTests
+public class InsertJobApplicationEndpointTests : TestBase
 {
-    private CustomWebApplicationFactory _factory;
-
-    [SetUp]
-    public async Task Setup()
-    {
-        var testDatabaseHelper = new TestDatabaseHelper();
-        await testDatabaseHelper.SetupDatabase();
-        _factory = new CustomWebApplicationFactory(testDatabaseHelper,
-                                                   (x) =>
-        {
-        });
-    }
-
-
-    [TearDown]
-    public async Task TearDown()
-    {
-
-        if (_factory is not null)
-        {
-            await _factory.TestDatabaseHelper.DeleteAsync();
-            await _factory.DisposeAsync();
-
-        }
-    }
-
     [Test]
     public async Task InsertJobApplication_ShouldInsertNewJobApplication()
     {
@@ -52,16 +20,23 @@ public class InsertJobApplicationEndpointTests
         var candidate = await dbContext.Candidates.FirstAsync();
         var company = await dbContext.Companies.FirstAsync();
         var jobApplicationSource = await dbContext.JobApplicationSources.FirstAsync();
-        var allJobApplicationsBefore = await dbContext.JobApplications.ToListAsync();
+        var allJobApplicationsBefore = await dbContext.JobApplications.IgnoreQueryFilters().ToListAsync();
 
         //Act
+        await LoginHelper.LoginCandidate(client);
+        var responseLogin = await client.PostAsJsonAsync("candidates/login",
+                                                         new CandidateLoginRequestDTO()
+                                                         {
+                                                             Email = "email@email.com",
+                                                             Password = "test123"
+                                                         });
         var response = await client.PostAsJsonAsync($"job-applications",
                                                     new JobApplicationInsertRequestDTO(CandidateId: candidate.Id,
                                                                                        JobApplicationSourceId: jobApplicationSource.Id,
                                                                                        CompanyId: company.Id));
         var json = await response.Content.ReadFromJsonAsync<JobApplicationInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
-        var allJobApplicationsAfter = await dbContext2.JobApplications.ToListAsync();
+        var allJobApplicationsAfter = await dbContext2.JobApplications.IgnoreQueryFilters().ToListAsync();
 
         //Assert
         Assert.That(response, Is.Not.Null);

@@ -4,22 +4,15 @@ using Microsoft.AspNetCore.Identity;
 using Procoding.ApplicationTracker.Application.Authentication.Claims;
 using Procoding.ApplicationTracker.Application.Authentication.JwtTokens;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
-using Procoding.ApplicationTracker.Application.Employees.Commands.LoginEmployee;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Response.Employees;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Employees.Commands.RefreshLoginTokenForEmployee;
 
-internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<RefreshLoginTokenForEmployeeCommand, EmployeeLoginResponseDTO>
+internal sealed class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<RefreshLoginTokenForEmployeeCommand, EmployeeLoginResponseDTO>
 {
     readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly UserManager<Employee> _userManager;
@@ -29,11 +22,11 @@ internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<Refr
     private readonly IUnitOfWork _unitOfWork;
 
     public RefreshLoginTokenForEmployeeCommandHandler(IRefreshTokenRepository refreshTokenRepository,
-                                       UserManager<Employee> userManager,
-                                       TimeProvider timeProvider,
-                                       IJwtTokenCreator<Employee> jwtTokenCreator,
-                                       JwtTokenOptions<Employee> jwtTokenOptions,
-                                       IUnitOfWork unitOfWork)
+                                                      UserManager<Employee> userManager,
+                                                      TimeProvider timeProvider,
+                                                      IJwtTokenCreator<Employee> jwtTokenCreator,
+                                                      JwtTokenOptions<Employee> jwtTokenOptions,
+                                                      IUnitOfWork unitOfWork)
     {
         _refreshTokenRepository = refreshTokenRepository;
         _userManager = userManager;
@@ -45,7 +38,7 @@ internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<Refr
 
     public async Task<Result<EmployeeLoginResponseDTO>> Handle(RefreshLoginTokenForEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = await _refreshTokenRepository.GetByToken(request.RefreshToken);
+        var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
 
         if (refreshToken is null || refreshToken.HasExpired(_timeProvider) || refreshToken.Invalidated)
         {
@@ -69,14 +62,14 @@ internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<Refr
             return new Result<EmployeeLoginResponseDTO>(new ValidationException("Invalid refresh token"));
         }
 
-        await _refreshTokenRepository.MarkAsUsed(refreshToken);
+        await _refreshTokenRepository.MarkAsUsedAsync(refreshToken);
 
         var expiryDate = _timeProvider.GetLocalNow().AddMonths(6);
 
         var claims = ClaimsFactory.CreateClaims(userEmail: employee.Email.ToString()!,
-                                              userId: employee.Id.ToString(),
-                                              name: employee.Name,
-                                              surname: employee.Surname);
+                                                userId: employee.Id.ToString(),
+                                                name: employee.Name,
+                                                surname: employee.Surname);
 
         claims.AddRange(ClaimsFactory.CreateEmployeeClaims());
 
@@ -88,7 +81,7 @@ internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<Refr
             TokenType = "Bearer"
         };
 
-        await _refreshTokenRepository.Insert(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
+        await _refreshTokenRepository.InsertAsync(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
                                                                           accessToken: tokenResponse.AccessToken,
                                                                           refreshToken: tokenResponse.RefreshToken,
                                                                           employeeId: employee.Id));
@@ -97,8 +90,8 @@ internal class RefreshLoginTokenForEmployeeCommandHandler : ICommandHandler<Refr
 
 
         return tokenResponse;
-
     }
+
     private string GenerateRefreshToken()
     {
         return Guid.NewGuid().ToString();

@@ -13,7 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.RefreshLoginTokenForCandidate;
 
-internal class RefreshLoginTokenForCandidateCommandHandler : ICommandHandler<RefreshLoginTokenForCandidateCommand, CandidateLoginResponseDTO>
+internal sealed class RefreshLoginTokenForCandidateCommandHandler : ICommandHandler<RefreshLoginTokenForCandidateCommand, CandidateLoginResponseDTO>
 {
     readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly UserManager<Candidate> _userManager;
@@ -39,7 +39,7 @@ internal class RefreshLoginTokenForCandidateCommandHandler : ICommandHandler<Ref
 
     public async Task<Result<CandidateLoginResponseDTO>> Handle(RefreshLoginTokenForCandidateCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = await _refreshTokenRepository.GetByToken(request.RefreshToken);
+        var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken);
 
         if (refreshToken is null || refreshToken.HasExpired(_timeProvider) || refreshToken.Invalidated)
         {
@@ -63,7 +63,7 @@ internal class RefreshLoginTokenForCandidateCommandHandler : ICommandHandler<Ref
             return new Result<CandidateLoginResponseDTO>(new ValidationException("Invalid refresh token"));
         }
 
-        await _refreshTokenRepository.MarkAsUsed(refreshToken);
+        await _refreshTokenRepository.MarkAsUsedAsync(refreshToken);
 
         var expiryDate = _timeProvider.GetLocalNow().AddMonths(6);
 
@@ -82,7 +82,7 @@ internal class RefreshLoginTokenForCandidateCommandHandler : ICommandHandler<Ref
             TokenType = "Bearer"
         };
 
-        await _refreshTokenRepository.Insert(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
+        await _refreshTokenRepository.InsertAsync(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
                                                                           accessToken: tokenResponse.AccessToken,
                                                                           refreshToken: tokenResponse.RefreshToken,
                                                                           employeeId: employee.Id));

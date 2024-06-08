@@ -18,7 +18,7 @@ public class GetAllEmployeesEndpoint : EndpointBaseAsync.WithRequest<EmployeeGet
     }
 
     [HttpGet("employees")]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override Task<EmployeeListResponseDTO> HandleAsync([FromQuery] EmployeeGetListRequestDTO request, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetEmployeesQuery(pageNumber: request.PageNumber,

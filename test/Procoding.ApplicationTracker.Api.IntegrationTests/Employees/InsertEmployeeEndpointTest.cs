@@ -1,44 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework.Constraints;
 using Procoding.ApplicationTracker.DTOs.Request.Employees;
 using Procoding.ApplicationTracker.DTOs.Response.Employees;
 using Procoding.ApplicationTracker.Infrastructure.Data;
+using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.Employees;
 
 [TestFixture]
-internal class InsertEmployeeEndpointTests
+internal class InsertEmployeeEndpointTests : TestBase
 {
-    private CustomWebApplicationFactory _factory;
-
-    [SetUp]
-    public async Task Setup()
-    {
-        var testDatabaseHelper = new TestDatabaseHelper();
-        await testDatabaseHelper.SetupDatabase();
-        _factory = new CustomWebApplicationFactory(testDatabaseHelper,
-                                                   (x) =>
-                                                   {
-                                                   });
-    }
-
-
-    [TearDown]
-    public async Task TearDown()
-    {
-
-        if (_factory is not null)
-        {
-            await _factory.TestDatabaseHelper.DeleteAsync();
-            await _factory.DisposeAsync();
-
-        }
-    }
-
     [Test]
     public async Task InsertEmployee_ShouldInsertNewEmployee()
     {
@@ -48,7 +21,8 @@ internal class InsertEmployeeEndpointTests
         var allEmployees = await dbContext.Employees.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "pass123"));
+        await LoginHelper.LoginEmployee(client);
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!"));
         var json = await response.Content.ReadFromJsonAsync<EmployeeInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();
@@ -63,6 +37,25 @@ internal class InsertEmployeeEndpointTests
     }
 
     [Test]
+    public async Task InsertEmployee_IfLoggedInAsCandidate_ShouldInsertNewEmployee()
+    {
+        //Arrange
+        var client = _factory.CreateClient();
+        using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
+        var allEmployees = await dbContext.Employees.ToListAsync();
+
+        //Act
+        await LoginHelper.LoginCandidate(client);
+        var response = await client.PostAsync($"employees",
+                                              JsonContent.Create(new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!")));
+
+        //Assert
+        Assert.That(response, Is.Not.Null);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
+    }
+
+
+    [Test]
     public async Task InsertEmployee_IfBadRequest_ShouldReturnBadRequest()
     {
         //Arrange
@@ -71,7 +64,8 @@ internal class InsertEmployeeEndpointTests
         var allEmployees = await dbContext.Employees.ToListAsync();
 
         //Act
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "",""));
+        await LoginHelper.LoginEmployee(client);
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "", ""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();

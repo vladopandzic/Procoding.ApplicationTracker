@@ -4,7 +4,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.RefreshLoginTokenForCandidate;
 
-public class RefreshLoginTokenForCandidateCommand : ICommand<Result<CandidateLoginResponseDTO>>
+public sealed class RefreshLoginTokenForCandidateCommand : ICommand<Result<CandidateLoginResponseDTO>>
 {
     public RefreshLoginTokenForCandidateCommand(string accessToken, string refreshToken)
     {

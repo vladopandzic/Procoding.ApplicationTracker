@@ -1,6 +1,8 @@
 ﻿using LanguageExt.Common;
+using Microsoft.AspNetCore.Identity;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
@@ -13,11 +15,13 @@ internal sealed class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmplo
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher<Employee> _passwordHasher;
 
-    public UpdateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
+    public UpdateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork, IPasswordHasher<Employee> passwordHasher)
     {
         _employeeRepository = employeeRepository;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Result<EmployeeUpdatedResponseDTO>> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
@@ -32,7 +36,7 @@ internal sealed class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmplo
 
         var email = new Email(request.Email);
 
-        employee.Update(request.Name, request.Surname, email);
+        employee.Update(name: request.Name, surname: request.Surname, email: email, password: request.Password, _passwordHasher);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

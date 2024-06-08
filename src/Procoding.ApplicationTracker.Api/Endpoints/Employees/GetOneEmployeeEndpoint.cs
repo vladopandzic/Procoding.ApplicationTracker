@@ -16,7 +16,7 @@ public class GetOneEmployeeEndpoint : EndpointBaseAsync.WithRequest<Guid>.WithRe
     }
 
     [HttpGet("employees/{id}")]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override Task<EmployeeResponseDTO> HandleAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return _sender.Send(new GetOneEmployeeQuery(id), cancellationToken);

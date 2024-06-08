@@ -1,49 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Procoding.ApplicationTracker.Application.Employees.Commands.UpdateEmployee;
-using Procoding.ApplicationTracker.Application.Companies.Commands.UpdateCompany;
+using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.DTOs.Request.Employees;
 using Procoding.ApplicationTracker.DTOs.Response.Employees;
-using Procoding.ApplicationTracker.DTOs.Response.Companies;
 using Procoding.ApplicationTracker.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests.Employees;
 
 
 [TestFixture]
-internal class UpdateEmployeeEndpointTests
+internal class UpdateEmployeeEndpointTests : TestBase
 {
-    private CustomWebApplicationFactory _factory;
-
-    [SetUp]
-    public async Task Setup()
-    {
-        var testDatabaseHelper = new TestDatabaseHelper();
-        await testDatabaseHelper.SetupDatabase();
-        _factory = new CustomWebApplicationFactory(testDatabaseHelper,
-                                                   (x) =>
-        {
-        });
-    }
-
-
-    [TearDown]
-    public async Task TearDown()
-    {
-        if (_factory is not null)
-        {
-            await _factory.TestDatabaseHelper.DeleteAsync();
-            await _factory.DisposeAsync();
-        }
-    }
-
     [Test]
     public async Task UpdateEmployee_ShouldUpdateEmployee()
     {
@@ -51,10 +22,12 @@ internal class UpdateEmployeeEndpointTests
         var client = _factory.CreateClient();
         using var dbContext = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var firstFromDb = dbContext.Employees.FirstOrDefault();
+        var passwordHasher = _factory.Services.GetRequiredScopedService<IPasswordHasher<Employee>>();
 
         //Act
+        await LoginHelper.LoginEmployee(client);
         var response = await client.PutAsJsonAsync($"employees",
-                                                   new UpdateEmployeeCommand(firstFromDb!.Id, "UpdatedName", "UpdatedSurname", "updatedEmail@email.com"));
+                                                   new EmployeeUpdateRequestDTO(firstFromDb!.Id, "UpdatedName", "UpdatedSurname", "updatedEmail@email.com", "tEST123!!!"));
         var json = await response.Content.ReadFromJsonAsync<EmployeeUpdatedResponseDTO>();
 
         //Assert
@@ -66,6 +39,8 @@ internal class UpdateEmployeeEndpointTests
         Assert.That(firstFromDb.Surname, Is.Not.EqualTo("UpdatedSurname"));
         Assert.That(json!.Employee.Email, Is.EqualTo("updatedEmail@email.com"));
         Assert.That(firstFromDb.Email.Value, Is.Not.EqualTo("updatedEmail@email.com"));
+        var hashResult = passwordHasher.VerifyHashedPassword(firstFromDb, json.Employee.Password!, "tEST123!!!");
+        Assert.That(hashResult, Is.EqualTo(PasswordVerificationResult.Success));
     }
 
     [Test]
@@ -78,6 +53,7 @@ internal class UpdateEmployeeEndpointTests
         var firstFromDb = dbContext.Employees.FirstOrDefault();
 
         //Act
+        await LoginHelper.LoginEmployee(client);
         var response = await client.PutAsJsonAsync($"employees", new EmployeeUpdateRequestDTO(firstFromDb!.Id, "", "", "", ""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();

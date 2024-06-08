@@ -6,23 +6,15 @@ using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.Domain.ValueObjects;
-using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.SignupCandidate;
 
-internal class SignupCandidateCommandHandler : ICommandHandler<SignupCandidateCommand, CandidateSignupResponseDTO>
+internal sealed class SignupCandidateCommandHandler : ICommandHandler<SignupCandidateCommand, CandidateSignupResponseDTO>
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IPasswordHasher<Candidate> _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-
-    //readonly IRefreshTokenRepository _refreshTokenRepository;
-    //private readonly UserManager<Candidate> _userManager;
-    //private readonly TimeProvider _timeProvider;
-    //private readonly IJwtTokenCreator<Candidate> _jwtTokenCreator;
-    //private readonly JwtTokenOptions<Candidate> _jwtTokenOptions;
-    //private readonly IUnitOfWork _unitOfWork;
 
     public SignupCandidateCommandHandler(ICandidateRepository candidateRepository, IPasswordHasher<Candidate> passwordHasher, IUnitOfWork unitOfWork)
     {

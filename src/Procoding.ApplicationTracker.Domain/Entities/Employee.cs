@@ -138,12 +138,16 @@ public class Employee : IdentityUser<Guid>, IEntityBase, IAuditableEntity, ISoft
     /// <param name="surname"></param>
     /// <param name="email"></param>
     /// <returns></returns>
-    public Employee Update(string name, string surname, Email email)
+    public Employee Update(string name, string surname, Email email, string password, IPasswordHasher<Employee> passwordHasher)
     {
         Validate(name, surname, email);
         Name = name;
         Surname = surname;
         Email = email;
+        var hashedPassword = passwordHasher.HashPassword(this, password);
+
+        this.PasswordHash = hashedPassword;
+
         return this;
     }
 }

@@ -4,7 +4,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Employees;
 
 namespace Procoding.ApplicationTracker.Application.Employees.Commands.LoginEmployee;
 
-public class LoginEmployeeCommand : ICommand<Result<EmployeeLoginResponseDTO>>
+public sealed class LoginEmployeeCommand : ICommand<Result<EmployeeLoginResponseDTO>>
 {
     public LoginEmployeeCommand(string email, string password)
     {

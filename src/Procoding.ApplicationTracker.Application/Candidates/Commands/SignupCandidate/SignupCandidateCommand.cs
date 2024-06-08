@@ -4,7 +4,7 @@ using Procoding.ApplicationTracker.DTOs.Response.Candidates;
 
 namespace Procoding.ApplicationTracker.Application.Candidates.Commands.SignupCandidate;
 
-public class SignupCandidateCommand : ICommand<Result<CandidateSignupResponseDTO>>
+public sealed class SignupCandidateCommand : ICommand<Result<CandidateSignupResponseDTO>>
 {
     public SignupCandidateCommand(string email, string password, string name, string surname)
     {

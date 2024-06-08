@@ -1,20 +1,17 @@
 ﻿using LanguageExt.Common;
 using Microsoft.AspNetCore.Identity;
-using Procoding.ApplicationTracker.Application.Authentication;
 using Procoding.ApplicationTracker.Application.Authentication.Claims;
 using Procoding.ApplicationTracker.Application.Authentication.JwtTokens;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
-using Procoding.ApplicationTracker.Application.Employees.Commands.InsertEmployee;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
 using Procoding.ApplicationTracker.DTOs.Response.Employees;
-using System;
 
 namespace Procoding.ApplicationTracker.Application.Employees.Commands.LoginEmployee;
 
-internal class LoginEmployeeCommandHandler : ICommandHandler<LoginEmployeeCommand, EmployeeLoginResponseDTO>
+internal sealed class LoginEmployeeCommandHandler : ICommandHandler<LoginEmployeeCommand, EmployeeLoginResponseDTO>
 {
     readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly UserManager<Employee> _userManager;
@@ -64,7 +61,7 @@ internal class LoginEmployeeCommandHandler : ICommandHandler<LoginEmployeeComman
             TokenType = "Bearer"
         };
 
-        await _refreshTokenRepository.Insert(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
+        await _refreshTokenRepository.InsertAsync(new Domain.Auth.RefreshToken(expiryDate: expiryDate,
                                                                           accessToken: tokenResponse.AccessToken,
                                                                           refreshToken: tokenResponse.RefreshToken,
                                                                           employeeId: employee.Id));

@@ -22,7 +22,7 @@ public class UpdateCompanyEndpoint : EndpointBaseAsync.WithRequest<CompanyUpdate
     [HttpPut("companies")]
     [ProducesResponseType(typeof(CompanyUpdatedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override async Task<IActionResult> HandleAsync(CompanyUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new UpdateCompanyCommand(request.Id, request.Name, request.OfficialWebSiteLink), cancellationToken);

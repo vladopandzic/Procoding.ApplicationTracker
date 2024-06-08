@@ -20,7 +20,7 @@ public class InsertCandidateEndpoint : EndpointBaseAsync.WithRequest<CandidateIn
     [HttpPost("candidates")]
     [ProducesResponseType(typeof(CandidateInsertedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.EmployeeOnly)]
     public override async Task<IActionResult> HandleAsync(CandidateInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new InsertCandidateCommand(request.Name, request.Surname, request.Email, request.Password), cancellationToken);
