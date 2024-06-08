@@ -1,7 +1,5 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
-using Procoding.ApplicationTracker.DTOs.Request.Candidates;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
-using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
@@ -14,6 +12,8 @@ public class MyJobApplicationViewModel : EditViewModelBase
     private readonly IJobApplicationSourceService _jobApplicationSourceService;
     private readonly ICandidateService _candidateService;
     private readonly INotificationService _notificationService;
+    private readonly IJobTypeService _jobTypeService;
+    private readonly IWorkLocationTypeService _workLocationTypeService;
     private readonly ICompanyService _companyService;
 
     public JobApplicationDTO? JobApplication { get; set; }
@@ -21,6 +21,10 @@ public class MyJobApplicationViewModel : EditViewModelBase
     public List<JobApplicationSourceDTO> JobApplicationSources { get; set; } = new List<JobApplicationSourceDTO>();
 
     public List<CompanyDTO> Companies { get; set; } = new List<CompanyDTO>();
+
+    public List<JobTypeDTO> JobTypes { get; set; } = new List<JobTypeDTO>();
+
+    public List<WorkLocationTypeDTO> WorkLocationTypes { get; set; } = new List<WorkLocationTypeDTO>();
 
     //TODO: new valdiator
     public MyNewJobApplicationValidator Validator { get; }
@@ -36,6 +40,8 @@ public class MyJobApplicationViewModel : EditViewModelBase
                                      IJobApplicationSourceService jobApplicationSourceService,
                                      ICandidateService candidateService,
                                      INotificationService notificationService,
+                                     IJobTypeService jobTypeService,
+                                     IWorkLocationTypeService workLocationTypeService,
                                      MyNewJobApplicationValidator validator,
                                      CompanyValidator companyValidator)
     {
@@ -44,6 +50,8 @@ public class MyJobApplicationViewModel : EditViewModelBase
         _jobApplicationSourceService = jobApplicationSourceService;
         _candidateService = candidateService;
         _notificationService = notificationService;
+        _jobTypeService = jobTypeService;
+        _workLocationTypeService = workLocationTypeService;
         Validator = validator;
         CompanyValidator = companyValidator;
     }
@@ -52,7 +60,10 @@ public class MyJobApplicationViewModel : EditViewModelBase
     {
         NewCompany = new CompanyDTO(Guid.Empty, "", "");
 
-        await Task.WhenAll(GetCompanies(cancellationToken), GetJobApplicationSources(cancellationToken));
+        await Task.WhenAll(GetCompanies(cancellationToken),
+                           GetJobApplicationSources(cancellationToken),
+                           GetJobTypes(cancellationToken),
+                           GerWorkLocationTypes(cancellationToken));
 
         if (id is null)
         {
@@ -77,7 +88,6 @@ public class MyJobApplicationViewModel : EditViewModelBase
     public async Task SaveAsync()
     {
         var isJobApplicationValid = (await Validator.ValidateAsync(JobApplication!)).IsValid;
-
     }
 
     public async Task SaveNewCompany()
@@ -100,7 +110,6 @@ public class MyJobApplicationViewModel : EditViewModelBase
                 JobApplication!.Company = result.Value.Company;
                 CreateNewCompanyDialogVisible = false;
                 NewCompany = new CompanyDTO(Guid.Empty, "", "");
-
             }
             _notificationService.ShowMessageFromResult(result);
         }
@@ -118,6 +127,23 @@ public class MyJobApplicationViewModel : EditViewModelBase
         }
     }
 
+    private async Task GetJobTypes(CancellationToken cancellationToken)
+    {
+        var jobTypesResult = await _jobTypeService.GetJobTypesAsync(cancellationToken);
+        if (jobTypesResult.IsSuccess)
+        {
+            JobTypes = jobTypesResult.Value.JobTypes.ToList();
+        }
+    }
+
+    private async Task GerWorkLocationTypes(CancellationToken cancellationToken)
+    {
+        var workLocationTypesResult = await _workLocationTypeService.GetWorkLocationTypesAsync(cancellationToken);
+        if (workLocationTypesResult.IsSuccess)
+        {
+            WorkLocationTypes = workLocationTypesResult.Value.WorkLocationTypes.ToList();
+        }
+    }
 
     private async Task GetJobApplicationSources(CancellationToken cancellationToken)
     {

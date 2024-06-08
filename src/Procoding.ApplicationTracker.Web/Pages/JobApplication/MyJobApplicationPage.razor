@@ -101,6 +101,21 @@ else if (ViewModel.JobApplication is not null)
                                      Immediate="true"
                                      SearchFunc="SearchJobApplicationSourceFunc" />
 
+                    <MudAutocomplete T="WorkLocationTypeDTO"
+                                     Label="Work location type"
+                                     ResetValueOnEmptyText="true"
+                                     ToStringFunc=WorkLocationToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchWorkLocationTypesFunc" />
+
+                    <MudAutocomplete T="JobTypeDTO"
+                                     Label="JobType"
+                                     ResetValueOnEmptyText="true"
+                                     ToStringFunc=JobTypeToStringFunc
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     Immediate="true"
+                                     SearchFunc="SearchJobTypesFunc" />
 
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
 

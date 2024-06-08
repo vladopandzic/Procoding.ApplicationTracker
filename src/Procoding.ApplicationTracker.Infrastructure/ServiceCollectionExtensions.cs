@@ -30,6 +30,10 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
+        services.AddScoped<IJobTypeRepository, JobTypeRepository>();
+
+        services.AddScoped<IWorkLocationTypeRepository, WorkLocationTypeRepository>();
+
         return services;
     }
 }

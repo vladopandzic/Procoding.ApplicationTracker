@@ -75,6 +75,16 @@ public partial class MyJobApplicationPage
         return jobApplicationSource != null ? jobApplicationSource.Name : "";
     }
 
+    private string JobTypeToStringFunc(JobTypeDTO jobType)
+    {
+        return jobType != null ? jobType.Value : "";
+    }
+    private string WorkLocationToStringFunc(WorkLocationTypeDTO workLocation)
+    {
+        return workLocation != null ? workLocation.Value : "";
+    }
+
+
     protected async Task<IEnumerable<CompanyDTO>> SearchCompaniesFunc(string value)
     {
         if (value is null)
@@ -97,6 +107,25 @@ public partial class MyJobApplicationPage
         }
         return ViewModel.JobApplicationSources.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
+
+    protected async Task<IEnumerable<JobTypeDTO>> SearchJobTypesFunc(string value)
+    {
+        if (value is null)
+        {
+            return [];
+        }
+        return ViewModel.JobTypes.Where(x => x.Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    protected async Task<IEnumerable<WorkLocationTypeDTO>> SearchWorkLocationTypesFunc(string value)
+    {
+        if (value is null)
+        {
+            return [];
+        }
+        return ViewModel.WorkLocationTypes.Where(x => x.Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
 
     private void OpenCreateNewCompanyDialog()
     {

@@ -135,4 +135,16 @@ public static class UrlConstants
             return $"{GET_ALL_URL}";
         }
     }
+
+    public static class JobTypes
+    {
+        public const string GET_ALL_URL = "job-types";
+
+    }
+
+    public static class WorkLocationTypes
+    {
+        public const string GET_ALL_URL = "work-location-types";
+    }
+
 }
