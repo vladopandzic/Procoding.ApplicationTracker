@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain.Auth;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 using Procoding.ApplicationTracker.Infrastructure.Data;
@@ -29,9 +29,13 @@ public class UpdateJobApplicationEndpointTests : TestBase
         await LoginHelper.LoginCandidate(client);
         var response = await client.PutAsJsonAsync($"job-applications",
                                                    new JobApplicationUpdateRequestDTO(Id: firstFromDb!.Id,
-                                                                                      CandidateId: candidate.Id,
                                                                                       JobApplicationSourceId: jobApplicationSource.Id,
-                                                                                      CompanyId: company.Id));
+                                                                                      CompanyId: company.Id,
+                                                                                      JobPositionTitle: "Senior .NET engineer",
+                                                                                      JobAdLink: "https://www.link.com",
+                                                                                      JobType: new DTOs.Model.JobTypeDTO(JobType.Contract.Value),
+                                                                                      WorkLocationType: new DTOs.Model.WorkLocationTypeDTO(WorkLocationType.Remote.Value),
+                                                                                      Description: null));
         var json = await response.Content.ReadFromJsonAsync<JobApplicationUpdatedResponseDTO>();
 
         //Assert

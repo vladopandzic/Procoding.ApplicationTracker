@@ -116,8 +116,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
         if (JobApplication!.Id == Guid.Empty)
         {
             var result = await _jobApplicationService
-                    .InsertJobApplicationAsync(new JobApplicationInsertRequestDTO(CandidateId: JobApplication.Candidate!.Id,
-                                                                                  JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
+                    .InsertJobApplicationAsync(new JobApplicationInsertRequestDTO(JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
                                                                                   CompanyId: JobApplication.Company!.Id,
                                                                                   JobPositionTitle: JobApplication.JobPositionTitle,
                                                                                   JobAdLink: JobApplication.JobAdLink,
@@ -135,9 +134,13 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
         {
             var result =
                 await _jobApplicationService.UpdateJobApplicationAsync(new JobApplicationUpdateRequestDTO(Id: JobApplication.Id,
-                                                                                                          CandidateId: JobApplication.Candidate!.Id,
                                                                                                           JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
-                                                                                                          CompanyId: JobApplication.Company!.Id));
+                                                                                                          CompanyId: JobApplication.Company!.Id,
+                                                                                                          JobPositionTitle: JobApplication.JobPositionTitle,
+                                                                                                          JobAdLink: JobApplication.JobAdLink,
+                                                                                                          JobType: JobApplication.JobType,
+                                                                                                          WorkLocationType: JobApplication.WorkLocation,
+                                                                                                          Description: JobApplication.Description));
 
             _notificationService.ShowMessageFromResult(result);
         }

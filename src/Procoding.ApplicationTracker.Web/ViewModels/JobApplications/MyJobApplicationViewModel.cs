@@ -1,5 +1,6 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.Companies;
+using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
@@ -96,6 +97,46 @@ public class MyJobApplicationViewModel : EditViewModelBase
     public async Task SaveAsync()
     {
         var isJobApplicationValid = (await Validator.ValidateAsync(JobApplication!)).IsValid;
+
+        if (!isJobApplicationValid)
+        {
+            return;
+        }
+        IsSaving = true;
+
+        if (JobApplication!.Id == Guid.Empty)
+        {
+            var result = await _jobApplicationService
+                    .InsertJobApplicationAsync(new JobApplicationInsertRequestDTO(JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
+                                                                                  CompanyId: JobApplication.Company!.Id,
+                                                                                  JobPositionTitle: JobApplication.JobPositionTitle,
+                                                                                  JobAdLink: JobApplication.JobAdLink,
+                                                                                  JobType: JobApplication.JobType,
+                                                                                  WorkLocationType: JobApplication.WorkLocation,
+                                                                                  Description: JobApplication.Description));
+
+            if (result.IsSuccess)
+            {
+                JobApplication.Id = result.Value.JobApplication.Id;
+            }
+            _notificationService.ShowMessageFromResult(result);
+        }
+        else
+        {
+            var result =
+                await _jobApplicationService.UpdateJobApplicationAsync(new JobApplicationUpdateRequestDTO(Id: JobApplication.Id,
+                                                                                                          JobApplicationSourceId: JobApplication.ApplicationSource!.Id,
+                                                                                                          CompanyId: JobApplication.Company!.Id,
+                                                                                                          JobPositionTitle: JobApplication.JobPositionTitle,
+                                                                                                          JobAdLink: JobApplication.JobAdLink,
+                                                                                                          JobType: JobApplication.JobType,
+                                                                                                          WorkLocationType: JobApplication.WorkLocation,
+                                                                                                          Description: JobApplication.Description));
+
+            _notificationService.ShowMessageFromResult(result);
+        }
+
+        IsSaving = false;
     }
 
     public async Task SaveNewCompany()

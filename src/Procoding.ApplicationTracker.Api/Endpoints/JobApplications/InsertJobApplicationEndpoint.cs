@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Procoding.ApplicationTracker.Api.Extensions;
 using Procoding.ApplicationTracker.Application.JobApplications.Commands.ApplyForJob;
+using Procoding.ApplicationTracker.Domain.Auth;
 using Procoding.ApplicationTracker.DTOs.Request.JobApplications;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
@@ -12,18 +13,21 @@ namespace Procoding.ApplicationTracker.Api.Endpoints.JobApplications;
 public class InsertJobApplicationEndpoint : EndpointBaseAsync.WithRequest<JobApplicationInsertRequestDTO>.WithResult<IActionResult>
 {
     readonly ISender _sender;
-    public InsertJobApplicationEndpoint(ISender sender)
+    private readonly IIdentityContext _identityContext;
+
+    public InsertJobApplicationEndpoint(ISender sender, IIdentityContext identityContext)
     {
         this._sender = sender;
+        _identityContext = identityContext;
     }
 
     [HttpPost("job-applications")]
     [ProducesResponseType(typeof(JobApplicationInsertedResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate")]
+    [Authorize(AuthenticationSchemes = "BearerEmployee,BearerCandidate", Policy = Policies.CandidateOnly)]
     public override async Task<IActionResult> HandleAsync(JobApplicationInsertRequestDTO request, CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(new ApplyForJobCommand(candidateId: request.CandidateId,
+        var result = await _sender.Send(new ApplyForJobCommand(candidateId: _identityContext.UserId!.Value,
                                                                companyId: request.CompanyId,
                                                                jobApplicationSourceId: request.JobApplicationSourceId,
                                                                jobPositionTitle: request.JobPositionTitle,

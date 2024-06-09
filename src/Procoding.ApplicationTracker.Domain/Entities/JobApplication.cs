@@ -109,13 +109,32 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
         return interview;
     }
 
-    public JobApplication Update(Company company, JobApplicationSource jobApplicationSource, Candidate candidate)
+    public JobApplication Update(Company company,
+                                 JobApplicationSource jobApplicationSource,
+                                 Candidate candidate,
+                                 string jobPositionTitle,
+                                 WorkLocationType workLocationType,
+                                 JobType jobType,
+                                 Link jobAdLink,
+                                 string? description)
     {
         Company = company;
         ApplicationSource = jobApplicationSource;
         Candidate = candidate;
-
-        this.AddDomainEvent(new JobApplicationUpdatedDomainEvent(Id, company, jobApplicationSource, candidate));
+        JobPositionTitle = jobPositionTitle;
+        JobType = jobType;
+        WorkLocationType = workLocationType;
+        JobAdLink = jobAdLink;
+        Description = description;
+        this.AddDomainEvent(new JobApplicationUpdatedDomainEvent(id: Id,
+                                                                 company: company,
+                                                                 jobApplicationSource: jobApplicationSource,
+                                                                 candidate: candidate,
+                                                                 jobPositionTitle: jobPositionTitle,
+                                                                 workLocationType: workLocationType,
+                                                                 jobType: jobType,
+                                                                 jobAdLink: jobAdLink,
+                                                                 description: description));
 
         return this;
     }
@@ -138,22 +157,22 @@ public sealed class JobApplication : AggregateRoot, ISoftDeletableEntity, IAudit
     /// <summary>
     /// Job type like <see cref="JobType.FullTime"/> or <see cref="JobType.PartTime"/>.
     /// </summary>
-    public JobType JobType { get; }
+    public JobType JobType { get; private set; }
 
     /// <summary>
     /// Work location type like <see cref="WorkLocationType.Remote"/> or <see cref="WorkLocationType.Hybrid"/>.
     /// </summary>
-    public WorkLocationType WorkLocationType { get; }
+    public WorkLocationType WorkLocationType { get; private set; }
 
     //TODO: make it as separate table?
     /// <summary>
     /// Title for the position like Senior .NET software engineer.
     /// </summary>
-    public string JobPositionTitle { get; }
+    public string JobPositionTitle { get; private set; }
 
-    public string? Description { get; }
+    public string? Description { get; private set; }
 
-    public Link JobAdLink { get; }
+    public Link JobAdLink { get; private set; }
 
     /// <summary>
     /// Company the candidate applies for.

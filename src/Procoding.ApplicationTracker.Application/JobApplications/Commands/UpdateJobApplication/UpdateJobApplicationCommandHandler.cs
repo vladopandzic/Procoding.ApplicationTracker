@@ -1,9 +1,9 @@
 ﻿using LanguageExt.Common;
-using MediatR;
 using Procoding.ApplicationTracker.Application.Core.Abstractions.Messaging;
 using Procoding.ApplicationTracker.Domain.Abstractions;
 using Procoding.ApplicationTracker.Domain.Exceptions;
 using Procoding.ApplicationTracker.Domain.Repositories;
+using Procoding.ApplicationTracker.Domain.ValueObjects;
 using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Response.JobApplications;
 
@@ -37,6 +37,10 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
     {
         var jobApplication = await _jobApplicationRepository.GetJobApplicationAsync(request.Id, cancellationToken);
 
+        var workLocationType = new WorkLocationType(request.WorkLocationType);
+        var jobType = new JobType(request.JobType);
+        var jobAdLink = new Link(request.JobAdLink);
+
         if (jobApplication is null)
         {
             throw new JobApplicationDoesNotExistException("Job application does not exist");
@@ -63,7 +67,14 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
             throw new JobApplicationSourceDoesNotExistException("Candidate does not exist");
         }
 
-        jobApplication.Update(company, jobApplicationSource, candidate);
+        jobApplication.Update(company: company,
+                              jobApplicationSource: jobApplicationSource,
+                              candidate: candidate,
+                              jobPositionTitle: request.JobPositionTitle,
+                              workLocationType: workLocationType,
+                              jobType: jobType,
+                              jobAdLink: jobAdLink,
+                              description: request.Description);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -77,7 +88,7 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 
         var workLocationDto = new WorkLocationTypeDTO(jobApplication.WorkLocationType.Value);
-        var jobType = new JobTypeDTO(jobApplication.JobType.Value);
+        var jobTypeDto = new JobTypeDTO(jobApplication.JobType.Value);
 
         return new JobApplicationUpdatedResponseDTO(new JobApplicationDTO(id: jobApplication.Id,
                                                                           candidate: candidateDto,
@@ -86,7 +97,7 @@ internal sealed class UpdateJobApplicationCommandHandler : ICommandHandler<Updat
                                                                           jobPositionTitle: jobApplication.JobPositionTitle,
                                                                           jobAdLink: jobApplication.JobAdLink.Value,
                                                                           workLocation: workLocationDto,
-                                                                          jobType: jobType,
+                                                                          jobType: jobTypeDto,
                                                                           description: jobApplication.Description));
     }
 }

@@ -24,7 +24,10 @@
                 <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">@(IsAdminView ? "Admin view" : "Candidates view")</MudText>
                 <MudDivider Class="my-2" />
                 <MudNavLink Href="/">Home</MudNavLink>
-                <MudNavLink Href="/my-job-applications/new">New job application</MudNavLink>
+                <AuthorizeView Roles="Candidate">
+                    <MudNavLink Href="/my-job-applications/new">New job application</MudNavLink>
+                    <MudNavLink Href="/my-job-applications">Job application</MudNavLink>
+                </AuthorizeView>
                 <AuthorizeView Roles="Employee">
                     <MudNavLink Href="/job-applications">Job applications</MudNavLink>
                     <MudNavLink Href="/candidates">Candidates</MudNavLink>

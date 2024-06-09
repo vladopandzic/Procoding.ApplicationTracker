@@ -32,8 +32,7 @@ public class InsertJobApplicationEndpointTests : TestBase
                                                              Password = "test123"
                                                          });
         var response = await client.PostAsJsonAsync($"job-applications",
-                                                    new JobApplicationInsertRequestDTO(CandidateId: candidate.Id,
-                                                                                       JobApplicationSourceId: jobApplicationSource.Id,
+                                                    new JobApplicationInsertRequestDTO(JobApplicationSourceId: jobApplicationSource.Id,
                                                                                        CompanyId: company.Id,
                                                                                        JobPositionTitle: "Senior .NET engineer",
                                                                                        JobAdLink: "https://www.link.com",

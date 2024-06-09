@@ -30,5 +30,7 @@ public static class IServiceCollectionExtensions
 
         services.AddTransient<MyJobApplicationViewModel, MyJobApplicationViewModel>();
 
+        services.AddTransient<MyJobApplicationsListViewModel, MyJobApplicationsListViewModel>();
+
     }
 }

@@ -48,7 +48,7 @@ public partial class MyJobApplicationPage
         await newNewCompanyForm!.Validate();
         await ViewModel.SaveNewCompany();
 
-        if (ViewModel.JobApplication?.Company.Id != Guid.Empty)
+        if (ViewModel.JobApplication?.Company?.Id != Guid.Empty)
         {
             await mudCompanyAutocomplete.SelectOption(ViewModel.JobApplication!.Company);
         }

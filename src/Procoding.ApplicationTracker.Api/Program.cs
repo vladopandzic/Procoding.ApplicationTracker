@@ -114,6 +114,8 @@ public class Program
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy(Policies.EmployeeOnly, Policies.EmployeeOnlyPolicy());
+            options.AddPolicy(Policies.CandidateOnly, Policies.CandidateOnlyPolicy());
+
         });
         var app = builder.Build();
 
