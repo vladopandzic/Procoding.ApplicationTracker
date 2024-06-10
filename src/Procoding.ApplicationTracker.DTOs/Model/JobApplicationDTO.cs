@@ -12,7 +12,7 @@ public class JobApplicationDTO
                              CompanyDTO company,
                              string jobPositionTitle,
                              string jobAdLink,
-                             WorkLocationTypeDTO workLocation,
+                             WorkLocationTypeDTO workLocationType,
                              JobTypeDTO jobType,
                              string? description)
     {
@@ -22,7 +22,7 @@ public class JobApplicationDTO
         Company = company;
         JobPositionTitle = jobPositionTitle;
         JobAdLink = jobAdLink;
-        WorkLocation = workLocation;
+        WorkLocationType = workLocationType;
         JobType = jobType;
         Description = description;
     }
@@ -39,7 +39,7 @@ public class JobApplicationDTO
 
     public string JobAdLink { get; set; }
 
-    public WorkLocationTypeDTO WorkLocation { get; set; }
+    public WorkLocationTypeDTO WorkLocationType { get; set; }
 
     public JobTypeDTO JobType { get; set; }
 

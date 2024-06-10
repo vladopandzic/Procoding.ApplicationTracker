@@ -56,7 +56,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
                                                    company: company,
                                                    jobPositionTitle: "",
                                                    jobAdLink: "",
-                                                   workLocation: new WorkLocationTypeDTO(""),
+                                                   workLocationType: new WorkLocationTypeDTO(""),
                                                    jobType: new JobTypeDTO(""),
                                                    description: "");
 
@@ -121,7 +121,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
                                                                                   JobPositionTitle: JobApplication.JobPositionTitle,
                                                                                   JobAdLink: JobApplication.JobAdLink,
                                                                                   JobType: JobApplication.JobType,
-                                                                                  WorkLocationType: JobApplication.WorkLocation,
+                                                                                  WorkLocationType: JobApplication.WorkLocationType,
                                                                                   Description: JobApplication.Description));
 
             if (result.IsSuccess)
@@ -139,7 +139,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
                                                                                                           JobPositionTitle: JobApplication.JobPositionTitle,
                                                                                                           JobAdLink: JobApplication.JobAdLink,
                                                                                                           JobType: JobApplication.JobType,
-                                                                                                          WorkLocationType: JobApplication.WorkLocation,
+                                                                                                          WorkLocationType: JobApplication.WorkLocationType,
                                                                                                           Description: JobApplication.Description));
 
             _notificationService.ShowMessageFromResult(result);

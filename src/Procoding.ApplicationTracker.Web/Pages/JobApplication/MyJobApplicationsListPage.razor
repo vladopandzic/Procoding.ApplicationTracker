@@ -9,11 +9,19 @@
 }
 else
 {
-    <MudText Typo="Typo.h4">Job applications</MudText>
     <br />
-    <MudLink Href="@($"my-job-applications/new")">
-        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
-    </MudLink>
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">Job applications</MudText>
+            <MudSpacer/>
+            <MudLink Href="@($"my-job-applications/new")">
+                <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+            </MudLink>
+        </MudToolBar>
+     
+    </MudCard>
+
+  
     <br />
     <MudDataGrid ServerData="@LoadGridData" T="JobApplicationDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
@@ -22,7 +30,7 @@ else
             <PropertyColumn Property="x => x.ApplicationSource.Name" Title="ApplicationSource.Name" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.JobAdLink" Title="JobAdLink" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.JobType.Value" Title="JobType" Resizable="true" Filterable="true" />
-            <PropertyColumn Property="x => x.WorkLocation.Value" Title="WorkLocation" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.WorkLocationType.Value" Title="WorkLocationType" Resizable="true" Filterable="true" />
 
             <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                 <CellTemplate Context="data">

@@ -36,6 +36,8 @@ public class MyJobApplicationViewModel : EditViewModelBase
 
     public CompanyDTO NewCompany { get; set; } = default!;
 
+    public string PageTitle { get; set; }
+
     public MyJobApplicationViewModel(IJobApplicationService jobApplicationService,
                                      ICompanyService companyService,
                                      IJobApplicationSourceService jobApplicationSourceService,
@@ -79,8 +81,9 @@ public class MyJobApplicationViewModel : EditViewModelBase
                                                    jobPositionTitle: "",
                                                    jobAdLink: "",
                                                    jobType: new JobTypeDTO(""),
-                                                   workLocation: new WorkLocationTypeDTO(""),
+                                                   workLocationType: new WorkLocationTypeDTO(""),
                                                    description: null);
+            SetPageTitle();
 
             return;
         }
@@ -92,6 +95,13 @@ public class MyJobApplicationViewModel : EditViewModelBase
         {
             JobApplication = response.Value.JobApplication;
         }
+
+        SetPageTitle();
+    }
+
+    private void SetPageTitle()
+    {
+        PageTitle = JobApplication?.Id == Guid.Empty ? "New job application" : $"Job application for {JobApplication?.Company?.CompanyName}";
     }
 
     public async Task SaveAsync()
@@ -112,7 +122,7 @@ public class MyJobApplicationViewModel : EditViewModelBase
                                                                                   JobPositionTitle: JobApplication.JobPositionTitle,
                                                                                   JobAdLink: JobApplication.JobAdLink,
                                                                                   JobType: JobApplication.JobType,
-                                                                                  WorkLocationType: JobApplication.WorkLocation,
+                                                                                  WorkLocationType: JobApplication.WorkLocationType,
                                                                                   Description: JobApplication.Description));
 
             if (result.IsSuccess)
@@ -130,7 +140,7 @@ public class MyJobApplicationViewModel : EditViewModelBase
                                                                                                           JobPositionTitle: JobApplication.JobPositionTitle,
                                                                                                           JobAdLink: JobApplication.JobAdLink,
                                                                                                           JobType: JobApplication.JobType,
-                                                                                                          WorkLocationType: JobApplication.WorkLocation,
+                                                                                                          WorkLocationType: JobApplication.WorkLocationType,
                                                                                                           Description: JobApplication.Description));
 
             _notificationService.ShowMessageFromResult(result);

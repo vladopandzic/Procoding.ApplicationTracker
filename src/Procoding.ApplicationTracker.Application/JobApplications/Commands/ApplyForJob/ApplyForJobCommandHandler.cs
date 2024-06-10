@@ -84,7 +84,7 @@ internal sealed class ApplyForJobCommandHandler : ICommandHandler<ApplyForJobCom
                                                                            company: companyDto,
                                                                            jobPositionTitle: jobApplication.JobPositionTitle,
                                                                            jobAdLink: jobApplication.JobAdLink.Value,
-                                                                           workLocation: workLocationDto,
+                                                                           workLocationType: workLocationDto,
                                                                            jobType: jobType,
                                                                            description: jobApplication.Description));
     }

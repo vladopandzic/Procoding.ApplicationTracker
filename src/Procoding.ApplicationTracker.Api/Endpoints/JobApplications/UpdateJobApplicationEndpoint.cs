@@ -29,7 +29,6 @@ public class UpdateJobApplicationEndpoint : EndpointBaseAsync.WithRequest<JobApp
 
     public override async Task<IActionResult> HandleAsync(JobApplicationUpdateRequestDTO request, CancellationToken cancellationToken = default)
     {
-      
         var result = await _sender.Send(new UpdateJobApplicationCommand(id: request.Id,
                                                                         candidateId: _identityContext.UserId!.Value,
                                                                         companyId: request.CompanyId,

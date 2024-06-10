@@ -35,6 +35,7 @@ public class Program
         builder.Services.AddTransient<IMapper, Mapper>();
         builder.Services.AddMediatR(x =>
         {
+           
             x.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(GetJobApplicationSourcesQuery).Assembly)
              .AddHandlerValidations();
         });

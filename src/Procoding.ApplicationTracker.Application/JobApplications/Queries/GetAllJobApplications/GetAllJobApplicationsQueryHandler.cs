@@ -38,7 +38,7 @@ internal sealed class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJo
                                          applicationSource: jobApplicationSourceDto,
                                          company: companyDto,
                                          jobAdLink: x.JobAdLink.Value,
-                                         workLocation: workLocationDto,
+                                         workLocationType: workLocationDto,
                                          jobType: jobType,
                                          jobPositionTitle: x.JobPositionTitle,
                                          description: null);

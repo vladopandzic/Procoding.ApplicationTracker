@@ -29,6 +29,22 @@ public partial class MyJobApplicationPage
 
     private MudAutocomplete<CompanyDTO> mudCompanyAutocomplete = default!;
 
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ViewModel.JobApplication?.Id != null && Id == ViewModel.JobApplication?.Id.ToString())
+        {
+            return;
+        }
+        if (Id == "new")
+        {
+            await ViewModel.InitializeViewModel(null);
+        }
+        else
+        {
+            await ViewModel.InitializeViewModel(Guid.Parse(Id));
+        }
+        await base.OnParametersSetAsync();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,9 +103,9 @@ public partial class MyJobApplicationPage
 
     protected async Task<IEnumerable<CompanyDTO>> SearchCompaniesFunc(string value)
     {
-        if (value is null)
+        if (string.IsNullOrEmpty(value))
         {
-            return [];
+            return ViewModel.Companies;
         }
         return ViewModel.Companies.Where(x => x.CompanyName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
@@ -101,27 +117,27 @@ public partial class MyJobApplicationPage
 
     protected async Task<IEnumerable<JobApplicationSourceDTO>> SearchJobApplicationSourceFunc(string value)
     {
-        if (value is null)
+        if (string.IsNullOrEmpty(value))
         {
-            return [];
+            return ViewModel.JobApplicationSources;
         }
         return ViewModel.JobApplicationSources.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     protected async Task<IEnumerable<JobTypeDTO>> SearchJobTypesFunc(string value)
     {
-        if (value is null)
+        if (string.IsNullOrEmpty(value))
         {
-            return [];
+            return ViewModel.JobTypes;
         }
         return ViewModel.JobTypes.Where(x => x.Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     protected async Task<IEnumerable<WorkLocationTypeDTO>> SearchWorkLocationTypesFunc(string value)
     {
-        if (value is null)
+        if (string.IsNullOrEmpty(value))
         {
-            return [];
+            return ViewModel.WorkLocationTypes;
         }
         return ViewModel.WorkLocationTypes.Where(x => x.Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }

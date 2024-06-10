@@ -30,9 +30,9 @@ public class JobApplicationValidator : Validators.FluentValueValidator<JobApplic
             }
         });
 
-        RuleFor(x => x.WorkLocation).NotEmpty();
+        RuleFor(x => x.WorkLocationType).NotEmpty();
 
-        RuleFor(x => x.WorkLocation).Custom((workLocation, context) =>
+        RuleFor(x => x.WorkLocationType).Custom((workLocation, context) =>
         {
             if (workLocation is not null)
             {

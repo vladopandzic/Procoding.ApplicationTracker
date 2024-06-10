@@ -67,6 +67,11 @@ internal static class ValidationErrors
 
         internal static Error JobApplicationSourceIsRequired => new Error("JobApplications.JobApplicationSourceIsRequired", "JobApplicationSource is required.");
 
+        internal static Error JobAdLinkIsRequired => new Error("JobApplications.JobAdLinkIsRequired", "Job Ad Link is required.");
+
+        internal static Error JobAdLinkIsNotValidLink => new Error("JobApplications.JobAdLinkIsNotValidLink", "Job ad link is not a valid link.");
+
+
         internal static Error CompanyIsRequired => new Error("JobApplications.CompanyIsRequired", "Company is required.");
 
 

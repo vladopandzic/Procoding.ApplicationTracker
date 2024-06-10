@@ -13,52 +13,58 @@
 }
 else if (ViewModel.JobApplication is not null)
 {
+    <br />
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">@ViewModel.PageTitle</MudText>
+        </MudToolBar>
+    </MudCard>
+    <br />
+    <MudCard>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudDialog IsVisible="ViewModel.CreateNewCompanyDialogVisible"
+                           IsVisibleChanged="(newValue)=>{ViewModel.CreateNewCompanyDialogVisible=newValue;}"
+                           ContentStyle="min-width:500px"
+                           Options="new DialogOptions(){CloseOnEscapeKey=true, CloseButton=true }"
+                           @ref="dialogRef">
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">Create new company</MudText>
 
-    <MudDialog IsVisible="ViewModel.CreateNewCompanyDialogVisible"
-               IsVisibleChanged="(newValue)=>{ViewModel.CreateNewCompanyDialogVisible=newValue;}"
-               ContentStyle="min-width:500px"
-               Options="new DialogOptions(){CloseOnEscapeKey=true, CloseButton=true }"
-               @ref="dialogRef">
-        <TitleContent>
-            <MudText Typo="Typo.h6">Create new company</MudText>
+                    </TitleContent>
+                    <DialogContent>
 
-        </TitleContent>
-        <DialogContent>
+                        <MudForm @ref=newNewCompanyForm Model="ViewModel.NewCompany" ValidationDelay="0" Validation="ViewModel.CompanyValidator.ValidateValue">
 
-            <MudForm @ref=newNewCompanyForm Model="ViewModel.NewCompany" ValidationDelay="0" Validation="ViewModel.CompanyValidator.ValidateValue">
+                            <MudTextField @bind-Value=ViewModel.NewCompany.CompanyName
+                                          T="string"
+                                          Label="Name"
+                                          Validation="ViewModel.CompanyValidator.ValidateValue"
+                                          Immediate="true"
+                                          For="(()=>ViewModel.NewCompany.CompanyName)" />
 
-                <MudTextField @bind-Value=ViewModel.NewCompany.CompanyName
-                              T="string"
-                              Label="Name"
-                              Validation="ViewModel.CompanyValidator.ValidateValue"
-                              Immediate="true"
-                              For="(()=>ViewModel.NewCompany.CompanyName)" />
+                            <MudTextField @bind-Value=ViewModel.NewCompany.OfficialWebSiteLink
+                                          T="string"
+                                          Label="Official website link"
+                                          Validation="ViewModel.CompanyValidator.ValidateValue"
+                                          Immediate="true"
+                                          For="(()=>ViewModel.NewCompany.OfficialWebSiteLink)" />
 
-                <MudTextField @bind-Value=ViewModel.NewCompany.OfficialWebSiteLink
-                              T="string"
-                              Label="Official website link"
-                              Validation="ViewModel.CompanyValidator.ValidateValue"
-                              Immediate="true"
-                              For="(()=>ViewModel.NewCompany.OfficialWebSiteLink)" />
+                            <br />
+                            <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="SaveNewCompany" />
+                        </MudForm>
+                    </DialogContent>
 
-                <br />
-                <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="SaveNewCompany" />
-            </MudForm>
-        </DialogContent>
+                </MudDialog>
 
-    </MudDialog>
-
-    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
-        <MudCard>
-            <MudCardHeader>
-                <MudText Typo="Typo.h4">New job application</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudForm @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+                
+                <MudForm Class="pl-5" @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
                     <MudTextField @bind-Value=ViewModel.JobApplication.JobPositionTitle
                                   Validation="ViewModel.Validator.ValidateValue"
                                   Immediate="true"
+                                  Clearable="true"
+                                  Placeholder="For example .NET developer"
                                   For="(()=>ViewModel.JobApplication.JobPositionTitle)"
                                   Label="Job position title" />
 
@@ -70,8 +76,11 @@ else if (ViewModel.JobApplication is not null)
                                      For="(()=>ViewModel.JobApplication.Company)"
                                      ToStringFunc=CompaniesToStringFunc
                                      Validation="ViewModel.Validator.ValidateValue"
+                                     Placeholder="Choose from the list or add new"
                                      Immediate="true"
                                      MaxItems="100"
+                                     Clearable="true"
+                                     Class="mt-5"
                                      @bind-Text=ViewModel.NewCompany.CompanyName
                                      SearchFunc="SearchCompaniesFunc">
                         <NoItemsTemplate>
@@ -98,22 +107,26 @@ else if (ViewModel.JobApplication is not null)
 
                     <MudAutocomplete T="JobApplicationSourceDTO"
                                      Label="Job application source"
+                                     Class="mt-5"
                                      ResetValueOnEmptyText="true"
                                      @bind-Value="ViewModel.JobApplication.ApplicationSource"
                                      For="(()=>ViewModel.JobApplication.ApplicationSource)"
                                      ToStringFunc=JobApplicationSourcesToStringFunc
                                      Validation="ViewModel.Validator.ValidateValue"
                                      Immediate="true"
+                                     Clearable="true"
                                      SearchFunc="SearchJobApplicationSourceFunc" />
 
                     <MudAutocomplete T="WorkLocationTypeDTO"
                                      Label="Work location type"
                                      ResetValueOnEmptyText="true"
-                                     @bind-Value="ViewModel.JobApplication.WorkLocation"
-                                     For="(()=>ViewModel.JobApplication.WorkLocation)"
+                                     @bind-Value="ViewModel.JobApplication.WorkLocationType"
+                                     For="(()=>ViewModel.JobApplication.WorkLocationType)"
                                      ToStringFunc=WorkLocationToStringFunc
                                      Validation="ViewModel.Validator.ValidateValue"
                                      Immediate="true"
+                                     Clearable="true"
+                                     Class="mt-5"
                                      SearchFunc="SearchWorkLocationTypesFunc" />
 
                     <MudAutocomplete T="JobTypeDTO"
@@ -124,25 +137,35 @@ else if (ViewModel.JobApplication is not null)
                                      ToStringFunc=JobTypeToStringFunc
                                      Validation="ViewModel.Validator.ValidateValue"
                                      Immediate="true"
+                                     Clearable="true"
+                                     Class="mt-5"
                                      SearchFunc="SearchJobTypesFunc" />
 
                     <MudTextField @bind-Value=ViewModel.JobApplication.JobAdLink
                                   Validation="ViewModel.Validator.ValidateValue"
                                   For="(()=>ViewModel.JobApplication.JobAdLink)"
                                   Immediate="true"
+                                  Placeholder="Something like https://www.link.com"
+                                  Clearable="true"
+                                  Class="mt-5"
                                   Label="Job ad link" />
 
                     <MudTextField @bind-Value=ViewModel.JobApplication.Description
                                   Validation="ViewModel.Validator.ValidateValue"
                                   For="(()=>ViewModel.JobApplication.Description)"
                                   Immediate="true"
+                                  Class="mt-5"
+                                  Counter="500"
+                                  Clearable="true"
+                                  MaxLength="500"
+                                  AutoGrow
+                                  MaxLines="6"
                                   Label="Description" />
 
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
 
                 </MudForm>
-            </MudCardContent>
-        </MudCard>
-
-    </MudContainer>
+            </MudItem>
+        </MudGrid>
+    </MudCard>
 }

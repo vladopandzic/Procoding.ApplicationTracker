@@ -3,7 +3,7 @@ using Procoding.ApplicationTracker.DTOs.Model;
 
 namespace Procoding.ApplicationTracker.Web.Validators;
 
-public class MyNewJobApplicationValidator : Validators.FluentValueValidator<JobApplicationDTO>
+public class MyNewJobApplicationValidator : FluentValueValidator<JobApplicationDTO>
 {
     public MyNewJobApplicationValidator()
     {
@@ -36,7 +36,7 @@ public class MyNewJobApplicationValidator : Validators.FluentValueValidator<JobA
         RuleFor(x => x.JobPositionTitle).NotEmpty();
 
 
-        RuleFor(x => x.JobAdLink).NotEmpty();
+        RuleFor(x => x.JobAdLink).NotEmpty().ValidUrl();
 
         RuleFor(x => x.JobAdLink).Custom((jobAdLink, context) =>
         {
@@ -49,9 +49,9 @@ public class MyNewJobApplicationValidator : Validators.FluentValueValidator<JobA
             }
         });
 
-        RuleFor(x => x.WorkLocation).NotEmpty();
+        RuleFor(x => x.WorkLocationType).NotEmpty();
 
-        RuleFor(x => x.WorkLocation).Custom((workLocation, context) =>
+        RuleFor(x => x.WorkLocationType).Custom((workLocation, context) =>
         {
             if (workLocation is not null)
             {

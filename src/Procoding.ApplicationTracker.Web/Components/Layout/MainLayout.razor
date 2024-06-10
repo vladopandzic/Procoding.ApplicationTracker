@@ -23,22 +23,22 @@
                 <MudText Typo="Typo.h6" Class="px-4">Job application tracker</MudText>
                 <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">@(IsAdminView ? "Admin view" : "Candidates view")</MudText>
                 <MudDivider Class="my-2" />
-                <MudNavLink Href="/">Home</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" Href="/">Home</MudNavLink>
                 <AuthorizeView Roles="Candidate">
-                    <MudNavLink Href="/my-job-applications/new">New job application</MudNavLink>
-                    <MudNavLink Href="/my-job-applications">Job application</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/my-job-applications/new">New job application</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/my-job-applications">Job applications</MudNavLink>
                 </AuthorizeView>
                 <AuthorizeView Roles="Employee">
-                    <MudNavLink Href="/job-applications">Job applications</MudNavLink>
-                    <MudNavLink Href="/candidates">Candidates</MudNavLink>
-                    <MudNavLink Href="/companies">Companies</MudNavLink>
-                    <MudNavLink Href="/job-application-sources">Job application sources</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/job-applications">Job applications</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/candidates">Candidates</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/companies">Companies</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Href="/job-application-sources">Job application sources</MudNavLink>
                 </AuthorizeView>
 
             </MudNavMenu>
         </MudPaper>
     </MudDrawer>
-    <MudMainContent Class="pl-5">
+    <MudMainContent Class="pl-5 pr-5">
         @Body
     </MudMainContent>
 </MudLayout>

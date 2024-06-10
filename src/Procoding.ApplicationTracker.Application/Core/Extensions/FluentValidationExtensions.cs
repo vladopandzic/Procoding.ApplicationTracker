@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using Procoding.ApplicationTracker.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Procoding.ApplicationTracker.Application.Core.Extensions;
 
@@ -31,4 +26,12 @@ public static class FluentValidationExtensions
 
         return rule.WithErrorCode(error.Code).WithMessage(error.Message);
     }
+
+    public static IRuleBuilderOptions<T, string> ValidUrl<T>(this IRuleBuilder<T, string> ruleBuilder)
+    {
+        return ruleBuilder.Must(uri => Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+                         .WithMessage("'{PropertyName}' is not a valid URL.");
+    }
+
+
 }

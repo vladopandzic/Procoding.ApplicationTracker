@@ -51,34 +51,31 @@ internal class Program
                                      });
                                      x.AddMudBlazorDialog();
                                      var baseApiUrl = "https://localhost:7140/";
-                                     x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                                 .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
-                                     x.AddHttpClient<ICompanyService, CompanyService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
+                                     //Only add retry policy to one of them since all of them have same name
+                                     x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>("ServerApi",
+                                                                                                                x => x.BaseAddress = new Uri(baseApiUrl))
+                                                 .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3,
+                                                                                                                               retryNumber => TimeSpan.FromMilliseconds(600)));
 
-                                                 .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
-                                     x.AddHttpClient<ICandidateService, CandidateService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                                 .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                                     x.AddHttpClient<ICompanyService, CompanyService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<IJobApplicationService, JobApplicationService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                                  .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                                     x.AddHttpClient<ICandidateService, CandidateService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<IEmployeeService, EmployeeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                                   .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                                     x.AddHttpClient<IJobApplicationService, JobApplicationService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<IAuthService, AuthService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                               .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
-                                     x.AddHttpClient<IWorkLocationTypeService, WorkLocationTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                              .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                                     x.AddHttpClient<IEmployeeService, EmployeeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<IJobTypeService, JobTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl))
-                                             .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                                     x.AddHttpClient<IAuthService, AuthService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
+                                     x.AddHttpClient<IWorkLocationTypeService, WorkLocationTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
+
+                                     x.AddHttpClient<IJobTypeService, JobTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
 
                                      x.AddTransient<INotificationService, NotificationService>();
-
-
-
                                  });
 
 
