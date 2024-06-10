@@ -1,20 +1,47 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Docker.DotNet.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Infrastructure.Data;
+using Testcontainers.MsSql;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests;
 
 public class TestBase
 {
+    private readonly MsSqlContainer _msSqlContainer
+      = new MsSqlBuilder().Build();
 
     internal CustomWebApplicationFactory _factory;
+
+    [OneTimeSetUp]
+    public async Task OneTimeSetup()
+    {
+        await _msSqlContainer.StartAsync();
+    }
+    public async ValueTask<string> CreateDatabaseAndGetConnectionStringAsync()
+    {
+        MsSqlContainer serverInstance = _msSqlContainer;
+        string databaseName = "Test" + Guid.NewGuid().ToString().Replace("-", "");
+        await serverInstance.ExecScriptAsync($"create database [{databaseName}]");
+        string connectionString =
+            serverInstance
+                .GetConnectionString()
+                .Replace("Database=master", $"Database={databaseName}");
+        return connectionString;
+    }
 
     [SetUp]
     public async Task Setup()
     {
+
+
         var testDatabaseHelper = new TestDatabaseHelper();
+
+        var connectionString = await CreateDatabaseAndGetConnectionStringAsync();
+
         _factory = new CustomWebApplicationFactory(testDatabaseHelper,
+                                                   connectionString,
                                                    (x) =>
                                                    {
                                                    });
@@ -35,5 +62,16 @@ public class TestBase
             await _factory.TestDatabaseHelper.DeleteAsync(_factory.Services.GetRequiredScopedService<ApplicationDbContext>());
             await _factory.DisposeAsync();
         }
+
     }
+
+    [OneTimeTearDown]
+    public async Task TearDownOneTime()
+    {
+
+        await _msSqlContainer.DisposeAsync();
+
+    }
+
+
 }
