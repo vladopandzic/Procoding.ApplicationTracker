@@ -22,7 +22,8 @@ internal class InsertEmployeeEndpointTests : TestBase
 
         //Act
         await LoginHelper.LoginEmployee(client);
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!"));
+        var response = await client.PostAsJsonAsync($"employees",
+                                                    new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!", true));
         var json = await response.Content.ReadFromJsonAsync<EmployeeInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();
@@ -47,7 +48,11 @@ internal class InsertEmployeeEndpointTests : TestBase
         //Act
         await LoginHelper.LoginCandidate(client);
         var response = await client.PostAsync($"employees",
-                                              JsonContent.Create(new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!")));
+                                              JsonContent.Create(new EmployeeInsertRequestDTO("NameNew",
+                                                                                              "SurnameNew",
+                                                                                              "newemail@newemail.com",
+                                                                                              "Pass123!",
+                                                                                              true)));
 
         //Assert
         Assert.That(response, Is.Not.Null);
@@ -65,7 +70,7 @@ internal class InsertEmployeeEndpointTests : TestBase
 
         //Act
         await LoginHelper.LoginEmployee(client);
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "", ""));
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "", "", true));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();

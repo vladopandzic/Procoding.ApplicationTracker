@@ -1,13 +1,15 @@
 ﻿namespace Procoding.ApplicationTracker.DTOs.Model;
 
-public class EmployeeDTO
+public class EmployeeEditDTO
 {
-    public EmployeeDTO(Guid id, string name, string surname, string email)
+    public EmployeeEditDTO(Guid id, string name, string surname, string email, string password, bool updatePassword)
     {
         Id = id;
         Name = name;
         Surname = surname;
         Email = email;
+        Password = password;
+        UpdatePassword = updatePassword;
     }
 
     public Guid Id { get; set; }
@@ -17,4 +19,8 @@ public class EmployeeDTO
     public string Surname { get; set; }
 
     public string Email { get; set; }
+
+    public string Password { get; set; }
+
+    public bool UpdatePassword { get; set; }
 }

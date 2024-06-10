@@ -20,9 +20,8 @@ else
         </MudToolBar>
      
     </MudCard>
-
-  
     <br />
+
     <MudDataGrid ServerData="@LoadGridData" T="JobApplicationDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
             <PropertyColumn Property="x => x.JobPositionTitle" Title="JobPositionTitle" Resizable="true" Filterable="true" />

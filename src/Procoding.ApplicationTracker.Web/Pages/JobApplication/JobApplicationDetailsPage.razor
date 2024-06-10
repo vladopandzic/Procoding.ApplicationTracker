@@ -14,13 +14,17 @@
 }
 else if (ViewModel.JobApplication is not null)
 {
-    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
-        <MudCard>
-            <MudCardHeader>
-                <MudText Typo="Typo.h4">New job application</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudForm @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+    <br />
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">@ViewModel.PageTitle</MudText>
+        </MudToolBar>
+    </MudCard>
+    <br />
+    <MudCard>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudForm Class="pl-5" @ref=mudForm Model="ViewModel.JobApplication" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
                     <MudAutocomplete T="CandidateDTO"
                                      Label="Candidate"
@@ -56,8 +60,8 @@ else if (ViewModel.JobApplication is not null)
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
 
                 </MudForm>
-            </MudCardContent>
-        </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudCard>
 
-    </MudContainer>
 }

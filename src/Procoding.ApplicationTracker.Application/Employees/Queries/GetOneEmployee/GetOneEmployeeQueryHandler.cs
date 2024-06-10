@@ -21,12 +21,11 @@ internal sealed class GetOneEmployeeQueryHandler : IQueryHandler<GetOneEmployeeQ
         if (employee is null)
             throw new Domain.Exceptions.EmployeeDoesNotExistException();
 
-        var companyDTO = new EmployeeDTO(id: employee.Id,
+        var employeeDto = new EmployeeDTO(id: employee.Id,
                                          name: employee.Name,
                                          surname: employee.Surname,
-                                         email: employee.Email.Value,
-                                         password: employee.PasswordHash);
+                                         email: employee.Email.Value);
 
-        return new EmployeeResponseDTO(companyDTO);
+        return new EmployeeResponseDTO(employeeDto);
     }
 }

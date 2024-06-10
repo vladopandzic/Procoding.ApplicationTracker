@@ -25,6 +25,9 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
 
     public JobApplicationValidator Validator { get; }
 
+    public string? PageTitle { get; set; }
+
+
     public JobApplicationDetailsViewModel(IJobApplicationService jobApplicationService,
                                           ICompanyService companyService,
                                           IJobApplicationSourceService jobApplicationSourceService,
@@ -60,6 +63,8 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
                                                    jobType: new JobTypeDTO(""),
                                                    description: "");
 
+            SetPageTitle();
+
             return;
         }
         IsLoading = true;
@@ -70,6 +75,7 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
         {
             JobApplication = response.Value.JobApplication;
         }
+        SetPageTitle();
     }
 
     private async Task GetCompanies(CancellationToken cancellationToken)
@@ -146,5 +152,10 @@ public class JobApplicationDetailsViewModel : EditViewModelBase
         }
 
         IsSaving = false;
+    }
+
+    private void SetPageTitle()
+    {
+        PageTitle = JobApplication?.Id == Guid.Empty ? "New job application" : $"Edit job application for: {JobApplication!.Company.CompanyName}";
     }
 }

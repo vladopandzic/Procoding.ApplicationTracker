@@ -1,7 +1,5 @@
 ﻿using Procoding.ApplicationTracker.DTOs.Model;
 using Procoding.ApplicationTracker.DTOs.Request.Employees;
-using Procoding.ApplicationTracker.DTOs.Request.JobApplicationSources;
-using Procoding.ApplicationTracker.Web.Services;
 using Procoding.ApplicationTracker.Web.Services.Interfaces;
 using Procoding.ApplicationTracker.Web.Validators;
 using Procoding.ApplicationTracker.Web.ViewModels.Abstractions;
@@ -13,9 +11,12 @@ public class EmployeeDetailsViewModel : EditViewModelBase
     private readonly IEmployeeService _employeeService;
     private readonly INotificationService _notificationService;
 
-    public EmployeeDTO? Employee { get; set; }
+    public EmployeeEditDTO? Employee { get; set; }
 
     public EmployeeValidator Validator { get; }
+
+    public string? PageTitle { get; set; }
+
 
     public EmployeeDetailsViewModel(IEmployeeService employeeService, EmployeeValidator validator, INotificationService notificationService)
     {
@@ -28,7 +29,9 @@ public class EmployeeDetailsViewModel : EditViewModelBase
     {
         if (id is null)
         {
-            Employee = new EmployeeDTO(Guid.Empty, "", "", "", "");
+            Employee = new EmployeeEditDTO(Guid.Empty, "", "", "", "", false);
+            SetPageTitle();
+
             return;
         }
         IsLoading = true;
@@ -37,8 +40,15 @@ public class EmployeeDetailsViewModel : EditViewModelBase
 
         if (response.IsSuccess)
         {
-            Employee = response.Value.Employee;
+            var employeeDto = response.Value.Employee;
+            Employee = new EmployeeEditDTO(id: employeeDto.Id,
+                                           name: employeeDto.Name,
+                                           surname: employeeDto.Surname,
+                                           email: employeeDto.Email,
+                                           password: "",
+                                           updatePassword: false);
         }
+        SetPageTitle();
     }
 
     public async Task<bool> IsValidAsync()
@@ -60,7 +70,8 @@ public class EmployeeDetailsViewModel : EditViewModelBase
             var result = await _employeeService.InsertEmployeeAsync(new EmployeeInsertRequestDTO(Employee!.Name,
                                                                                                  Employee.Surname,
                                                                                                  Employee.Email,
-                                                                                                 Employee.Password));
+                                                                                                 Employee.Password,
+                                                                                                 Employee.UpdatePassword));
 
             if (result.IsSuccess)
             {
@@ -75,11 +86,17 @@ public class EmployeeDetailsViewModel : EditViewModelBase
                                                                                                  Employee!.Name,
                                                                                                  Employee.Surname,
                                                                                                  Employee.Email,
-                                                                                                 Employee.Password));
+                                                                                                 Employee.Password,
+                                                                                                 Employee.UpdatePassword));
 
             _notificationService.ShowMessageFromResult(result);
         }
 
         IsSaving = false;
+    }
+
+    private void SetPageTitle()
+    {
+        PageTitle = Employee?.Id == Guid.Empty ? "New employee" : $"Edit employee: {Employee!.Name}";
     }
 }

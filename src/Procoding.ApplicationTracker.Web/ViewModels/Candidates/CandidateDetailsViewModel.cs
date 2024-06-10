@@ -17,6 +17,13 @@ public class CandidateDetailsViewModel : EditViewModelBase
 
     public CandidateValidator Validator { get; }
 
+    public string? PageTitle { get; set; }
+
+    private void SetPageTitle()
+    {
+        PageTitle = Candidate?.Id == Guid.Empty ? "New candidate" : $"Edit candidate: {Candidate!.Name}";
+    }
+
     public CandidateDetailsViewModel(ICandidateService candidateService,
                                      CandidateValidator validator,
                                      INotificationService notificationService)
@@ -31,6 +38,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
         if (id is null)
         {
             Candidate = new CandidateDTO(Guid.Empty, "", "", "", "");
+            SetPageTitle();
             return;
         }
         IsLoading = true;
@@ -41,6 +49,8 @@ public class CandidateDetailsViewModel : EditViewModelBase
         {
             Candidate = response.Value.Candidate;
         }
+        SetPageTitle();
+
     }
 
     public async Task<bool> IsValidAsync()

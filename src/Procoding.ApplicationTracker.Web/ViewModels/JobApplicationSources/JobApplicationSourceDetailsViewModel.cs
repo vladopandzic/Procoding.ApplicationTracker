@@ -15,6 +15,8 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
 
     public JobApplicationSourceValidator Validator { get; }
 
+    public string? PageTitle { get; set; }
+
     public JobApplicationSourceDetailsViewModel(IJobApplicationSourceService jobApplicationSourceService,
                                                JobApplicationSourceValidator validator,
                                                INotificationService notificationService)
@@ -29,6 +31,7 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
         if (id is null)
         {
             JobApplicationSource = new JobApplicationSourceDTO(Guid.Empty, "");
+            SetPageTitle();
             return;
         }
         IsLoading = true;
@@ -39,6 +42,7 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
         {
             JobApplicationSource = response.Value.JobApplicationSource;
         }
+        SetPageTitle();
     }
 
     public async Task<bool> IsValidAsync()
@@ -77,5 +81,10 @@ public class JobApplicationSourceDetailsViewModel : EditViewModelBase
         }
 
         IsSaving = false;
+    }
+
+    private void SetPageTitle()
+    {
+        PageTitle = JobApplicationSource?.Id == Guid.Empty ? "New job application source" : $"Edit job application source: {JobApplicationSource!.Name}";
     }
 }

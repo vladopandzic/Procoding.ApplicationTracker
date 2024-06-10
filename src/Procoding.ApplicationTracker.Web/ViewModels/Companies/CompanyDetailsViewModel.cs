@@ -15,6 +15,9 @@ public class CompanyDetailsViewModel : EditViewModelBase
 
     public CompanyValidator Validator { get; }
 
+    public string? PageTitle { get; set; }
+
+
     public CompanyDetailsViewModel(ICompanyService companyService, INotificationService notificationService, CompanyValidator validator)
     {
         _companyService = companyService;
@@ -22,11 +25,13 @@ public class CompanyDetailsViewModel : EditViewModelBase
         Validator = validator;
     }
 
+
     public async Task InitializeViewModel(Guid? id, CancellationToken cancellationToken = default)
     {
         if (id is null)
         {
             Company = new CompanyDTO(Guid.Empty, "", "");
+            SetPageTitle();
             return;
         }
         IsLoading = true;
@@ -37,7 +42,9 @@ public class CompanyDetailsViewModel : EditViewModelBase
         {
             Company = response.Value.Company;
         }
+        SetPageTitle();
     }
+
 
     public async Task<bool> IsValidAsync()
     {
@@ -71,5 +78,10 @@ public class CompanyDetailsViewModel : EditViewModelBase
         }
 
         IsSaving = false;
+    }
+
+    private void SetPageTitle()
+    {
+        PageTitle = Company?.Id == Guid.Empty ? "New company" : $"Edit company: {Company!.CompanyName}";
     }
 }

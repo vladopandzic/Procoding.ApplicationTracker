@@ -12,13 +12,18 @@
 }
 else if (ViewModel.Employee is not null)
 {
-    <MudContainer MaxWidth="MaxWidth.Medium" Style="margin-top: 20px;">
-        <MudCard>
-            <MudCardHeader>
-                <MudText Typo="Typo.h4">@ViewModel.Employee.Name</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudForm @ref=mudForm Model="ViewModel.Employee" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
+
+    <br />
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">@ViewModel.PageTitle</MudText>
+        </MudToolBar>
+    </MudCard>
+    <br />
+    <MudCard>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudForm Class="pl-5" @ref=mudForm Model="ViewModel.Employee" ValidationDelay="0" Validation="ViewModel.Validator.ValidateValue">
 
                     <MudTextField @bind-Value=ViewModel.Employee.Name
                                   T="string"
@@ -40,20 +45,26 @@ else if (ViewModel.Employee is not null)
                                   Validation="ViewModel.Validator.ValidateValue"
                                   Immediate="true"
                                   For="(()=>ViewModel.Employee.Email)" />
-
-                    <MudTextField @bind-Value=ViewModel.Employee.Password
-                                  T="string"
-                                  Label="Password"
-                                  Validation="ViewModel.Validator.ValidateValue"
-                                  InputType="InputType.Password"
-                                  Immediate="true"
-                                  For="(()=>ViewModel.Employee.Password)" />
+                    <MudCheckBox @bind-Checked=ViewModel.Employee.UpdatePassword
+                                 T="bool"
+                                 Label="Change password"
+                                 Validation="ViewModel.Validator.ValidateValue"
+                                 For="(()=>ViewModel.Employee.UpdatePassword)" />
+                    @if (ViewModel.Employee.UpdatePassword)
+                    {
+                        <MudTextField @bind-Value=ViewModel.Employee.Password
+                                      T="string"
+                                      Label="Password"
+                                      Validation="ViewModel.Validator.ValidateValue"
+                                      Immediate="true"
+                                      For="(()=>ViewModel.Employee.Password)" />
+                    }
 
                     <br />
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
                 </MudForm>
-            </MudCardContent>
-        </MudCard>
+            </MudItem>
+        </MudGrid>
 
-    </MudContainer>
+    </MudCard>
 }

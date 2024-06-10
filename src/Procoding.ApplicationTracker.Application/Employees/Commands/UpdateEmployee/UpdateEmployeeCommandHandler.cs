@@ -44,8 +44,7 @@ internal sealed class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmplo
         var employeeDto = new EmployeeDTO(employee.Id,
                                           name: employee.Name,
                                           surname: employee.Surname,
-                                          email: employee.Email.Value,
-                                          password: employee.PasswordHash);
+                                          email: employee.Email.Value);
 
         return new EmployeeUpdatedResponseDTO(employeeDto);
     }

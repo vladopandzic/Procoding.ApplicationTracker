@@ -9,12 +9,18 @@
 }
 else
 {
-    <MudText Typo="Typo.h4">Job applications</MudText>
     <br />
-    <MudLink Href="@($"job-applications/new")">
-        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
-    </MudLink>
-    <br />
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">Job applications</MudText>
+            <MudSpacer />
+            <MudLink Href="@($"job-applications/new")">
+                <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+            </MudLink>
+        </MudToolBar>
+    </MudCard>
+    <br/>
+
     <MudDataGrid ServerData="@LoadGridData" T="JobApplicationDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
             <PropertyColumn Property="x => x.Candidate.Name" header Title="Candidate.Name" Filterable="true" />

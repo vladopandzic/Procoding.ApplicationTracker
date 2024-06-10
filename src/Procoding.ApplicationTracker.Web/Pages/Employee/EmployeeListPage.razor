@@ -9,17 +9,23 @@
 }
 else
 {
-    <MudText Typo="Typo.h4">Employees</MudText>
     <br />
-    <MudLink Href="@($"employees/new")">
-        <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
-    </MudLink>
+    <MudCard>
+        <MudToolBar>
+            <MudText Typo="Typo.h5" Style="font-weight:600">Employees</MudText>
+            <MudSpacer />
+            <MudLink Href="@($"employees/new")">
+                <MudButton StartIcon="@Icons.Material.Outlined.NewLabel" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Success">New</MudButton>
+            </MudLink>
+        </MudToolBar>
+
+    </MudCard>
     <br />
     <MudDataGrid ServerData="@LoadGridData" T="EmployeeDTO" Hover=true RowsPerPage="10" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
             <PropertyColumn Property="x => x.Name" Title="Name" Resizable="true" Filterable="true" />
             <PropertyColumn Property="x => x.Surname" Title="Surname" Resizable="true" Filterable="true" />
-            <PropertyColumn Property="x => x.Email" Title="Email" Resizable="true" Filterable="true" />
+            <PropertyColumn Property="x => x.Email" Title="Email.Value" Resizable="true" Filterable="true" />
 
             <TemplateColumn CellClass="d-flex justify-end" Filterable="false">
                 <CellTemplate Context="data">

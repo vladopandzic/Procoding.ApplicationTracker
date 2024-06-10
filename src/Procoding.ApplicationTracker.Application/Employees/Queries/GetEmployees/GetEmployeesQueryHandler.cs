@@ -28,7 +28,7 @@ internal sealed class GetEmployeeQueryHandler : IQueryHandler<GetEmployeesQuery,
 
         var count = await _EmployeeRepository.CountAsync(specification, cancellationToken);
 
-        var EmployeeDTOs = employees.Select(x => new EmployeeDTO(id: x.Id, name: x.Name, surname: x.Surname, email: x.Email.Value, password: x.PasswordHash)).ToList();
+        var EmployeeDTOs = employees.Select(x => new EmployeeDTO(id: x.Id, name: x.Name, surname: x.Surname, email: x.Email.Value)).ToList();
 
         return new EmployeeListResponseDTO(employees: EmployeeDTOs.AsReadOnly(), totalCount: count);
     }

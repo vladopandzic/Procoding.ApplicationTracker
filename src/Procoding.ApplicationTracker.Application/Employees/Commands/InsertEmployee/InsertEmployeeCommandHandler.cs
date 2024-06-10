@@ -46,8 +46,7 @@ internal sealed class InsertEmployeeCommandHandler : ICommandHandler<InsertEmplo
         var employeeDto = new EmployeeDTO(id: employee.Id,
                                           name: employee.Name,
                                           surname: employee.Surname,
-                                          email: employee.Email.Value,
-                                          password: employee.PasswordHash);
+                                          email: employee.Email.Value);
 
         return new EmployeeInsertedResponseDTO(employeeDto);
     }
