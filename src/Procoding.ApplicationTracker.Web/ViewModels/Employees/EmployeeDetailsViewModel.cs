@@ -70,12 +70,14 @@ public class EmployeeDetailsViewModel : EditViewModelBase
             var result = await _employeeService.InsertEmployeeAsync(new EmployeeInsertRequestDTO(Employee!.Name,
                                                                                                  Employee.Surname,
                                                                                                  Employee.Email,
-                                                                                                 Employee.Password,
-                                                                                                 Employee.UpdatePassword));
+                                                                                                 Employee.Password));
 
             if (result.IsSuccess)
             {
                 Employee.Id = result.Value.Employee.Id;
+                Employee.Name = result.Value.Employee.Name;
+                Employee.Password = "";
+                Employee.UpdatePassword = false;
             }
 
             _notificationService.ShowMessageFromResult(result);

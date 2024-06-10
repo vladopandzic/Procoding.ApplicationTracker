@@ -45,14 +45,7 @@ else if (ViewModel.Candidate is not null)
                                   Immediate="true"
                                   For="(()=>ViewModel.Candidate.Email)" />
 
-                    <MudTextField @bind-Value=ViewModel.Candidate.Password
-                                  T="string"
-                                  Label="Password"
-                                  Validation="ViewModel.Validator.ValidateValue"
-                                  InputType="InputType.Password"
-                                  Immediate="true"
-                                  For="(()=>ViewModel.Candidate.Password)" />
-
+                 
                     <br />
                     <SaveButton Disabled="ViewModel.IsSaving" IsSaving="ViewModel.IsSaving" OnClick="OnSubmit" />
                 </MudForm>

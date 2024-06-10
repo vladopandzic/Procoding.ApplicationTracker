@@ -70,7 +70,7 @@ public class MyJobApplicationViewModel : EditViewModelBase
 
         if (id is null)
         {
-            var candidate = new CandidateDTO(Guid.Empty, "", "", "", "");
+            var candidate = new CandidateDTO(Guid.Empty, "", "", "");
             var jobApplicationSource = new JobApplicationSourceDTO(Guid.Empty, "");
             var company = new CompanyDTO(Guid.Empty, "", "");
 

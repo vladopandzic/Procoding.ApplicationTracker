@@ -26,7 +26,7 @@ internal sealed class GetAllJobApplicationsQueryHandler : IQueryHandler<GetAllJo
 
         var jobApplicationsDto = jobApplications.Select(x =>
         {
-            var candidateDto = new CandidateDTO(x.Candidate.Id, x.Candidate.Name, x.Candidate.Surname, x.Candidate.Email.Value, x.Candidate.PasswordHash);
+            var candidateDto = new CandidateDTO(x.Candidate.Id, x.Candidate.Name, x.Candidate.Surname, x.Candidate.Email.Value);
             var jobApplicationSourceDto = new JobApplicationSourceDTO(x.ApplicationSource.Id, x.ApplicationSource.Name);
             var companyDto = new CompanyDTO(x.Company.Id, x.Company.CompanyName.Value, x.Company.OfficialWebSiteLink.Value);
 

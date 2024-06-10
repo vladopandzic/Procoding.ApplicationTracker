@@ -138,6 +138,24 @@ public class Employee : IdentityUser<Guid>, IEntityBase, IAuditableEntity, ISoft
     /// <param name="surname"></param>
     /// <param name="email"></param>
     /// <returns></returns>
+    public Employee Update(string name, string surname, Email email)
+    {
+        Validate(name, surname, email);
+        Name = name;
+        Surname = surname;
+        Email = email;
+
+        return this;
+    }
+
+
+    /// <summary>
+    /// Updates main attribute of the <see cref="Employee"/>.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="surname"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public Employee Update(string name, string surname, Email email, string password, IPasswordHasher<Employee> passwordHasher)
     {
         Validate(name, surname, email);

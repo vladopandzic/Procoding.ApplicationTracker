@@ -28,7 +28,8 @@ public class UpdateEmployeeEndpoint : EndpointBaseAsync.WithRequest<EmployeeUpda
                                                                   name: request.Name,
                                                                   surname: request.Surname,
                                                                   email: request.Email,
-                                                                  password: request.Password),
+                                                                  password: request.Password,
+                                                                  updatePassword: request.UpdatePassword),
                                         cancellationToken);
 
         return result.Match<IActionResult>(Ok, err => BadRequest(err.MapToResponse()));

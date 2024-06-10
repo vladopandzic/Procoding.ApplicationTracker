@@ -36,7 +36,15 @@ internal sealed class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmplo
 
         var email = new Email(request.Email);
 
-        employee.Update(name: request.Name, surname: request.Surname, email: email, password: request.Password, _passwordHasher);
+        if (request.UpdatePassword)
+        {
+            employee.Update(name: request.Name, surname: request.Surname, email: email, password: request.Password, _passwordHasher);
+
+        }
+        else
+        {
+            employee.Update(name: request.Name, surname: request.Surname, email: email);
+        }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

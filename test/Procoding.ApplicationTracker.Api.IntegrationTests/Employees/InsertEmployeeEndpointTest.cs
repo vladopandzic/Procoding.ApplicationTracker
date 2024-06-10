@@ -23,7 +23,7 @@ internal class InsertEmployeeEndpointTests : TestBase
         //Act
         await LoginHelper.LoginEmployee(client);
         var response = await client.PostAsJsonAsync($"employees",
-                                                    new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!", true));
+                                                    new EmployeeInsertRequestDTO("NameNew", "SurnameNew", "newemail@newemail.com", "Pass123!"));
         var json = await response.Content.ReadFromJsonAsync<EmployeeInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();
@@ -51,8 +51,7 @@ internal class InsertEmployeeEndpointTests : TestBase
                                               JsonContent.Create(new EmployeeInsertRequestDTO("NameNew",
                                                                                               "SurnameNew",
                                                                                               "newemail@newemail.com",
-                                                                                              "Pass123!",
-                                                                                              true)));
+                                                                                              "Pass123!")));
 
         //Assert
         Assert.That(response, Is.Not.Null);
@@ -70,7 +69,7 @@ internal class InsertEmployeeEndpointTests : TestBase
 
         //Act
         await LoginHelper.LoginEmployee(client);
-        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "", "", true));
+        var response = await client.PostAsJsonAsync($"employees", new EmployeeInsertRequestDTO("", "", "", ""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allEmployeesAfter = await dbContext2.Employees.ToListAsync();

@@ -25,8 +25,7 @@ internal sealed class GetOneJobApplicationQueryHandler : IQueryHandler<GetOneJob
         var candidateDto = new CandidateDTO(jobApplication.Candidate.Id,
                                             jobApplication.Candidate.Name,
                                             jobApplication.Candidate.Surname,
-                                            jobApplication.Candidate.Email.Value,
-                                            jobApplication.Candidate.PasswordHash);
+                                            jobApplication.Candidate.Email.Value);
         var jobApplicationSourceDto = new JobApplicationSourceDTO(jobApplication.ApplicationSource.Id, jobApplication.ApplicationSource.Name);
         var companyDto = new CompanyDTO(jobApplication.Company.Id, jobApplication.Company.CompanyName.Value, jobApplication.Company.OfficialWebSiteLink.Value);
 

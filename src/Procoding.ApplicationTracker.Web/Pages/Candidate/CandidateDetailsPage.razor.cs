@@ -18,14 +18,9 @@ public partial class CandidateDetailsPage
 
     protected override async Task OnInitializedAsync()
     {
-        if (Id == "new")
-        {
-            await ViewModel.InitializeViewModel(null);
-        }
-        else
-        {
-            await ViewModel.InitializeViewModel(Guid.Parse(Id));
-        }
+
+        await ViewModel.InitializeViewModel(Guid.Parse(Id));
+
         await base.OnInitializedAsync();
     }
 

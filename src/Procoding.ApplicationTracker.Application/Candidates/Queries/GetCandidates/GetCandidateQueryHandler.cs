@@ -22,7 +22,7 @@ internal sealed class GetCandidateQueryHandler : IQueryHandler<GetCandidatesQuer
 
         var count = await _candidateRepository.CountAsync(specification, cancellationToken);
 
-        var candidateDTOs = candidates.Select(x => new CandidateDTO(x.Id, x.Name, x.Surname, x.Email.Value, x.PasswordHash)).ToList();
+        var candidateDTOs = candidates.Select(x => new CandidateDTO(x.Id, x.Name, x.Surname, x.Email.Value)).ToList();
 
         return new CandidateListResponseDTO(candidates: candidateDTOs.AsReadOnly(), totalCount: count);
     }

@@ -45,18 +45,22 @@ else if (ViewModel.Employee is not null)
                                   Validation="ViewModel.Validator.ValidateValue"
                                   Immediate="true"
                                   For="(()=>ViewModel.Employee.Email)" />
-                    <MudCheckBox @bind-Checked=ViewModel.Employee.UpdatePassword
-                                 T="bool"
-                                 Label="Change password"
-                                 Validation="ViewModel.Validator.ValidateValue"
-                                 For="(()=>ViewModel.Employee.UpdatePassword)" />
-                    @if (ViewModel.Employee.UpdatePassword)
+                    @if (ViewModel.Employee.Id != Guid.Empty)
+                    {
+                        <MudCheckBox @bind-Value=ViewModel.Employee.UpdatePassword
+                                     T="bool"
+                                     Label="Change password"
+                                     Validation="ViewModel.Validator.ValidateValue"
+                                     For="(()=>ViewModel.Employee.UpdatePassword)" />
+                    }
+                    @if ((ViewModel.Employee.UpdatePassword && ViewModel.Employee.Id != Guid.Empty) || ViewModel.Employee.Id == Guid.Empty)
                     {
                         <MudTextField @bind-Value=ViewModel.Employee.Password
                                       T="string"
                                       Label="Password"
                                       Validation="ViewModel.Validator.ValidateValue"
                                       Immediate="true"
+                                      InputType="InputType.Password"
                                       For="(()=>ViewModel.Employee.Password)" />
                     }
 

@@ -37,7 +37,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
     {
         if (id is null)
         {
-            Candidate = new CandidateDTO(Guid.Empty, "", "", "", "");
+            Candidate = new CandidateDTO(Guid.Empty, "", "", "");
             SetPageTitle();
             return;
         }
@@ -71,7 +71,7 @@ public class CandidateDetailsViewModel : EditViewModelBase
         if (Candidate!.Id == Guid.Empty)
         {
             var result = await _candidateService.InsertCandidateAsync(
-                         new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email, Candidate.Password));
+                         new CandidateInsertRequestDTO(Candidate!.Name, Candidate.Surname, Candidate.Email));
 
             if (result.IsSuccess)
             {

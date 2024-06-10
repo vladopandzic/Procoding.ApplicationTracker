@@ -21,7 +21,7 @@ internal class InsertCandidateEndpointTests : TestBase
 
         //Act
         await LoginHelper.LoginEmployee(client);
-        var response = await client.PostAsJsonAsync($"candidates", new CandidateInsertRequestDTO("NameNew", "SurnameNew", "newemail2@newemail.com", "Test123!!!!!"));
+        var response = await client.PostAsJsonAsync($"candidates", new CandidateInsertRequestDTO("NameNew", "SurnameNew", "newemail2@newemail.com"));
         var json = await response.Content.ReadFromJsonAsync<CandidateInsertedResponseDTO>();
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allCandidatesAfter = await dbContext2.Candidates.ToListAsync();
@@ -45,7 +45,7 @@ internal class InsertCandidateEndpointTests : TestBase
 
         //Act
         await LoginHelper.LoginEmployee(client);
-        var response = await client.PostAsJsonAsync($"candidates", new CandidateInsertRequestDTO("", "", "", "test123"));
+        var response = await client.PostAsJsonAsync($"candidates", new CandidateInsertRequestDTO("", "", ""));
         var problemDetails = (await response.Content.ReadFromJsonAsync<ProblemDetails>())!;
         using var dbContext2 = _factory.Services.GetRequiredScopedService<ApplicationDbContext>();
         var allCandidatesAfter = await dbContext2.Candidates.ToListAsync();

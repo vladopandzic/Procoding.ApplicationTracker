@@ -121,13 +121,14 @@ public sealed class Candidate : IdentityUser<Guid>, ISoftDeletableEntity, IAudit
     /// <param name="surname"></param>
     /// <param name="email"></param>
     /// <returns></returns>
-    public Candidate Update(string name, string surname, Email email)
+    public async Task<(Candidate Candidate, IdentityResult UpdateResult)> Update(string name, string surname, Email email, UserManager<Candidate> userManager)
     {
         Validate(name, surname, email);
         Name = name;
         Surname = surname;
         Email = email;
-        return this;
+        ;
+        return (this, await userManager.UpdateAsync(this));
     }
 
     /// <summary>
