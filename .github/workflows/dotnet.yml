@@ -35,7 +35,7 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release --no-restore
   deploy:
-
+    needs: build_and_test
     runs-on: ubuntu-latest
     environment:
       name: Production
