@@ -16,7 +16,8 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
-   
+    environment:
+      name: Production
     steps:
      - name: Debug AWS Credentials
        run: | 
