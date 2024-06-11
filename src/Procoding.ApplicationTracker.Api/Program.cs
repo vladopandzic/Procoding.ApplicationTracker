@@ -35,11 +35,16 @@ public class Program
         builder.Services.AddTransient<IMapper, Mapper>();
         builder.Services.AddMediatR(x =>
         {
-           
+
             x.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(GetJobApplicationSourcesQuery).Assembly)
              .AddHandlerValidations();
         });
-        builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("JobApplicationDatabase")));
+
+        builder.Services.AddDbContext<ApplicationDbContext>(option =>
+        option.UseNpgsql(builder.Configuration.GetConnectionString("JobApplicationDatabase"), 
+        x => x.MigrationsAssembly("Procoding.ApplicationTracker.Persistance.Migrations.PostgreSQL")));
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
         builder.Services.AddPersistance();
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -120,7 +125,7 @@ public class Program
         });
         var app = builder.Build();
 
-        //using ApplicationDbContext context = await SeedDatabaseAsync(app);
+        using ApplicationDbContext context = await SeedOneEmployee(app);
 
         app.MapDefaultEndpoints();
 
@@ -149,6 +154,14 @@ public class Program
         var context = app.Services.GetRequiredScopedService<ApplicationDbContext>();
         var passwordHasher = app.Services.GetRequiredScopedService<IPasswordHasher<Candidate>>();
         await SeedData.SeedAsync(context, passwordHasher);
+        return context;
+    }
+
+    private static async Task<ApplicationDbContext> SeedOneEmployee(WebApplication app)
+    {
+        var context = app.Services.GetRequiredScopedService<ApplicationDbContext>();
+        var userManager = app.Services.GetRequiredScopedService<UserManager<Employee>>();
+        await SeedData.SeedEmployee(context, userManager);
         return context;
     }
 }

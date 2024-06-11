@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Procoding.ApplicationTracker.Api.IntegrationTests", "test\Procoding.ApplicationTracker.Api.IntegrationTests\Procoding.ApplicationTracker.Api.IntegrationTests.csproj", "{149522D1-2877-4C2A-A969-D3883609E9E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Procoding.ApplicationTracker.Persistance.Migrations.PostgreSQL", "src\Procoding.ApplicationTracker.Persistance.Migrations.PostgreSQL\Procoding.ApplicationTracker.Persistance.Migrations.PostgreSQL.csproj", "{CD74FE94-749B-4F13-9D72-7B7E38DA80B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{149522D1-2877-4C2A-A969-D3883609E9E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{149522D1-2877-4C2A-A969-D3883609E9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{149522D1-2877-4C2A-A969-D3883609E9E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD74FE94-749B-4F13-9D72-7B7E38DA80B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD74FE94-749B-4F13-9D72-7B7E38DA80B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD74FE94-749B-4F13-9D72-7B7E38DA80B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD74FE94-749B-4F13-9D72-7B7E38DA80B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{731264B1-13D7-4291-879E-56CA597792A3} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 		{592B84B5-F356-4E17-90FE-26F33B8B586D} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
 		{149522D1-2877-4C2A-A969-D3883609E9E9} = {FF9F9555-26A4-4190-94E1-EC78E3E94E6F}
+		{CD74FE94-749B-4F13-9D72-7B7E38DA80B5} = {8302A11C-7E0F-46D0-AE58-E39797B75E74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23C9585D-5823-475F-884E-4A8D6FFF1F93}

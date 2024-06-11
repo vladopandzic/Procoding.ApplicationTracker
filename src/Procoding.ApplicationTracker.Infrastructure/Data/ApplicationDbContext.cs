@@ -128,6 +128,7 @@ public class ApplicationDbContext : DbContext, IUnitOfWork
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=ApplicationTrackerDb;Trusted_Connection=True;TrustServerCertificate=True;");
+        // optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS;Database=ApplicationTrackerDb;Trusted_Connection=True;TrustServerCertificate=True;");
+        //optionsBuilder.UseNpgsql(@"Host=localhost;Database=ApplicationDbTracker;Username=postgres;Password=admin");
     }
 }

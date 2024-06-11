@@ -48,4 +48,21 @@ public static class SeedData
 
         await dbContext.SaveChangesAsync();
     }
+
+    public static async Task SeedEmployee(ApplicationDbContext applicationDbContext, UserManager<Employee> userManager)
+    {
+        var employee = Employee.Create(Guid.NewGuid(),
+                                                      "Vlado",
+                                                      "Pandžić",
+                                                      new Email("pandzic.vlado@gmail.com"),
+                                                      "Pass123!",
+                                                      userManager.PasswordHasher);
+
+        var result = await userManager.CreateAsync(employee, "Pass123!");
+
+        await applicationDbContext.Employees.AddAsync(employee);
+
+        var result2 = await applicationDbContext.SaveChangesAsync();
+
+    }
 }
