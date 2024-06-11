@@ -125,7 +125,7 @@ public class Program
         });
         var app = builder.Build();
 
-        using ApplicationDbContext context = await SeedOneEmployee(app);
+        //using ApplicationDbContext context = await SeedOneEmployee(app);
 
         app.MapDefaultEndpoints();
 

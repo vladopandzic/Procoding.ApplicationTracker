@@ -43,7 +43,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Api.Program>
         builder.ConfigureTestServices((services) =>
         {
             services.RemoveAll(typeof(DbContextOptions<ApplicationDbContext>));
-            services.AddDbContext<ApplicationDbContext>((_, option) => option.UseSqlServer(ConnectionString));
+            services.AddDbContext<ApplicationDbContext>((_, option) => option.UseNpgsql(ConnectionString));
         });
 
         //        builder.ConfigureServices((services) =>

@@ -12,11 +12,14 @@ public class AppAdapter
 {
     private WebApplication _app;
 
-    public AppAdapter(string[] args, Type type, Action<IServiceCollection> options)
+    public AppAdapter(string[] args, Type type, Action<IServiceCollection, IConfiguration> options)
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        options.Invoke(builder.Services);
+        var configuration = builder.Configuration;
+
+
+        options.Invoke(builder.Services, configuration);
 
         builder.Services.AddRazorComponents()
                         .AddInteractiveServerComponents(x => x.DetailedErrors = true);
@@ -48,11 +51,11 @@ public class AppAdapter
 
         _app.UseAntiforgery();
 
-        _app.UseEndpoints(x => { });
+        _app.UseEndpoints(x =>
+        {
+        });
 
-        _app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Login}/{action=Index}/{id?}");
+        _app.MapControllerRoute(name: "default", pattern: "{controller=Login}/{action=Index}/{id?}");
     }
 
 

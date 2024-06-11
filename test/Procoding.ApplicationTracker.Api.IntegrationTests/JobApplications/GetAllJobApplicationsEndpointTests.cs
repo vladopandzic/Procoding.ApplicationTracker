@@ -63,7 +63,7 @@ public class GetAllJobApplicationsEndpointTests : TestBase
                                                                                               id: Guid.NewGuid(),
                                                                                               jobApplicationSource: jobApplicationSource,
                                                                                               company: company,
-                                                                                              jobPositionTitle: f.Random.String(),
+                                                                                              jobPositionTitle: "ss",
                                                                                               jobAdLink: new Link(f.Internet.Url()),
                                                                                               jobType: JobType.Contract,
                                                                                               workLocationType: WorkLocationType.Remote,

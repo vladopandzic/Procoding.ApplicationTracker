@@ -13,14 +13,14 @@ public class TestDatabaseHelper
     public string ConnectionString { get; }
 
     private readonly DbContextOptions<ApplicationDbContext> _options;
-    private const string DATABASE_SERVER_NAME = "localhost\\SQLEXPRESS";
+    private const string DATABASE_SERVER_NAME = "localhost";
 
     public TestDatabaseHelper()
     {
         _databaseName = $"TestDb2_{Guid.NewGuid()}";
-        ConnectionString = $"Server={DATABASE_SERVER_NAME};Database={_databaseName};Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
+        ConnectionString = $"Host={DATABASE_SERVER_NAME};Database=ApplicationDbTracker;Username=postgres;Password=admin";
         _options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                                                                    .UseSqlServer(ConnectionString)
+                                                                    .UseNpgsql(ConnectionString)
                                                                     .Options;
     }
 

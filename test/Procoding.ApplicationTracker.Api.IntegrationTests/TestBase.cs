@@ -4,13 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Procoding.ApplicationTracker.Domain.Entities;
 using Procoding.ApplicationTracker.Infrastructure.Data;
 using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 
 namespace Procoding.ApplicationTracker.Api.IntegrationTests;
 
 public class TestBase
 {
-    private readonly MsSqlContainer _msSqlContainer
-      = new MsSqlBuilder().Build();
+    private readonly Testcontainers.PostgreSql.PostgreSqlContainer _msSqlContainer
+      = new PostgreSqlBuilder().Build();
 
     internal CustomWebApplicationFactory _factory;
 
@@ -21,13 +22,13 @@ public class TestBase
     }
     public async ValueTask<string> CreateDatabaseAndGetConnectionStringAsync()
     {
-        MsSqlContainer serverInstance = _msSqlContainer;
+        PostgreSqlContainer serverInstance = _msSqlContainer;
         string databaseName = "Test" + Guid.NewGuid().ToString().Replace("-", "");
         await serverInstance.ExecScriptAsync($"create database [{databaseName}]");
         string connectionString =
             serverInstance
                 .GetConnectionString()
-                .Replace("Database=master", $"Database={databaseName}");
+                .Replace("Database=postgres", $"Database={databaseName}");
         return connectionString;
     }
 

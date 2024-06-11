@@ -18,64 +18,65 @@ internal class Program
     {
         var app = new AppAdapter(args,
                                  typeof(Program),
-                                 x =>
+                                 (services, configuration) =>
                                  {
-                                     x.AddServerSideBlazor();
+                                     services.AddServerSideBlazor();
 
-                                     x.AddScoped<ITokenProvider, TokenProvider>();
+                                     services.AddScoped<ITokenProvider, TokenProvider>();
 
-                                     x.AddControllersWithViews().AddApplicationPart(typeof(AdminController).Assembly);
+                                     services.AddControllersWithViews().AddApplicationPart(typeof(AdminController).Assembly);
 
 
-                                     x.AddScoped<AuthenticationStateProvider, RevalidatingServerAuthenticationState>();
-                                     x.AddCascadingAuthenticationState();
+                                     services.AddScoped<AuthenticationStateProvider, RevalidatingServerAuthenticationState>();
+                                     services.AddCascadingAuthenticationState();
 
-                                     x.AddAuthentication().AddCookie(x =>
+                                     services.AddAuthentication().AddCookie(x =>
                                      {
                                          x.LoginPath = "/login";
                                          x.AccessDeniedPath = "/no-access";
                                      });
 
-                                     x.AddAuthorization();
+                                     services.AddAuthorization();
 
-                                     x.AddBlazoredLocalStorage();
+                                     services.AddBlazoredLocalStorage();
 
-                                     x.AddTransient<ISomething, Something>();
-                                     x.AddViewModels();
-                                     x.AddMudServices(x =>
+                                     services.AddTransient<ISomething, Something>();
+                                     services.AddViewModels();
+                                     services.AddMudServices(x =>
                                      {
                                          x.SnackbarConfiguration.PreventDuplicates = false;
                                          x.SnackbarConfiguration.MaxDisplayedSnackbars = 20;
                                          x.SnackbarConfiguration.HideTransitionDuration = 100;
                                          x.SnackbarConfiguration.ShowTransitionDuration = 200;
                                      });
-                                     x.AddMudBlazorDialog();
-                                     var baseApiUrl = "https://localhost:7140/";
+                                     services.AddMudBlazorDialog();
+
+                                     var baseApiUrl = configuration.GetValue(typeof(string),"BaseApiUrl") as string;
 
                                      //Only add retry policy to one of them since all of them have same name
-                                     x.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>("ServerApi",
+                                     services.AddHttpClient<IJobApplicationSourceService, JobApplicationSourceService>("ServerApi",
                                                                                                                 x => x.BaseAddress = new Uri(baseApiUrl))
                                                  .AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.WaitAndRetryAsync(3,
                                                                                                                                retryNumber => TimeSpan.FromMilliseconds(600)));
 
-                                     x.AddHttpClient<ICompanyService, CompanyService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+                                     services.AddHttpClient<ICompanyService, CompanyService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<ICandidateService, CandidateService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+                                     services.AddHttpClient<ICandidateService, CandidateService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
-                                     x.AddHttpClient<IJobApplicationService, JobApplicationService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
-
-
-                                     x.AddHttpClient<IEmployeeService, EmployeeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
-
-                                     x.AddHttpClient<IAuthService, AuthService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
-
-                                     x.AddHttpClient<IWorkLocationTypeService, WorkLocationTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+                                     services.AddHttpClient<IJobApplicationService, JobApplicationService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
 
-                                     x.AddHttpClient<IJobTypeService, JobTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+                                     services.AddHttpClient<IEmployeeService, EmployeeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
+                                     services.AddHttpClient<IAuthService, AuthService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
+                                     services.AddHttpClient<IWorkLocationTypeService, WorkLocationTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
 
 
-                                     x.AddTransient<INotificationService, NotificationService>();
+                                     services.AddHttpClient<IJobTypeService, JobTypeService>("ServerApi", x => x.BaseAddress = new Uri(baseApiUrl));
+
+
+                                     services.AddTransient<INotificationService, NotificationService>();
                                  });
 
 
